@@ -27,4 +27,15 @@ public class Coupon extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+//        if (this.user != null) {
+//            this.user.getCoupons().remove(this);
+//        }
+//        this.user = user;
+//        if (!user.getCoupons().contains(this)) {
+//            user.addCoupons(this);
+//        }
+    }
 }

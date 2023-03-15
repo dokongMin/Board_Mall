@@ -17,7 +17,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "boardId")
     private Long id;
 
@@ -34,5 +35,19 @@ public class Board extends BaseEntity {
 
     @OneToMany(mappedBy = "board")
     private List<BoardLike> boardLikes = new ArrayList<>();
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setBoardComments(BoardComment boardComment) {
+        this.boardComments.add(boardComment);
+        boardComment.setBoard(this);
+    }
+
+    public void setBoardLikes(BoardLike boardLike) {
+        this.boardLikes.add(boardLike);
+        boardLike.setBoard(this);
+    }
 
 }

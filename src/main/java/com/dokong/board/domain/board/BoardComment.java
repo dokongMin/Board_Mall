@@ -28,4 +28,12 @@ public class BoardComment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
