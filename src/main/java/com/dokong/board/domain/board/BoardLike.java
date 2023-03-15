@@ -1,28 +1,26 @@
-package com.dokong.board.domain;
+package com.dokong.board.domain.board;
 
-
-import com.dokong.board.domain.baseentity.BaseTimeEntity;
+import com.dokong.board.domain.User;
+import com.dokong.board.domain.baseentity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Coupon extends BaseTimeEntity {
+public class BoardLike extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "couponId")
+    @Column(name = "boardLikeId")
     private Long id;
 
-    private String couponName;
-    private Long couponRate;
-    private String couponDetail;
-    private Long minCouponPrice;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "boardId")
+    private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
