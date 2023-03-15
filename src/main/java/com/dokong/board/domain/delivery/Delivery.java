@@ -1,6 +1,7 @@
 package com.dokong.board.domain.delivery;
 
 import com.dokong.board.domain.Address;
+import com.dokong.board.domain.order.Order;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,7 @@ public class Delivery {
 
     @Enumerated(EnumType.STRING)
     private deliveryStatus deliveryStatus;
+
+    @OneToOne(mappedBy = "delivery")
+    private Order order;
 }

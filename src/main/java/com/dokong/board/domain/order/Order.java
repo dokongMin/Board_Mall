@@ -1,12 +1,17 @@
 package com.dokong.board.domain.order;
 
 import com.dokong.board.domain.Address;
+import com.dokong.board.domain.OrderProduct;
+import com.dokong.board.domain.User;
+import com.dokong.board.domain.delivery.Delivery;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,4 +30,15 @@ public class Order {
 
     @Embedded
     private Address address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deliveryId")
+    private Delivery delivery;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderProduct> orderProducts = new ArrayList<>();
 }

@@ -1,6 +1,7 @@
 package com.dokong.board.domain.board;
 
 
+import com.dokong.board.domain.User;
 import com.dokong.board.domain.baseentity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,4 +20,12 @@ public class BoardComment extends BaseEntity {
     private Long id;
 
     private String commentContent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "boardId")
+    private Board board;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 }
