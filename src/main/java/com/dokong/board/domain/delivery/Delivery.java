@@ -26,4 +26,8 @@ public class Delivery {
 
     @OneToOne(mappedBy = "delivery")
     private Order order;
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

@@ -32,4 +32,13 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<CartProduct> cartProducts = new ArrayList<>();
 
+    public void OrderProducts(OrderProduct orderProduct) {
+        this.orderProducts.add(orderProduct);
+        orderProduct.setProduct(this);
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+        category.getProducts().add(this);
+    }
 }
