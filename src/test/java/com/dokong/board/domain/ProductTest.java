@@ -4,6 +4,7 @@ import com.dokong.board.exception.NotEnoughStockException;
 import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductTest {
 
     @Test
+    @DisplayName("수량_제거")
     public void removeStock() throws Exception {
         // given
         Product product = Product.builder()
@@ -27,6 +29,7 @@ class ProductTest {
     }
 
     @Test
+    @DisplayName("수량_제거_예외")
     public void removeStockException() throws Exception {
         // given
         Product product = Product.builder()
@@ -42,6 +45,7 @@ class ProductTest {
     }
 
     @Test
+    @DisplayName("수량_추가")
     public void addStock () throws Exception{
         // given
         Product product = Product.builder()
