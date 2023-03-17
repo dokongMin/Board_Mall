@@ -30,6 +30,7 @@ public class Coupon extends BaseTimeEntity {
 
     public void setUser(User user) {
         this.user = user;
+        user.addCoupons(this);
 //        if (this.user != null) {
 //            this.user.getCoupons().remove(this);
 //        }
