@@ -35,10 +35,10 @@ public class Product {
     /**
      * 연관관계 편의 메소드
      */
-    public void OrderProducts(OrderProduct orderProduct) {
-        this.orderProducts.add(orderProduct);
-        orderProduct.setProduct(this);
-    }
+//    public void OrderProducts(OrderProduct orderProduct) {
+//        this.orderProducts.add(orderProduct);
+//        orderProduct.setProduct(this);
+//    }
 
     public void setCategory(Category category) {
         this.category = category;
