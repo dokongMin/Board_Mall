@@ -2,9 +2,7 @@ package com.dokong.board.domain;
 
 
 import com.dokong.board.domain.baseentity.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
@@ -12,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Coupon extends BaseTimeEntity {
 
     @Id
@@ -20,9 +19,9 @@ public class Coupon extends BaseTimeEntity {
     private Long id;
 
     private String couponName;
-    private Long couponRate;
+    private int couponRate;
     private String couponDetail;
-    private Long minCouponPrice;
+    private int minCouponPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
@@ -30,13 +29,13 @@ public class Coupon extends BaseTimeEntity {
 
     public void setUser(User user) {
         this.user = user;
-        user.addCoupons(this);
-//        if (this.user != null) {
-//            this.user.getCoupons().remove(this);
-//        }
-//        this.user = user;
-//        if (!user.getCoupons().contains(this)) {
-//            user.addCoupons(this);
-//        }
+    }
+
+    @Builder
+    public Coupon(String couponName, int couponRate, String couponDetail, int minCouponPrice) {
+        this.couponName = couponName;
+        this.couponRate = couponRate;
+        this.couponDetail = couponDetail;
+        this.minCouponPrice = minCouponPrice;
     }
 }

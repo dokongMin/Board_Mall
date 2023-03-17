@@ -1,15 +1,16 @@
 package com.dokong.board.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.dokong.board.domain.baseentity.BaseTimeEntity;
+import com.dokong.board.exception.NotEnoughStockException;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CartProduct {
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class CartProduct extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +29,24 @@ public class CartProduct {
     @JoinColumn(name = "productId")
     private Product product;
 
+//    public void createCartOrder(User user, Product product) {
+////        if (cartProductCount > product.getItemStock()) {
+////            throw new NotEnoughStockException("수량이 부족합니다.");
+////        }
+//        setUser(user);
+////        setProduct(product);
+//    }
+
+
+    public void createCartOrder(User user) {
+        this.user = user;
+        user.getCartProducts().add(this);
+    }
+
+    @Builder
+    public CartProduct(String cartItemName, int cartItemCount, int cartItemPrice) {
+        this.cartItemName = cartItemName;
+        this.cartItemCount = cartItemCount;
+        this.cartItemPrice = cartItemPrice;
+    }
 }
