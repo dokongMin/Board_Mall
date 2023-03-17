@@ -1,9 +1,7 @@
 package com.dokong.board.domain;
 
 import com.dokong.board.domain.order.Order;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderProduct {
 
     @Id
@@ -36,6 +35,24 @@ public class OrderProduct {
     }
 
     public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    /**
+     * 비즈니스 로직
+     */
+    public void cancel() {
+        product.addStock(orderItemCount);
+    }
+
+    /**
+     * Builder
+     */
+    @Builder
+    public OrderProduct(int orderItemPrice, int orderItemCount, Order order, Product product) {
+        this.orderItemPrice = orderItemPrice;
+        this.orderItemCount = orderItemCount;
+        this.order = order;
         this.product = product;
     }
 }

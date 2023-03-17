@@ -12,7 +12,7 @@ import javax.persistence.Embedded;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
-public abstract class Address {
+public class Address {
 
     private String city;
     private String roadCode;

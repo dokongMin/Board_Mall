@@ -2,15 +2,14 @@ package com.dokong.board.domain.delivery;
 
 import com.dokong.board.domain.Address;
 import com.dokong.board.domain.order.Order;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Delivery {
 
     @Id
@@ -22,12 +21,19 @@ public class Delivery {
     private Address address;
 
     @Enumerated(EnumType.STRING)
-    private deliveryStatus deliveryStatus;
+    private DeliveryStatus deliveryStatus;
 
     @OneToOne(mappedBy = "delivery")
     private Order order;
 
     public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    @Builder
+    public Delivery(Address address, DeliveryStatus deliveryStatus, Order order) {
+        this.address = address;
+        this.deliveryStatus = deliveryStatus;
         this.order = order;
     }
 }

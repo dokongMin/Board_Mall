@@ -38,6 +38,7 @@ public class Board extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+        user.getBoards().add(this);
     }
 
     public void setBoardComments(BoardComment boardComment) {

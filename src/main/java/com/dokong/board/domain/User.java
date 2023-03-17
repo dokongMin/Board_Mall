@@ -5,17 +5,16 @@ import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.board.BoardComment;
 import com.dokong.board.domain.board.BoardLike;
 import com.dokong.board.domain.order.Order;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "user")
+@Entity(name = "member")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User extends BaseTimeEntity {
 
     @Id
@@ -54,27 +53,31 @@ public class User extends BaseTimeEntity {
 
     public void addCoupons(Coupon coupon) {
         this.coupons.add(coupon);
-        if (coupon.getUser() != this) {
-            coupon.setUser(this);
-        }
+//        if (coupon.getUser() != this) {
+//            coupon.setUser(this);
+//        }
     }
 
-    public void writeBoard(Board board) {
-        this.boards.add(board);
-        if (board.getUser() != this) {
-            board.setUser(this);
-        }
-    }
+//    public void likeBoard(BoardLike boardLike) {
+//        this.boardLikes.add(boardLike);
+//        if (boardLike.getUser() != this) {
+//            boardLike.setUser(this);
+//        }
+//    }
+//
+//    public void writeComment(BoardComment boardComment) {
+//        this.boardComments.add(boardComment);
+//        boardComment.setUser(this);
+//    }
 
-    public void likeBoard(BoardLike boardLike) {
-        this.boardLikes.add(boardLike);
-        if (boardLike.getUser() != this) {
-            boardLike.setUser(this);
-        }
-    }
-
-    public void writeComment(BoardComment boardComment) {
-        this.boardComments.add(boardComment);
-        boardComment.setUser(this);
+    @Builder
+    public User(String username, String password, String name, String phoneNumber, String email, String gender, Address address) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.gender = gender;
+        this.address = address;
     }
 }
