@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.dokong.board.domain.order.OrderTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-03-17T07:59:14" hostname="jeongminhwan-ui-MacBookAir.local" time="0.069">
+  <properties/>
+  <testcase name="주문_취소" classname="com.dokong.board.domain.order.OrderTest" time="0.063"/>
+  <testcase name="주문_생성" classname="com.dokong.board.domain.order.OrderTest" time="0.001"/>
+  <testcase name="주문_취소_예외" classname="com.dokong.board.domain.order.OrderTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

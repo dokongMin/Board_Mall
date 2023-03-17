@@ -16,7 +16,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Order {
 
     @Id
@@ -91,7 +90,7 @@ public class Order {
      * Builder
      */
     @Builder
-    public Order(OrderStatus orderStatus, LocalDateTime orderDate) {
+    public Order(OrderStatus orderStatus, LocalDateTime orderDate, Address address) {
         this.orderStatus = orderStatus;
         this.orderDate = orderDate;
         this.address = address;

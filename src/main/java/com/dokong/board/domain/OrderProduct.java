@@ -41,6 +41,10 @@ public class OrderProduct {
     /**
      * 비즈니스 로직
      */
+    public void order() {
+        product.removeStock(orderItemCount);
+    }
+
     public void cancel() {
         product.addStock(orderItemCount);
     }
