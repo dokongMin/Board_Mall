@@ -51,24 +51,10 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<CartProduct> cartProducts = new ArrayList<>();
 
-    public void addCoupons(Coupon coupon) {
+    public void addCoupon(Coupon coupon) {
         this.coupons.add(coupon);
-//        if (coupon.getUser() != this) {
-//            coupon.setUser(this);
-//        }
+        coupon.setUser(this);
     }
-
-//    public void likeBoard(BoardLike boardLike) {
-//        this.boardLikes.add(boardLike);
-//        if (boardLike.getUser() != this) {
-//            boardLike.setUser(this);
-//        }
-//    }
-//
-//    public void writeComment(BoardComment boardComment) {
-//        this.boardComments.add(boardComment);
-//        boardComment.setUser(this);
-//    }
 
     @Builder
     public User(String username, String password, String name, String phoneNumber, String email, String gender, Address address) {

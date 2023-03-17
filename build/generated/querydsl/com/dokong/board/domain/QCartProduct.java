@@ -22,13 +22,21 @@ public class QCartProduct extends EntityPathBase<CartProduct> {
 
     public static final QCartProduct cartProduct = new QCartProduct("cartProduct");
 
+    public final com.dokong.board.domain.baseentity.QBaseTimeEntity _super = new com.dokong.board.domain.baseentity.QBaseTimeEntity(this);
+
     public final NumberPath<Integer> cartItemCount = createNumber("cartItemCount", Integer.class);
 
     public final StringPath cartItemName = createString("cartItemName");
 
     public final NumberPath<Integer> cartItemPrice = createNumber("cartItemPrice", Integer.class);
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final QProduct product;
 

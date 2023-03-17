@@ -3,10 +3,7 @@ package com.dokong.board.domain.board;
 import com.dokong.board.domain.User;
 import com.dokong.board.domain.baseentity.BaseEntity;
 import com.dokong.board.domain.baseentity.BaseTimeEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Board extends BaseEntity {
 
     @Id
@@ -36,19 +34,22 @@ public class Board extends BaseEntity {
     @OneToMany(mappedBy = "board")
     private List<BoardLike> boardLikes = new ArrayList<>();
 
-    public void setUser(User user) {
+    public void writeBoard(User user) {
         this.user = user;
         user.getBoards().add(this);
     }
 
-    public void setBoardComments(BoardComment boardComment) {
-        this.boardComments.add(boardComment);
-        boardComment.setBoard(this);
+    public void addLikeCount() {
+        this.likeCount += 1;
+    }
+    public void removeLikeCount() {
+        this.likeCount -= 1;
     }
 
-    public void setBoardLikes(BoardLike boardLike) {
-        this.boardLikes.add(boardLike);
-        boardLike.setBoard(this);
+    @Builder
+    public Board(String boardTitle, String boardContent) {
+        this.boardTitle = boardTitle;
+        this.boardContent = boardContent;
+        this.likeCount = 0;
     }
-
 }

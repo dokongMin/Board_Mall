@@ -3,15 +3,14 @@ package com.dokong.board.domain.board;
 
 import com.dokong.board.domain.User;
 import com.dokong.board.domain.baseentity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BoardComment extends BaseEntity {
 
     @Id
@@ -33,8 +32,15 @@ public class BoardComment extends BaseEntity {
         this.board = board;
     }
 
-    public void setUser(User user) {
+    public void writeComment(User user, Board board) {
         this.user = user;
+        user.getBoardComments().add(this);
+        this.board = board;
+        board.getBoardComments().add(this);
     }
-    
+
+    @Builder
+    public BoardComment(String commentContent) {
+        this.commentContent = commentContent;
+    }
 }

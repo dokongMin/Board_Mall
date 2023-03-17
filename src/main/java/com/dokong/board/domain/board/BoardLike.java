@@ -2,15 +2,15 @@ package com.dokong.board.domain.board;
 
 import com.dokong.board.domain.User;
 import com.dokong.board.domain.baseentity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+//@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BoardLike extends BaseEntity {
 
     @Id
@@ -33,4 +33,19 @@ public class BoardLike extends BaseEntity {
     public void setBoard(Board board) {
         this.board = board;
     }
+
+    /**
+     * 두 번 클릭 시 , 좋아요 취소 기능 구현하기
+     */
+    public void pushLike(User user, Board board) {
+//        if (user.getBoardLikes().contains(this)) {
+//            System.out.println("호출됨?");
+//        }
+        this.user = user;
+        user.getBoardLikes().add(this);
+        this.board = board;
+        board.getBoardLikes().add(this);
+        board.addLikeCount();
+    }
+
 }
