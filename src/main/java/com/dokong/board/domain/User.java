@@ -56,6 +56,12 @@ public class User extends BaseTimeEntity {
         coupon.setUser(this);
     }
 
+    public void updateUser(String password, String email, Address address) {
+        this.password = password;
+        this.email = email;
+        this.address = address;
+    }
+
     @Builder
     public User(String username, String password, String name, String phoneNumber, String email, String gender, Address address) {
         this.username = username;
