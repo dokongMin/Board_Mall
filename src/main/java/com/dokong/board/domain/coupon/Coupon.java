@@ -1,9 +1,9 @@
-package com.dokong.board.domain;
+package com.dokong.board.domain.coupon;
 
 
+import com.dokong.board.domain.user.User;
 import com.dokong.board.domain.baseentity.BaseTimeEntity;
 import lombok.*;
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 
@@ -23,6 +23,9 @@ public class Coupon extends BaseTimeEntity {
     private String couponDetail;
     private int minCouponPrice;
 
+    @Enumerated(EnumType.STRING)
+    private CouponStatus couponStatus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
@@ -31,11 +34,13 @@ public class Coupon extends BaseTimeEntity {
         this.user = user;
     }
 
+
     @Builder
-    public Coupon(String couponName, int couponRate, String couponDetail, int minCouponPrice) {
+    public Coupon(String couponName, int couponRate, String couponDetail, int minCouponPrice, CouponStatus couponStatus) {
         this.couponName = couponName;
         this.couponRate = couponRate;
         this.couponDetail = couponDetail;
         this.minCouponPrice = minCouponPrice;
+        this.couponStatus = couponStatus;
     }
 }

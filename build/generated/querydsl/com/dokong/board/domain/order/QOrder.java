@@ -34,7 +34,7 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final EnumPath<OrderStatus> orderStatus = createEnum("orderStatus", OrderStatus.class);
 
-    public final com.dokong.board.domain.QUser user;
+    public final com.dokong.board.domain.user.QUser user;
 
     public QOrder(String variable) {
         this(Order.class, forVariable(variable), INITS);
@@ -56,7 +56,7 @@ public class QOrder extends EntityPathBase<Order> {
         super(type, metadata, inits);
         this.address = inits.isInitialized("address") ? new com.dokong.board.domain.QAddress(forProperty("address")) : null;
         this.delivery = inits.isInitialized("delivery") ? new com.dokong.board.domain.delivery.QDelivery(forProperty("delivery"), inits.get("delivery")) : null;
-        this.user = inits.isInitialized("user") ? new com.dokong.board.domain.QUser(forProperty("user"), inits.get("user")) : null;
+        this.user = inits.isInitialized("user") ? new com.dokong.board.domain.user.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

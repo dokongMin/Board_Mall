@@ -3,6 +3,7 @@ package com.dokong.board.domain.order;
 import com.dokong.board.domain.*;
 import com.dokong.board.domain.delivery.Delivery;
 import com.dokong.board.domain.delivery.DeliveryStatus;
+import com.dokong.board.domain.user.User;
 import com.dokong.board.exception.AlreadyDeliverException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

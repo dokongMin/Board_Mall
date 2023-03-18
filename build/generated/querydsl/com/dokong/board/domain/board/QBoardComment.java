@@ -42,7 +42,7 @@ public class QBoardComment extends EntityPathBase<BoardComment> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
-    public final com.dokong.board.domain.QUser user;
+    public final com.dokong.board.domain.user.QUser user;
 
     public QBoardComment(String variable) {
         this(BoardComment.class, forVariable(variable), INITS);
@@ -63,7 +63,7 @@ public class QBoardComment extends EntityPathBase<BoardComment> {
     public QBoardComment(Class<? extends BoardComment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.board = inits.isInitialized("board") ? new QBoard(forProperty("board"), inits.get("board")) : null;
-        this.user = inits.isInitialized("user") ? new com.dokong.board.domain.QUser(forProperty("user"), inits.get("user")) : null;
+        this.user = inits.isInitialized("user") ? new com.dokong.board.domain.user.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

@@ -40,7 +40,7 @@ public class QCartProduct extends EntityPathBase<CartProduct> {
 
     public final QProduct product;
 
-    public final QUser user;
+    public final com.dokong.board.domain.user.QUser user;
 
     public QCartProduct(String variable) {
         this(CartProduct.class, forVariable(variable), INITS);
@@ -61,7 +61,7 @@ public class QCartProduct extends EntityPathBase<CartProduct> {
     public QCartProduct(Class<? extends CartProduct> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
-        this.user = inits.isInitialized("user") ? new QUser(forProperty("user"), inits.get("user")) : null;
+        this.user = inits.isInitialized("user") ? new com.dokong.board.domain.user.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

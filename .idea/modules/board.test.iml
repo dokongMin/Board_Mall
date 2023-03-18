@@ -11,7 +11,9 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
-        <datasource-mapping />
+        <datasource-mapping>
+          <factory-entry name="board.test" />
+        </datasource-mapping>
         <naming-strategy-map />
       </configuration>
     </facet>
@@ -34,6 +36,7 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-thymeleaf:2.7.9" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-validation:2.7.9" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:2.7.9" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1" level="project" />
     <orderEntry type="library" name="Gradle: com.querydsl:querydsl-jpa:5.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-test:2.7.9" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-aop:2.7.9" level="project" />
@@ -52,6 +55,8 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:2.7.9" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-webmvc:5.3.25" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-web:5.3.25" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.gavlyukovskiy:datasource-decorator-spring-boot-autoconfigure:1.7.1" level="project" />
+    <orderEntry type="library" name="Gradle: p6spy:p6spy:3.9.0" level="project" />
     <orderEntry type="library" name="Gradle: com.querydsl:querydsl-core:5.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-test-autoconfigure:2.7.9" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-test:2.7.9" level="project" />
