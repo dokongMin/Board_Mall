@@ -1,10 +1,11 @@
 package com.dokong.board.service;
 
 import com.dokong.board.domain.Address;
-import com.dokong.board.domain.User;
+import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.UserRepository;
 import com.dokong.board.repository.dto.userdto.JoinUserDto;
 import com.dokong.board.repository.dto.userdto.UpdateUserDto;
+import com.dokong.board.repository.dto.userdto.JoinUserResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +33,7 @@ class UserServiceTest {
         // given
         Address address = new Address("서울", "110-332", "0000");
 
-        JoinUserDto userDto = JoinUserDto.builder()
-                .username("alsghks")
-                .password("1234")
-                .name("정민환")
-                .address(address)
-                .email("alsghks@naver.com")
-                .gender("M")
-                .phoneNumber("1233-23423")
-                .build();
+        JoinUserDto userDto = getJoinUserDto(address);
 
         JoinUserDto userDto2 = JoinUserDto.builder()
                 .username("alsghks2")
@@ -53,14 +46,13 @@ class UserServiceTest {
                 .build();
 
         // when
-        Long savedId = userService.saveUser(userDto);
+        JoinUserResponseDto joinUserResponseDto = userService.saveUser(userDto);
         userService.saveUser(userDto2);
 
-        User user = userRepository.findById(savedId).orElseThrow(() -> {
+        User user = userRepository.findByUsername(joinUserResponseDto.getUsername()).orElseThrow(() -> {
             throw new IllegalStateException("회원이 없습니다.");
         });
         // then
-        assertThat(savedId).isEqualTo(1);
         assertThat(user.getUsername()).isEqualTo("alsghks");
         assertThat(userRepository.findAll().size()).isEqualTo(2);
     }
@@ -93,15 +85,7 @@ class UserServiceTest {
         Address address = new Address("서울", "110-332", "0000");
         Address newAddress = new Address("경기", "999-999", "9999");
 
-        JoinUserDto userDto = JoinUserDto.builder()
-                .username("alsghks")
-                .password("1234")
-                .name("정민환")
-                .address(address)
-                .email("alsghks@naver.com")
-                .gender("M")
-                .phoneNumber("1233-23423")
-                .build();
+        JoinUserDto userDto = getJoinUserDto(address);
 
         userService.saveUser(userDto);
 
@@ -117,5 +101,18 @@ class UserServiceTest {
         // then
         assertThat(findUser.getPassword()).isEqualTo("999");
         assertThat(findUser.getAddress()).isEqualTo(newAddress);
+    }
+
+    private JoinUserDto getJoinUserDto(Address address) {
+        JoinUserDto userDto = JoinUserDto.builder()
+                .username("alsghks")
+                .password("1234")
+                .name("정민환")
+                .address(address)
+                .email("alsghks@naver.com")
+                .gender("M")
+                .phoneNumber("1233-23423")
+                .build();
+        return userDto;
     }
 }

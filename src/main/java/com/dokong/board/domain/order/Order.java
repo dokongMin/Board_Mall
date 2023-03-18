@@ -2,7 +2,7 @@ package com.dokong.board.domain.order;
 
 import com.dokong.board.domain.Address;
 import com.dokong.board.domain.OrderProduct;
-import com.dokong.board.domain.User;
+import com.dokong.board.domain.user.User;
 import com.dokong.board.domain.delivery.Delivery;
 import com.dokong.board.domain.delivery.DeliveryStatus;
 import com.dokong.board.exception.AlreadyDeliverException;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "orders")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {

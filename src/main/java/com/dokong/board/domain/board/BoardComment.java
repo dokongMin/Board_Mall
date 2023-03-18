@@ -1,7 +1,7 @@
 package com.dokong.board.domain.board;
 
 
-import com.dokong.board.domain.User;
+import com.dokong.board.domain.user.User;
 import com.dokong.board.domain.baseentity.BaseEntity;
 import lombok.*;
 

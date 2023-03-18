@@ -1,7 +1,7 @@
 package com.dokong.board.domain;
 
 import com.dokong.board.domain.baseentity.BaseTimeEntity;
-import com.dokong.board.exception.NotEnoughStockException;
+import com.dokong.board.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;

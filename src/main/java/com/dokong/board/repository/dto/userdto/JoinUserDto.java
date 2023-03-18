@@ -1,10 +1,9 @@
 package com.dokong.board.repository.dto.userdto;
 
 import com.dokong.board.domain.Address;
-import com.dokong.board.domain.User;
+import com.dokong.board.domain.user.User;
+import com.dokong.board.domain.user.UserRole;
 import lombok.*;
-
-import javax.persistence.Embedded;
 
 @Getter
 @Setter
@@ -18,6 +17,7 @@ public class JoinUserDto {
     private String email;
     private String gender;
     private Address address;
+    private UserRole userRole;
 
     @Builder
     public JoinUserDto(String username, String password, String name, String phoneNumber, String email, String gender, Address address) {
@@ -28,6 +28,7 @@ public class JoinUserDto {
         this.email = email;
         this.gender = gender;
         this.address = address;
+        this.userRole = UserRole.BRONZE;
     }
 
     public User toEntity() {
@@ -39,6 +40,7 @@ public class JoinUserDto {
                 .email(email)
                 .gender(gender)
                 .address(address)
+                .userRole(userRole)
                 .build();
     }
 }

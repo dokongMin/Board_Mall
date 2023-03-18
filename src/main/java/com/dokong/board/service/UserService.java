@@ -1,9 +1,11 @@
 package com.dokong.board.service;
 
-import com.dokong.board.domain.User;
+import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.UserRepository;
 import com.dokong.board.repository.dto.userdto.JoinUserDto;
 import com.dokong.board.repository.dto.userdto.UpdateUserDto;
+import com.dokong.board.repository.dto.userdto.JoinUserResponseDto;
+import com.dokong.board.repository.dto.userdto.UpdateUserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,24 +18,22 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long saveUser(JoinUserDto userDto) {
+    public JoinUserResponseDto saveUser(JoinUserDto userDto) {
         validateUsername(userDto);
-        User user = userRepository.save(userDto.toEntity());
-        return user.getId();
+        return JoinUserResponseDto.of(userRepository.save(userDto.toEntity()));
     }
 
     @Transactional
-    public Long updateUser(UpdateUserDto userDto) {
+    public UpdateUserResponseDto updateUser(UpdateUserDto userDto) {
         User user = checkValidUser(userDto);
         user.updateUser(userDto.getPassword(), userDto.getEmail(), userDto.getAddress());
-        return user.getId();
+        return UpdateUserResponseDto.of(user);
     }
 
     private User checkValidUser(UpdateUserDto userDto) {
-        User user = userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> {
+        return userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> {
             throw new IllegalStateException("해당 회원은 존재하지 않습니다.");
         });
-        return user;
     }
 
     private void validateUsername(JoinUserDto userDto) {

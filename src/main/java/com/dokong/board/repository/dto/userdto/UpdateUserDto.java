@@ -1,7 +1,8 @@
 package com.dokong.board.repository.dto.userdto;
 
 import com.dokong.board.domain.Address;
-import com.dokong.board.domain.User;
+import com.dokong.board.domain.user.User;
+import com.dokong.board.domain.user.UserRole;
 import lombok.*;
 
 @Getter

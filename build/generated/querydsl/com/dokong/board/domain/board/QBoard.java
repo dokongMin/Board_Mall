@@ -48,7 +48,7 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final NumberPath<Long> likeCount = createNumber("likeCount", Long.class);
 
-    public final com.dokong.board.domain.QUser user;
+    public final com.dokong.board.domain.user.QUser user;
 
     public QBoard(String variable) {
         this(Board.class, forVariable(variable), INITS);
@@ -68,7 +68,7 @@ public class QBoard extends EntityPathBase<Board> {
 
     public QBoard(Class<? extends Board> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.user = inits.isInitialized("user") ? new com.dokong.board.domain.QUser(forProperty("user"), inits.get("user")) : null;
+        this.user = inits.isInitialized("user") ? new com.dokong.board.domain.user.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }
