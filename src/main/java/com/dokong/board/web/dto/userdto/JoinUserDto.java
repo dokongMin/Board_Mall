@@ -1,4 +1,4 @@
-package com.dokong.board.repository.dto.userdto;
+package com.dokong.board.web.dto.userdto;
 
 import com.dokong.board.domain.Address;
 import com.dokong.board.domain.user.User;

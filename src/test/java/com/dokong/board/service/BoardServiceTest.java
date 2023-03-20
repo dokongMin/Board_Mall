@@ -3,17 +3,15 @@ package com.dokong.board.service;
 import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.BoardRepository;
-import com.dokong.board.repository.dto.boarddto.SaveBoardReqDto;
-import com.dokong.board.repository.dto.boarddto.SaveBoardRespDto;
-import com.dokong.board.repository.dto.boarddto.UpdateBoardDto;
+import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
+import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
+import com.dokong.board.web.dto.boarddto.UpdateBoardDto;
+import com.dokong.board.web.service.BoardService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

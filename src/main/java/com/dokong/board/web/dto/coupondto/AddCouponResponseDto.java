@@ -1,4 +1,4 @@
-package com.dokong.board.repository.dto.coupondto;
+package com.dokong.board.web.dto.coupondto;
 
 import com.dokong.board.domain.coupon.Coupon;
 import com.dokong.board.domain.coupon.CouponStatus;

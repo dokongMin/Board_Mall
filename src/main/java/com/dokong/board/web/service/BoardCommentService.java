@@ -1,9 +1,8 @@
-package com.dokong.board.service;
+package com.dokong.board.web.service;
 
 import com.dokong.board.domain.board.BoardComment;
 import com.dokong.board.repository.BoardCommentRepository;
-import com.dokong.board.repository.BoardRepository;
-import com.dokong.board.repository.dto.BoardCommentDto;
+import com.dokong.board.web.dto.BoardCommentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,7 @@ public class BoardCommentService {
 
     @Transactional
     public BoardCommentDto saveBoardComment(BoardCommentDto boardCommentDto) {
-        BoardComment boardComment = boardCommentRepository.save(boardCommentDto.toEntity(boardCommentDto));
+        BoardComment boardComment = boardCommentRepository.save(boardCommentDto.toEntity());
         return BoardCommentDto.of(boardComment);
     }
 

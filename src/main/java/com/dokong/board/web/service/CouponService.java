@@ -1,10 +1,14 @@
-package com.dokong.board.service;
+package com.dokong.board.web.service;
 
 import com.dokong.board.domain.coupon.Coupon;
+import com.dokong.board.domain.user.User;
+import com.dokong.board.exception.NoExistUserException;
 import com.dokong.board.repository.CouponRepository;
-import com.dokong.board.repository.dto.coupondto.AddCouponDto;
-import com.dokong.board.repository.dto.coupondto.AddCouponResponseDto;
-import com.dokong.board.repository.dto.coupondto.UpdateCouponDto;
+import com.dokong.board.repository.UserRepository;
+import com.dokong.board.web.dto.coupondto.AddCouponDto;
+import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
+import com.dokong.board.web.dto.coupondto.UpdateCouponDto;
+import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +21,15 @@ import java.util.List;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public AddCouponResponseDto addCoupon(AddCouponDto couponDto) {
+    public AddCouponResponseDto addCoupon(AddCouponDto couponDto, SessionUserDto userDto) {
         validCouponIssue(couponDto);
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> {
+            throw new NoExistUserException("해당 회원은 존재하지 않습니다.");
+        });
+        user.addCoupon(couponDto.toEntity());
         return AddCouponResponseDto.of(couponRepository.save(couponDto.toEntity()));
     }
 

@@ -1,4 +1,4 @@
-package com.dokong.board.repository.dto.boarddto;
+package com.dokong.board.web.dto.boarddto;
 import com.dokong.board.domain.board.Board;
 import lombok.Builder;
 import lombok.Getter;
