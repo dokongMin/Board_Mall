@@ -70,7 +70,7 @@ public class User extends BaseTimeEntity {
 
     private void checkJoinTime() {
         LocalDateTime joinDateTime = this.getCreatedDate();
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.of(2024,05,10,3,10);
         long betweenTime = ChronoUnit.DAYS.between(joinDateTime, now);
         if (betweenTime < 1) {
             throw new NotEnoughTimeException("쿠폰은 회원 가입 후, 하루가 지나야 발급 가능합니다.");

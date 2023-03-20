@@ -1,4 +1,4 @@
-package com.dokong.board.repository.dto.boarddto;
+package com.dokong.board.web.dto.boarddto;
 
 import com.dokong.board.domain.board.Board;
 import lombok.*;
@@ -19,10 +19,10 @@ public class SaveBoardReqDto {
         this.likeCount = likeCount;
     }
 
-    public Board toEntity(SaveBoardReqDto board) {
+    public Board toEntity() {
         return Board.builder()
-                .boardTitle(board.getBoardTitle())
-                .boardContent(board.getBoardContent())
+                .boardTitle(boardTitle)
+                .boardContent(boardContent)
                 .likeCount(0)
                 .build();
     }

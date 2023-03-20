@@ -1,10 +1,10 @@
-package com.dokong.board.service;
+package com.dokong.board.web.service;
 
 import com.dokong.board.domain.board.Board;
 import com.dokong.board.repository.BoardRepository;
-import com.dokong.board.repository.dto.boarddto.SaveBoardReqDto;
-import com.dokong.board.repository.dto.boarddto.SaveBoardRespDto;
-import com.dokong.board.repository.dto.boarddto.UpdateBoardDto;
+import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
+import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
+import com.dokong.board.web.dto.boarddto.UpdateBoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ public class BoardService {
 
     @Transactional
     public SaveBoardRespDto saveBoard(SaveBoardReqDto boardReqDto) {
-        Board board = boardRepository.save(boardReqDto.toEntity(boardReqDto));
+        Board board = boardRepository.save(boardReqDto.toEntity());
         return SaveBoardRespDto.of(board);
     }
 

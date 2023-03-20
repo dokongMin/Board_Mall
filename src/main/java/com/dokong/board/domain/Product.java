@@ -26,7 +26,7 @@ public class Product {
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryId")
+    @JoinColumn(name = "categoryId", unique = true)
     private Category category;
 
     @OneToMany(mappedBy = "product")
@@ -35,11 +35,6 @@ public class Product {
     /**
      * 연관관계 편의 메소드
      */
-//    public void OrderProducts(OrderProduct orderProduct) {
-//        this.orderProducts.add(orderProduct);
-//        orderProduct.setProduct(this);
-//    }
-
     public void setCategory(Category category) {
         this.category = category;
         category.getProducts().add(this);
@@ -58,6 +53,12 @@ public class Product {
             throw new NotEnoughStockException("수량이 부족합니다.");
         }
         itemStock = restStock;
+    }
+
+    public void updateProduct(String itemName, int itemPrice, int itemStock) {
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
+        this.itemStock = itemStock;
     }
 
     /**

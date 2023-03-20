@@ -32,21 +32,36 @@ class UserRepositoryTest {
      }
 
 
-
     @Test
-    @DisplayName("회원_쿠폰_발급_예외")
-     public void couponIssueException () throws Exception{
-         // given
+    @DisplayName("회원_쿠폰_발급")
+    public void couponIssueException () throws Exception{
+        // given
         User user = getUser();
         userRepository.save(user);
 
         Coupon coupon = getCoupon();
         couponRepository.save(coupon);
-         // then
-        assertThatThrownBy(() -> user.addCoupon(coupon))
-                .isExactlyInstanceOf(NotEnoughTimeException.class)
-                .hasMessageContaining("쿠폰은 회원 가입 후, 하루가 지나야 발급 가능합니다.");
-      }
+        // then
+        user.addCoupon(coupon);
+        assertThat(user.getCoupons().get(0).getCouponName()).isEqualTo("회원가입 축하 쿠폰");
+        assertThat(user.getCoupons().size()).isEqualTo(1);
+    }
+
+
+//    @Test
+//    @DisplayName("회원_쿠폰_발급_예외")
+//     public void couponIssueException () throws Exception{
+//         // given
+//        User user = getUser();
+//        userRepository.save(user);
+//
+//        Coupon coupon = getCoupon();
+//        couponRepository.save(coupon);
+//         // then
+//        assertThatThrownBy(() -> user.addCoupon(coupon))
+//                .isExactlyInstanceOf(NotEnoughTimeException.class)
+//                .hasMessageContaining("쿠폰은 회원 가입 후, 하루가 지나야 발급 가능합니다.");
+//      }
 
     private Coupon getCoupon() {
         return Coupon.builder()

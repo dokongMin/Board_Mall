@@ -1,11 +1,12 @@
-package com.dokong.board.service;
+package com.dokong.board.web.service;
 
 import com.dokong.board.domain.user.User;
+import com.dokong.board.exception.NoExistUserException;
 import com.dokong.board.repository.UserRepository;
-import com.dokong.board.repository.dto.userdto.JoinUserDto;
-import com.dokong.board.repository.dto.userdto.UpdateUserDto;
-import com.dokong.board.repository.dto.userdto.JoinUserResponseDto;
-import com.dokong.board.repository.dto.userdto.UpdateUserResponseDto;
+import com.dokong.board.web.dto.userdto.JoinUserDto;
+import com.dokong.board.web.dto.userdto.UpdateUserDto;
+import com.dokong.board.web.dto.userdto.JoinUserResponseDto;
+import com.dokong.board.web.dto.userdto.UpdateUserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class UserService {
 
     public User checkExistUser(UpdateUserDto userDto) {
         return userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> {
-            throw new IllegalStateException("해당 회원은 존재하지 않습니다.");
+            throw new NoExistUserException("해당 회원은 존재하지 않습니다.");
         });
     }
 

@@ -1,6 +1,5 @@
-package com.dokong.board.repository.dto;
+package com.dokong.board.web.dto;
 
-import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.board.BoardComment;
 import lombok.*;
 
@@ -16,9 +15,9 @@ public class BoardCommentDto {
         this.commentContent = commentContent;
     }
 
-    public BoardComment toEntity(BoardCommentDto boardComment) {
+    public BoardComment toEntity() {
         return BoardComment.builder()
-                .commentContent(boardComment.getCommentContent())
+                .commentContent(commentContent)
                 .build();
     }
 

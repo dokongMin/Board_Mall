@@ -65,12 +65,13 @@ public class Order {
      * 비즈니스 로직
      */
 
-    public void createOrder(User user, Delivery delivery, OrderProduct... orderProducts) {
+    public Order createOrder(User user, Delivery delivery, OrderProduct... orderProducts) {
         setUser(user);
         setDelivery(delivery);
         for (OrderProduct orderProduct : orderProducts) {
             addOrderProducts(orderProduct);
         }
+        return this;
     }
     public void cancelOrder() {
         if (checkDeliveryStatus()) {

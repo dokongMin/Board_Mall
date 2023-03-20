@@ -1,9 +1,16 @@
 package com.dokong.board.service;
 
-import com.dokong.board.repository.dto.coupondto.AddCouponDto;
-import com.dokong.board.repository.dto.coupondto.AddCouponResponseDto;
-import com.dokong.board.repository.dto.coupondto.UpdateCouponDto;
-import org.junit.jupiter.api.Assertions;
+import com.dokong.board.domain.user.User;
+import com.dokong.board.repository.UserRepository;
+import com.dokong.board.web.dto.coupondto.AddCouponDto;
+import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
+import com.dokong.board.web.dto.coupondto.UpdateCouponDto;
+import com.dokong.board.web.dto.userdto.JoinUserDto;
+import com.dokong.board.web.dto.userdto.LoginUserDto;
+import com.dokong.board.web.dto.userdto.SessionUserDto;
+import com.dokong.board.web.service.CouponService;
+import com.dokong.board.web.service.LoginService;
+import com.dokong.board.web.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,42 +28,69 @@ class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private LoginService loginService;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     @DisplayName("쿠폰_발급")
-    public void addCoupon () throws Exception{
+    public void addCoupon() throws Exception {
         // given
+        JoinUserDto userDto = getUserDto();
+        userService.saveUser(userDto);
+
+        LoginUserDto loginUserDto = getLoginUserDto(userDto);
+
+        SessionUserDto sessionUserDto = loginService.login(loginUserDto);
+        User user = userRepository.findByUsername(sessionUserDto.getUsername()).get();
+
         AddCouponDto coupon = getCoupon();
         // when
-        AddCouponResponseDto responseDto = couponService.addCoupon(coupon);
+        AddCouponResponseDto responseDto = couponService.addCoupon(coupon, sessionUserDto);
         // then
         assertThat(coupon.getCouponName()).isEqualTo(responseDto.getCouponName());
         assertThat(coupon.getCouponRate()).isEqualTo(responseDto.getCouponRate());
-     }
 
-     @Test
-     @DisplayName("쿠폰_발급_예외")
-     public void addCouponException () throws Exception{
-         // given
-         AddCouponDto coupon = getExceptionCoupon();
-         // then
-         assertThatThrownBy(() -> couponService.addCoupon(coupon))
-                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                 .hasMessageContaining("할인율은 99보다 클 수 없습니다.");
+        assertThat(user.getCoupons().size()).isEqualTo(1);
+        assertThat(user.getCoupons().get(0).getCouponName()).isEqualTo("회원가입 축하 쿠폰");
+    }
 
-      }
-      
-      @Test
-      @DisplayName("벌크_쿠폰_수정_예외")
-      public void bulkUpdateException () throws Exception{
-          // given
-          UpdateCouponDto coupon = getUpdateCoupon();
 
-          // then
-          assertThatThrownBy(() -> couponService.bulkUpdateCoupon(coupon))
-                  .isExactlyInstanceOf(IllegalArgumentException.class)
-                  .hasMessageContaining("해당 쿠폰은 존재하지 않습니다.");
-       }
-      
+    @Test
+    @DisplayName("쿠폰_발급_예외")
+    public void addCouponException() throws Exception {
+        // given
+        JoinUserDto userDto = getUserDto();
+        userService.saveUser(userDto);
+
+        LoginUserDto loginUserDto = getLoginUserDto(userDto);
+
+        SessionUserDto sessionUserDto = loginService.login(loginUserDto);
+        AddCouponDto coupon = getExceptionCoupon();
+        // then
+        assertThatThrownBy(() -> couponService.addCoupon(coupon, sessionUserDto))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("할인율은 99보다 클 수 없습니다.");
+
+    }
+
+    @Test
+    @DisplayName("벌크_쿠폰_수정_예외")
+    public void bulkUpdateException() throws Exception {
+        // given
+        UpdateCouponDto coupon = getUpdateCoupon();
+
+        // then
+        assertThatThrownBy(() -> couponService.bulkUpdateCoupon(coupon))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("해당 쿠폰은 존재하지 않습니다.");
+    }
+
 
     private AddCouponDto getCoupon() {
         return AddCouponDto.builder()
@@ -66,6 +100,7 @@ class CouponServiceTest {
                 .minCouponPrice(10000)
                 .build();
     }
+
     private AddCouponDto getExceptionCoupon() {
         return AddCouponDto.builder()
                 .couponName("회원가입 축하 쿠폰")
@@ -79,6 +114,20 @@ class CouponServiceTest {
         return UpdateCouponDto.builder()
                 .couponName("1번쿠폰")
                 .couponRate(15)
+                .build();
+    }
+
+    private LoginUserDto getLoginUserDto(JoinUserDto userDto) {
+        return LoginUserDto.builder()
+                .username(userDto.getUsername())
+                .password(userDto.getPassword())
+                .build();
+    }
+
+    private JoinUserDto getUserDto() {
+        return JoinUserDto.builder()
+                .username("aaa")
+                .password("bbb")
                 .build();
     }
 }
