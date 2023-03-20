@@ -32,14 +32,14 @@ public class CouponService {
     }
 
 
-    private void checkExistCoupon(UpdateCouponDto couponDto) {
+    public void checkExistCoupon(UpdateCouponDto couponDto) {
         List<Coupon> couponList = couponRepository.findByCouponName(couponDto.getCouponName());
         if (couponList.isEmpty()) {
             throw new IllegalArgumentException("해당 쿠폰은 존재하지 않습니다.");
         }
     }
 
-    private void validCouponIssue(AddCouponDto couponDto) {
+    public void validCouponIssue(AddCouponDto couponDto) {
         if (couponDto.getCouponRate() > 99) {
             throw new IllegalArgumentException("할인율은 99보다 클 수 없습니다.");
         }

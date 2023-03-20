@@ -39,6 +39,10 @@ public class BoardComment extends BaseEntity {
         board.getBoardComments().add(this);
     }
 
+    public void updateBoardComment(String commentContent) {
+        this.commentContent = commentContent;
+    }
+
     @Builder
     public BoardComment(String commentContent) {
         this.commentContent = commentContent;

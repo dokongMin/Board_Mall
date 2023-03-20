@@ -45,10 +45,15 @@ public class Board extends BaseEntity {
         this.likeCount -= 1;
     }
 
-    @Builder
-    public Board(String boardTitle, String boardContent) {
+    public void updateBoard(String boardTitle, String boardContent) {
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
-        this.likeCount = 0;
+    }
+
+    @Builder
+    public Board(String boardTitle, String boardContent, long likeCount) {
+        this.boardTitle = boardTitle;
+        this.boardContent = boardContent;
+        this.likeCount = likeCount;
     }
 }

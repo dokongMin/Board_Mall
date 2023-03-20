@@ -25,18 +25,18 @@ public class UserService {
 
     @Transactional
     public UpdateUserResponseDto updateUser(UpdateUserDto userDto) {
-        User user = checkValidUser(userDto);
+        User user = checkExistUser(userDto);
         user.updateUser(userDto.getPassword(), userDto.getEmail(), userDto.getAddress());
         return UpdateUserResponseDto.of(user);
     }
 
-    private User checkValidUser(UpdateUserDto userDto) {
+    public User checkExistUser(UpdateUserDto userDto) {
         return userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> {
             throw new IllegalStateException("해당 회원은 존재하지 않습니다.");
         });
     }
 
-    private void validateUsername(JoinUserDto userDto) {
+    public void validateUsername(JoinUserDto userDto) {
         boolean checkUsername = userRepository.findByUsername(userDto.getUsername()).isPresent();
         if (checkUsername) {
             throw new IllegalStateException("이미 존재하는 회원 아이디입니다.");
