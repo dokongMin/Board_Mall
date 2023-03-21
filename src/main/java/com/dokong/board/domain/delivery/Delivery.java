@@ -31,9 +31,8 @@ public class Delivery {
     }
 
     @Builder
-    public Delivery(Address address, DeliveryStatus deliveryStatus, Order order) {
+    public Delivery(Address address, DeliveryStatus deliveryStatus) {
         this.address = address;
         this.deliveryStatus = deliveryStatus;
-        this.order = order;
     }
 }

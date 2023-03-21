@@ -76,11 +76,10 @@ class OrderTest {
                 .build();
 
         OrderProduct orderProduct = OrderProduct.builder()
-                .product(product)
                 .orderItemCount(5)
                 .orderItemPrice(product.getItemPrice())
                 .build();
-        orderProduct.order();
+        orderProduct.order(product);
 
         Order order = Order.builder()
                 .orderStatus(OrderStatus.ORDER_COMPLETE)
@@ -113,11 +112,10 @@ class OrderTest {
                 .build();
 
         OrderProduct orderProduct = OrderProduct.builder()
-                .product(product)
                 .orderItemCount(5)
                 .orderItemPrice(product.getItemPrice())
                 .build();
-        orderProduct.order();
+        orderProduct.order(product);
 
         Order order = Order.builder()
                 .orderStatus(OrderStatus.ORDER_COMPLETE)
@@ -149,11 +147,10 @@ class OrderTest {
                 .build();
 
         OrderProduct orderProduct = OrderProduct.builder()
-                .product(product)
                 .orderItemCount(5)
                 .orderItemPrice(product.getItemPrice())
                 .build();
-        orderProduct.order();
+        orderProduct.order(product);
 
         Order order = Order.builder()
                 .orderStatus(OrderStatus.ORDER_COMPLETE)

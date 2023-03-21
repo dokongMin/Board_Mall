@@ -65,12 +65,9 @@ public class Product {
      * Builder
      */
     @Builder
-    public Product(String itemName, int itemPrice, int itemStock, List<OrderProduct> orderProducts, Category category, List<CartProduct> cartProducts) {
+    public Product(String itemName, int itemPrice, int itemStock) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
-        this.orderProducts = orderProducts;
-        this.category = category;
-        this.cartProducts = cartProducts;
     }
 }

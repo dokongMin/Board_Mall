@@ -19,7 +19,7 @@ public class LoginService {
 
     public SessionUserDto login(LoginUserDto userDto) {
 
-        User user = checkExistUser(userDto);
+        User user = loginCheck(userDto);
 
         return SessionUserDto.builder()
                 .id(user.getId())
@@ -27,7 +27,7 @@ public class LoginService {
                 .build();
     }
 
-    private User checkExistUser(LoginUserDto userDto) {
+    private User loginCheck(LoginUserDto userDto) {
         return userRepository.findByUsername(userDto.getUsername())
                 .filter(u -> u.getPassword().equals(userDto.getPassword()))
                 .orElseThrow(() -> {

@@ -1,4 +1,4 @@
-package com.dokong.board.web.dto;
+package com.dokong.board.web.dto.product;
 
 import com.dokong.board.domain.Category;
 import com.dokong.board.domain.Product;
@@ -12,17 +12,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SaveProductDto {
 
+    private Long id;
     private String itemName;
     private int itemPrice;
     private int itemStock;
-    private Category category;
 
     @Builder
-    public SaveProductDto(String itemName, int itemPrice, int itemStock, Category category) {
+    public SaveProductDto(Long id, String itemName, int itemPrice, int itemStock) {
+        this.id = id;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
-        this.category = category;
     }
 
     public Product toEntity() {
@@ -30,16 +30,15 @@ public class SaveProductDto {
                 .itemName(itemName)
                 .itemPrice(itemPrice)
                 .itemStock(itemStock)
-                .category(category)
                 .build();
     }
 
     public static SaveProductDto of(Product product) {
         return SaveProductDto.builder()
+                .id(product.getId())
                 .itemName(product.getItemName())
                 .itemPrice(product.getItemPrice())
                 .itemStock(product.getItemStock())
-                .category(product.getCategory())
                 .build();
     }
 }
