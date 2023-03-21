@@ -34,7 +34,7 @@ public class OrderProduct {
         this.order = order;
     }
 
-    public void setProduct(Product product) {
+    private void setProduct(Product product) {
         this.product = product;
         product.getOrderProducts().add(this);
     }
@@ -49,6 +49,7 @@ public class OrderProduct {
 
     public void cancel() {
         product.addStock(orderItemCount);
+        product.getOrderProducts().remove(this);
     }
 
     /**
