@@ -1,4 +1,4 @@
-package com.dokong.board.service;
+package com.dokong.board.web.service;
 
 import com.dokong.board.domain.Address;
 import com.dokong.board.domain.user.User;

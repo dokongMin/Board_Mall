@@ -1,4 +1,4 @@
-package com.dokong.board.web.dto;
+package com.dokong.board.web.dto.product;
 
 import com.dokong.board.domain.Product;
 import lombok.Builder;

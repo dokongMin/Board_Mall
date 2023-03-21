@@ -21,14 +21,12 @@ import java.util.List;
 public class CouponService {
 
     private final CouponRepository couponRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Transactional
     public AddCouponResponseDto addCoupon(AddCouponDto couponDto, SessionUserDto userDto) {
         validCouponIssue(couponDto);
-        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> {
-            throw new NoExistUserException("해당 회원은 존재하지 않습니다.");
-        });
+        User user = userService.findById(userDto.getId());
         user.addCoupon(couponDto.toEntity());
         return AddCouponResponseDto.of(couponRepository.save(couponDto.toEntity()));
     }

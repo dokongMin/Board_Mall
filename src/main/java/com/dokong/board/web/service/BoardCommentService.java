@@ -1,8 +1,11 @@
 package com.dokong.board.web.service;
 
+import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.board.BoardComment;
+import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.BoardCommentRepository;
 import com.dokong.board.web.dto.BoardCommentDto;
+import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +17,15 @@ public class BoardCommentService {
 
     private final BoardCommentRepository boardCommentRepository;
 
+    private final UserService userService;
+
+    private final BoardService boardService;
     @Transactional
-    public BoardCommentDto saveBoardComment(BoardCommentDto boardCommentDto) {
+    public BoardCommentDto saveBoardComment(BoardCommentDto boardCommentDto, SessionUserDto sessionUserDto, Long boardId) {
         BoardComment boardComment = boardCommentRepository.save(boardCommentDto.toEntity());
+        User user = userService.findById(sessionUserDto.getId());
+        Board board = boardService.findById(boardId);
+        boardComment.writeComment(user, board);
         return BoardCommentDto.of(boardComment);
     }
 

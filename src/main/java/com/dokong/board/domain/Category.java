@@ -1,8 +1,6 @@
 package com.dokong.board.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,4 +21,9 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 
+    @Builder
+    public Category(Long id, String categoryName) {
+        this.id = id;
+        this.categoryName = categoryName;
+    }
 }
