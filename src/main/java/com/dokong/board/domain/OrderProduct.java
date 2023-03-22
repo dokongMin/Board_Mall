@@ -34,10 +34,11 @@ public class OrderProduct {
         this.order = order;
     }
 
-    private void setProduct(Product product) {
+    public void setProduct(Product product) {
         this.product = product;
         product.getOrderProducts().add(this);
     }
+
 
     /**
      * 비즈니스 로직
@@ -56,7 +57,8 @@ public class OrderProduct {
      * Builder
      */
     @Builder
-    public OrderProduct(int orderItemPrice, int orderItemCount) {
+    public OrderProduct(Long id, int orderItemPrice, int orderItemCount) {
+        this.id = id;
         this.orderItemPrice = orderItemPrice;
         this.orderItemCount = orderItemCount;
     }

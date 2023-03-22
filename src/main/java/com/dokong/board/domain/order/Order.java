@@ -2,11 +2,14 @@ package com.dokong.board.domain.order;
 
 import com.dokong.board.domain.Address;
 import com.dokong.board.domain.OrderProduct;
+import com.dokong.board.domain.baseentity.BaseTimeEntity;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.domain.delivery.Delivery;
 import com.dokong.board.domain.delivery.DeliveryStatus;
 import com.dokong.board.exception.AlreadyDeliverException;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,7 +19,7 @@ import java.util.List;
 @Entity(name = "orders")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Order extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +29,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    private LocalDateTime orderDate;
 
     @Embedded
     private Address address;
@@ -50,7 +52,7 @@ public class Order {
         user.getOrders().add(this);
     }
 
-    public void addOrderProducts(OrderProduct orderProduct) {
+    public void setOrderProducts(OrderProduct orderProduct) {
         this.orderProducts.add(orderProduct);
         orderProduct.setOrder(this);
     }
@@ -65,11 +67,11 @@ public class Order {
      * 비즈니스 로직
      */
 
-    public Order createOrder(User user, Delivery delivery, OrderProduct... orderProducts) {
+    public Order createOrder(User user, Delivery delivery, List<OrderProduct> orderProducts) {
         setUser(user);
         setDelivery(delivery);
         for (OrderProduct orderProduct : orderProducts) {
-            addOrderProducts(orderProduct);
+            setOrderProducts(orderProduct);
         }
         return this;
     }
@@ -91,9 +93,8 @@ public class Order {
      * Builder
      */
     @Builder
-    public Order(OrderStatus orderStatus, LocalDateTime orderDate, Address address) {
+    public Order(OrderStatus orderStatus, Address address) {
         this.orderStatus = orderStatus;
-        this.orderDate = orderDate;
         this.address = address;
     }
 

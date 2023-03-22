@@ -9,6 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +25,7 @@ class OrderTest {
         Order order = createOrderDummy();
         // then
         assertThat(order.getOrderProducts().get(0).getOrderItemPrice()).isEqualTo(2000);
-        assertThat(order.getOrderProducts().get(0).getProduct().getItemStock()).isEqualTo(5);
+        assertThat(order.getOrderProducts().get(0).getProduct().getItemStock()).isEqualTo(2);
     }
 
 
@@ -75,19 +77,29 @@ class OrderTest {
                 .itemPrice(2000)
                 .build();
 
-        OrderProduct orderProduct = OrderProduct.builder()
+        List<OrderProduct> orderProducts = new LinkedList<>();
+
+        OrderProduct orderProduct1 = OrderProduct.builder()
                 .orderItemCount(5)
                 .orderItemPrice(product.getItemPrice())
                 .build();
-        orderProduct.order(product);
+        orderProduct1.order(product);
+
+        OrderProduct orderProduct2 = OrderProduct.builder()
+                .orderItemCount(3)
+                .orderItemPrice(product.getItemPrice())
+                .build();
+        orderProduct2.order(product);
+
+        orderProducts.add(orderProduct1);
+        orderProducts.add(orderProduct2);
 
         Order order = Order.builder()
                 .orderStatus(OrderStatus.ORDER_COMPLETE)
-                .orderDate(LocalDateTime.now())
                 .address(address)
                 .build();
 
-        order.createOrder(user, delivery, orderProduct);
+        order.createOrder(user, delivery, orderProducts);
         return order;
     }
 
@@ -111,19 +123,29 @@ class OrderTest {
                 .itemPrice(2000)
                 .build();
 
-        OrderProduct orderProduct = OrderProduct.builder()
+        List<OrderProduct> orderProducts = new LinkedList<>();
+
+        OrderProduct orderProduct1 = OrderProduct.builder()
                 .orderItemCount(5)
                 .orderItemPrice(product.getItemPrice())
                 .build();
-        orderProduct.order(product);
+        orderProduct1.order(product);
+
+        OrderProduct orderProduct2 = OrderProduct.builder()
+                .orderItemCount(3)
+                .orderItemPrice(product.getItemPrice())
+                .build();
+        orderProduct2.order(product);
+
+        orderProducts.add(orderProduct1);
+        orderProducts.add(orderProduct2);
 
         Order order = Order.builder()
                 .orderStatus(OrderStatus.ORDER_COMPLETE)
-                .orderDate(LocalDateTime.now())
                 .address(address)
                 .build();
 
-        order.createOrder(user, delivery, orderProduct);
+        order.createOrder(user, delivery, orderProducts);
         return order;
     }
     private Order createOrderDummy_Delivery_Proceed() {
@@ -146,19 +168,29 @@ class OrderTest {
                 .itemPrice(2000)
                 .build();
 
-        OrderProduct orderProduct = OrderProduct.builder()
+        List<OrderProduct> orderProducts = new LinkedList<>();
+
+        OrderProduct orderProduct1 = OrderProduct.builder()
                 .orderItemCount(5)
                 .orderItemPrice(product.getItemPrice())
                 .build();
-        orderProduct.order(product);
+        orderProduct1.order(product);
+
+        OrderProduct orderProduct2 = OrderProduct.builder()
+                .orderItemCount(3)
+                .orderItemPrice(product.getItemPrice())
+                .build();
+        orderProduct2.order(product);
+
+        orderProducts.add(orderProduct1);
+        orderProducts.add(orderProduct2);
 
         Order order = Order.builder()
                 .orderStatus(OrderStatus.ORDER_COMPLETE)
-                .orderDate(LocalDateTime.now())
                 .address(address)
                 .build();
 
-        order.createOrder(user, delivery, orderProduct);
+        order.createOrder(user, delivery, orderProducts);
         return order;
     }
 }

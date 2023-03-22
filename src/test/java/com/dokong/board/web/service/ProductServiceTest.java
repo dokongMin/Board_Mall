@@ -33,7 +33,7 @@ class ProductServiceTest {
     public void saveProduct() throws Exception {
         // given
         SaveProductDto productDto = getProduct();
-        CategoryDto categoryDto = getCategoryDto();
+        CategoryDto categoryDto = getCategoryDto1();
         CategoryDto categoryEntity = categoryService.saveCategory(categoryDto);
         Category category = categoryService.findById(categoryEntity.getId());
 
@@ -45,7 +45,7 @@ class ProductServiceTest {
         assertThat(product.getItemName()).isEqualTo("사과");
         assertThat(product.getItemStock()).isEqualTo(10);
         assertThat(product.getItemPrice()).isEqualTo(2000);
-        assertThat(product.getCategory().getCategoryName()).isEqualTo("과일");
+        assertThat(product.getCategory().getCategoryName()).isEqualTo("과일1");
     }
 
 
@@ -54,7 +54,7 @@ class ProductServiceTest {
     public void updateProduct() throws Exception {
         // given
         SaveProductDto productDto = getProduct();
-        CategoryDto categoryDto = getCategoryDto();
+        CategoryDto categoryDto = getCategoryDto2();
         CategoryDto categoryEntity = categoryService.saveCategory(categoryDto);
         Category category = categoryService.findById(categoryEntity.getId());
 
@@ -72,14 +72,14 @@ class ProductServiceTest {
         assertThat(product.getItemName()).isEqualTo("포도");
         assertThat(product.getItemPrice()).isEqualTo(10000);
         assertThat(product.getItemStock()).isEqualTo(1000);
-        assertThat(product.getCategory().getCategoryName()).isEqualTo("과일");
+        assertThat(product.getCategory().getCategoryName()).isEqualTo("과일2");
     }
 
     @Test
     @DisplayName("상품_수정_예외")
     public void updateProductException() throws Exception {
         SaveProductDto productDto = getProduct();
-        CategoryDto categoryDto = getCategoryDto();
+        CategoryDto categoryDto = getCategoryDto3();
         CategoryDto categoryEntity = categoryService.saveCategory(categoryDto);
         Category category = categoryService.findById(categoryEntity.getId());
 
@@ -104,9 +104,19 @@ class ProductServiceTest {
                 .build();
     }
 
-    private CategoryDto getCategoryDto() {
+    private CategoryDto getCategoryDto1() {
         return CategoryDto.builder()
-                .categoryName("과일")
+                .categoryName("과일1")
+                .build();
+    }
+    private CategoryDto getCategoryDto2() {
+        return CategoryDto.builder()
+                .categoryName("과일2")
+                .build();
+    }
+    private CategoryDto getCategoryDto3() {
+        return CategoryDto.builder()
+                .categoryName("과일3")
                 .build();
     }
 
