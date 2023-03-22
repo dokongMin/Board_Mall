@@ -25,6 +25,7 @@ public class SaveOrderProductDto {
 
     public OrderProduct toEntity(){
         return OrderProduct.builder()
+                .id(id)
                 .orderItemPrice(orderItemPrice)
                 .orderItemCount(orderItemCount)
                 .build();

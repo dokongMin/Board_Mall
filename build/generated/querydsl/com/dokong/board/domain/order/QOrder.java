@@ -22,13 +22,19 @@ public class QOrder extends EntityPathBase<Order> {
 
     public static final QOrder order = new QOrder("order1");
 
+    public final com.dokong.board.domain.baseentity.QBaseTimeEntity _super = new com.dokong.board.domain.baseentity.QBaseTimeEntity(this);
+
     public final com.dokong.board.domain.QAddress address;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
     public final com.dokong.board.domain.delivery.QDelivery delivery;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final DateTimePath<java.time.LocalDateTime> orderDate = createDateTime("orderDate", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final ListPath<com.dokong.board.domain.OrderProduct, com.dokong.board.domain.QOrderProduct> orderProducts = this.<com.dokong.board.domain.OrderProduct, com.dokong.board.domain.QOrderProduct>createList("orderProducts", com.dokong.board.domain.OrderProduct.class, com.dokong.board.domain.QOrderProduct.class, PathInits.DIRECT2);
 

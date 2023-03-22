@@ -26,7 +26,7 @@ public class Product {
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryId", unique = true)
+    @JoinColumn(name = "categoryId")
     private Category category;
 
     @OneToMany(mappedBy = "product")
@@ -37,8 +37,11 @@ public class Product {
      */
     public void setCategory(Category category) {
         this.category = category;
-        category.getProducts().add(this);
     }
+
+//    public void createOrderProducts(OrderProduct orderProducts) {
+//        this.orderProducts.add(orderProducts);
+//    }
 
     /**
      * 비즈니스 로직
