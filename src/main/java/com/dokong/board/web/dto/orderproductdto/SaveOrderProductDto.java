@@ -1,7 +1,6 @@
-package com.dokong.board.web.dto;
+package com.dokong.board.web.dto.orderproductdto;
 
 import com.dokong.board.domain.OrderProduct;
-import com.dokong.board.web.dto.product.SaveProductDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

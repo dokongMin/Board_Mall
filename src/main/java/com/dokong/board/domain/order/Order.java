@@ -47,21 +47,20 @@ public class Order extends BaseTimeEntity {
     /**
      * 연관관계 편의 메소드
      */
-    public void setUser(User user) {
+    private void setUser(User user) {
         this.user = user;
         user.getOrders().add(this);
     }
 
-    public void setOrderProducts(OrderProduct orderProduct) {
+    private void setOrderProducts(OrderProduct orderProduct) {
         this.orderProducts.add(orderProduct);
         orderProduct.setOrder(this);
     }
 
-    public void setDelivery(Delivery delivery) {
+    private void setDelivery(Delivery delivery) {
         this.delivery = delivery;
         delivery.setOrder(this);
     }
-
 
     /**
      * 비즈니스 로직
@@ -87,6 +86,10 @@ public class Order extends BaseTimeEntity {
 
     private boolean checkDeliveryStatus() {
         return delivery.getDeliveryStatus() == DeliveryStatus.DELIVER_PROCEED || delivery.getDeliveryStatus() == DeliveryStatus.DELIVER_COMPLETE;
+    }
+
+    public void updateOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     /**

@@ -39,10 +39,6 @@ public class Product {
         this.category = category;
     }
 
-//    public void createOrderProducts(OrderProduct orderProducts) {
-//        this.orderProducts.add(orderProducts);
-//    }
-
     /**
      * 비즈니스 로직
      */

@@ -3,14 +3,11 @@ package com.dokong.board.web.service;
 import com.dokong.board.domain.Category;
 import com.dokong.board.domain.Product;
 import com.dokong.board.repository.ProductRepository;
-import com.dokong.board.web.dto.CategoryDto;
 import com.dokong.board.web.dto.product.SaveProductDto;
 import com.dokong.board.web.dto.product.UpdateProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.transaction.TransactionScoped;
 
 @Service
 @RequiredArgsConstructor

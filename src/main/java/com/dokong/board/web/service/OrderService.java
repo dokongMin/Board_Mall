@@ -5,9 +5,9 @@ import com.dokong.board.domain.delivery.Delivery;
 import com.dokong.board.domain.order.Order;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.OrderRepository;
-import com.dokong.board.web.dto.SaveDeliveryDto;
-import com.dokong.board.web.dto.SaveOrderDto;
-import com.dokong.board.web.dto.SaveOrderProductDto;
+import com.dokong.board.web.dto.deliverydto.SaveDeliveryDto;
+import com.dokong.board.web.dto.orderdto.SaveOrderDto;
+import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,6 +37,12 @@ public class OrderService {
 
         order.createOrder(user, delivery, orderProducts);
         return SaveOrderDto.of(order);
+    }
+
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        Order order = findById(orderId);
+        order.cancelOrder();
     }
 
     private List<OrderProduct> getOrderProducts(List<Long> productIds, List<SaveOrderProductDto> saveOrderProductDtos) {

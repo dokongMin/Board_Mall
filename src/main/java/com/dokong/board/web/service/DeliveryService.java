@@ -2,7 +2,7 @@ package com.dokong.board.web.service;
 
 import com.dokong.board.domain.delivery.Delivery;
 import com.dokong.board.repository.DeliveryRepository;
-import com.dokong.board.web.dto.SaveDeliveryDto;
+import com.dokong.board.web.dto.deliverydto.SaveDeliveryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,9 +2,7 @@ package com.dokong.board.web.service;
 
 import com.dokong.board.domain.Category;
 import com.dokong.board.domain.Product;
-import com.dokong.board.repository.CategoryRepository;
-import com.dokong.board.repository.ProductRepository;
-import com.dokong.board.web.dto.CategoryDto;
+import com.dokong.board.web.dto.categorydto.CategoryDto;
 import com.dokong.board.web.dto.product.SaveProductDto;
 import com.dokong.board.web.dto.product.UpdateProductDto;
 import org.junit.jupiter.api.DisplayName;
@@ -12,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

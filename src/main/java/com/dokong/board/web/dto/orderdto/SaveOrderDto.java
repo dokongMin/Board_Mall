@@ -1,4 +1,4 @@
-package com.dokong.board.web.dto;
+package com.dokong.board.web.dto.orderdto;
 
 import com.dokong.board.domain.Address;
 import com.dokong.board.domain.order.Order;
