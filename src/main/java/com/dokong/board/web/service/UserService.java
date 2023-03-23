@@ -34,6 +34,12 @@ public class UserService {
         });
     }
 
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> {
+            throw new NoExistUserException("해당 회원은 존재하지 않습니다.");
+        });
+    }
+
     public User checkExistUser(UpdateUserDto userDto) {
         return userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> {
             throw new NoExistUserException("해당 회원은 존재하지 않습니다.");

@@ -71,8 +71,8 @@ class BoardTest {
                   .build();
           // when 
           BoardLike boardLike = new BoardLike();
-          boardLike.pushLike(user, board);
-          boardLike.pushLike(user, board);
+          board.pushBoardLike(user, boardLike);
+          board.pushBoardLike(user, boardLike);
           // then
           assertThat(board.getLikeCount()).isEqualTo(2);
        }
