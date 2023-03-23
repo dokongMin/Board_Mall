@@ -2,6 +2,8 @@ package com.dokong.board.domain.delivery;
 
 import com.dokong.board.domain.Address;
 import com.dokong.board.domain.order.Order;
+import com.dokong.board.domain.order.OrderStatus;
+import com.dokong.board.exception.NotPaidException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,6 +33,9 @@ public class Delivery {
     }
 
     public void updateDeliveryStatus(DeliveryStatus deliveryStatus) {
+        if (order.getOrderStatus() == OrderStatus.ORDER_CANCEL || order.getOrderStatus() == OrderStatus.ORDER_COMPLETE) {
+            throw new NotPaidException("결제가 완료되지 않은 주문은 배송이 불가합니다.");
+        }
         this.deliveryStatus = deliveryStatus;
     }
 

@@ -33,7 +33,7 @@ public class OrderService {
         Order order = orderRepository.save(saveOrderDto.toEntity());
         User user = userService.findById(sessionUserDto.getId());
         Delivery delivery = deliveryService.findById(deliveryDto.getId());
-        List<OrderProduct> orderProducts = getOrderProducts(productIds, saveOrderProductDtos);
+        List<OrderProduct> orderProducts = getOrderProducts(sessionUserDto, productIds, saveOrderProductDtos);
 
         order.createOrder(user, delivery, orderProducts);
         return SaveOrderDto.of(order);
@@ -45,12 +45,12 @@ public class OrderService {
         order.cancelOrder();
     }
 
-    private List<OrderProduct> getOrderProducts(List<Long> productIds, List<SaveOrderProductDto> saveOrderProductDtos) {
+    private List<OrderProduct> getOrderProducts(SessionUserDto sessionUserDto, List<Long> productIds, List<SaveOrderProductDto> saveOrderProductDtos) {
         List<OrderProduct> orderProducts = new ArrayList<>();
         for (int i = 0; i < productIds.size(); i++) {
             Long productId = productIds.get(i);
             SaveOrderProductDto orderProductDto = saveOrderProductDtos.get(i);
-            SaveOrderProductDto saveOrderProductDto = orderProductService.saveOrderProduct(orderProductDto, productId);
+            SaveOrderProductDto saveOrderProductDto = orderProductService.saveOrderProduct(sessionUserDto, orderProductDto, productId);
             OrderProduct orderProduct = orderProductService.findById(saveOrderProductDto.getId());
             orderProducts.add(orderProduct);
         }

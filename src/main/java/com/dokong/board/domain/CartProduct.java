@@ -5,6 +5,7 @@ import com.dokong.board.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +18,6 @@ public class CartProduct extends BaseTimeEntity {
     @Column(name = "cartProductId")
     private Long id;
 
-    private String cartItemName;
     private int cartItemCount;
     private int cartItemPrice;
 
@@ -38,14 +38,15 @@ public class CartProduct extends BaseTimeEntity {
 //    }
 
 
-    public void createCartOrder(User user) {
+    public void createCartOrder(User user, Product product) {
         this.user = user;
+        this.product = product;
         user.getCartProducts().add(this);
+        product.getCartProducts().add(this);
     }
 
     @Builder
-    public CartProduct(String cartItemName, int cartItemCount, int cartItemPrice) {
-        this.cartItemName = cartItemName;
+    public CartProduct(int cartItemCount, int cartItemPrice) {
         this.cartItemCount = cartItemCount;
         this.cartItemPrice = cartItemPrice;
     }

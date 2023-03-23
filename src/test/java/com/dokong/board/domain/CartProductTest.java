@@ -18,23 +18,24 @@ class CartProductTest {
                 .name("정민환")
                 .build();
 
-        Product product = Product.builder()
+        Product product1 = Product.builder()
                 .itemName("사과")
                 .itemStock(10)
                 .itemPrice(2000)
                 .build();
 
+
         CartProduct cartProduct = CartProduct.builder()
-                .cartItemName(product.getItemName())
                 .cartItemCount(10)
-                .cartItemPrice(product.getItemPrice())
+                .cartItemPrice(product1.getItemPrice())
                 .build();
 
         // when 
-        cartProduct.createCartOrder(user);
+        cartProduct.createCartOrder(user, product1);
 
         // then
-        assertThat(user.getCartProducts().get(0).getCartItemName()).isEqualTo("사과");
+        assertThat(user.getCartProducts().get(0).getProduct().getItemName()).isEqualTo("사과");
+        assertThat(cartProduct.getProduct().getItemName()).isEqualTo("사과");
      }
 
 }
