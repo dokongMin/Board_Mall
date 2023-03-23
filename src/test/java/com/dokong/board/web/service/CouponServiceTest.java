@@ -11,11 +11,16 @@ import com.dokong.board.web.dto.userdto.SessionUserDto;
 import com.dokong.board.web.service.CouponService;
 import com.dokong.board.web.service.LoginService;
 import com.dokong.board.web.service.UserService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -36,6 +41,8 @@ class CouponServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     @DisplayName("쿠폰_발급")
@@ -80,10 +87,38 @@ class CouponServiceTest {
     }
 
     @Test
+    @DisplayName("벌크_쿠폰_수정")
+    @Rollback(value = false)
+    public void bulkUpdateCoupon() throws Exception {
+        // given
+        JoinUserDto userDto = getUserDto();
+        userService.saveUser(userDto);
+
+        LoginUserDto loginUserDto = getLoginUserDto(userDto);
+
+        SessionUserDto sessionUserDto = loginService.login(loginUserDto);
+        User user = userRepository.findByUsername(sessionUserDto.getUsername()).get();
+
+        AddCouponDto coupon1 = getCoupon();
+        AddCouponDto coupon2 = getCoupon();
+        AddCouponResponseDto responseDto1 = couponService.addCoupon(coupon1, sessionUserDto);
+        AddCouponResponseDto responseDto2 = couponService.addCoupon(coupon2, sessionUserDto);
+
+        // then
+        UpdateCouponDto updateCouponDto = getUpdateCoupon();
+        couponService.bulkUpdateCoupon(updateCouponDto);
+        User perUser = userService.findById(user.getId());
+        assertThat(perUser.getCoupons().get(0).getCouponRate()).isEqualTo(40);
+        assertThat(perUser.getCoupons().get(1).getCouponRate()).isEqualTo(40);
+
+    }
+
+
+    @Test
     @DisplayName("벌크_쿠폰_수정_예외")
     public void bulkUpdateException() throws Exception {
         // given
-        UpdateCouponDto coupon = getUpdateCoupon();
+        UpdateCouponDto coupon = getUpdateCouponEx();
 
         // then
         assertThatThrownBy(() -> couponService.bulkUpdateCoupon(coupon))
@@ -110,12 +145,20 @@ class CouponServiceTest {
                 .build();
     }
 
-    private UpdateCouponDto getUpdateCoupon() {
+    private UpdateCouponDto getUpdateCouponEx() {
         return UpdateCouponDto.builder()
                 .couponName("1번쿠폰")
                 .couponRate(15)
                 .build();
     }
+
+    private UpdateCouponDto getUpdateCoupon() {
+        return UpdateCouponDto.builder()
+                .couponName("회원가입 축하 쿠폰")
+                .couponRate(40)
+                .build();
+    }
+
 
     private LoginUserDto getLoginUserDto(JoinUserDto userDto) {
         return LoginUserDto.builder()

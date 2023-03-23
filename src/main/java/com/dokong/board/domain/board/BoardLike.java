@@ -9,8 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-//@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BoardLike extends BaseEntity {
 
     @Id
@@ -37,15 +36,16 @@ public class BoardLike extends BaseEntity {
     /**
      * 두 번 클릭 시 , 좋아요 취소 기능 구현하기
      */
-    public void pushLike(User user, Board board) {
-//        if (user.getBoardLikes().contains(this)) {
-//            System.out.println("호출됨?");
-//        }
-        this.user = user;
-        user.getBoardLikes().add(this);
-        this.board = board;
-        board.getBoardLikes().add(this);
-        board.addLikeCount();
-    }
+//    public void pushLike(User user, Board board) {
+//        this.user = user;
+//        user.getBoardLikes().add(this);
+//        this.board = board;
+//        board.getBoardLikes().add(this);
+//        board.addLikeCount();
+//    }
 
+    @Builder
+    public BoardLike(Long id) {
+        this.id = id;
+    }
 }

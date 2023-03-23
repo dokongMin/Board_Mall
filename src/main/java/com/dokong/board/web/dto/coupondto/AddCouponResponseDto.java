@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AddCouponResponseDto {
 
+    private Long id;
     private String couponName;
     private int couponRate;
     private String couponDetail;
@@ -19,7 +20,8 @@ public class AddCouponResponseDto {
     private CouponStatus couponStatus;
 
     @Builder
-    public AddCouponResponseDto(String couponName, int couponRate, String couponDetail, int minCouponPrice, CouponStatus couponStatus) {
+    public AddCouponResponseDto(Long id, String couponName, int couponRate, String couponDetail, int minCouponPrice, CouponStatus couponStatus) {
+        this.id = id;
         this.couponName = couponName;
         this.couponRate = couponRate;
         this.couponDetail = couponDetail;

@@ -27,24 +27,26 @@ public class CouponService {
     public AddCouponResponseDto addCoupon(AddCouponDto couponDto, SessionUserDto userDto) {
         validCouponIssue(couponDto);
         User user = userService.findById(userDto.getId());
-        user.addCoupon(couponDto.toEntity());
-        return AddCouponResponseDto.of(couponRepository.save(couponDto.toEntity()));
+        Coupon coupon = couponRepository.save(couponDto.toEntity());
+        user.addCoupon(coupon);
+        return AddCouponResponseDto.of(coupon);
     }
 
     @Transactional
     public int bulkUpdateCoupon(UpdateCouponDto couponDto) {
-        checkExistCoupon(couponDto);
+        checkExistCoupon(couponDto.getCouponName());
         int resultCount = couponRepository.bulkUpdateCouponRate(couponDto.getCouponRate(), couponDto.getCouponName());
         return resultCount;
     }
 
 
-    public void checkExistCoupon(UpdateCouponDto couponDto) {
-        List<Coupon> couponList = couponRepository.findByCouponName(couponDto.getCouponName());
+    public void checkExistCoupon(String couponName) {
+        List<Coupon> couponList = couponRepository.findByCouponName(couponName);
         if (couponList.isEmpty()) {
             throw new IllegalArgumentException("해당 쿠폰은 존재하지 않습니다.");
         }
     }
+
 
     public void validCouponIssue(AddCouponDto couponDto) {
         if (couponDto.getCouponRate() > 99) {

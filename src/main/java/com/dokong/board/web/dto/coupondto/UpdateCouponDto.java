@@ -9,11 +9,13 @@ import lombok.*;
 @NoArgsConstructor
 public class UpdateCouponDto {
 
+    private Long id;
     private String couponName;
     private int couponRate;
 
     @Builder
-    public UpdateCouponDto(String couponName, int couponRate) {
+    public UpdateCouponDto(Long id, String couponName, int couponRate) {
+        this.id = id;
         this.couponName = couponName;
         this.couponRate = couponRate;
     }

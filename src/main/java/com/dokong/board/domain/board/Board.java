@@ -38,6 +38,21 @@ public class Board extends BaseEntity {
         user.getBoards().add(this);
     }
 
+    public void pushBoardLike(User user, BoardLike boardLike) {
+        user.getBoardLikes().add(boardLike);
+        boardLikes.add(boardLike);
+        boardLike.setUser(user);
+        boardLike.setBoard(this);
+        addLikeCount();
+    }
+
+    public void cancelBoardLike(BoardLike boardLike, User user, Board board) {
+        removeLikeCount();
+        user.getBoardLikes().remove(boardLike);
+        board.getBoardLikes().remove(boardLike);
+    }
+
+
     public void addLikeCount() {
         this.likeCount += 1;
     }
