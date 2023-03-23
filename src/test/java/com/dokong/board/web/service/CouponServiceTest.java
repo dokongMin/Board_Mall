@@ -88,7 +88,6 @@ class CouponServiceTest {
 
     @Test
     @DisplayName("벌크_쿠폰_수정")
-    @Rollback(value = false)
     public void bulkUpdateCoupon() throws Exception {
         // given
         JoinUserDto userDto = getUserDto();
