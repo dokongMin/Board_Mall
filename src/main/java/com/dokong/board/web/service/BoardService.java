@@ -34,12 +34,7 @@ public class BoardService {
         board.updateBoard(boardReqDto.getBoardTitle(), boardReqDto.getBoardContent());
         return UpdateBoardDto.of(board);
     }
-
-    //    public Board checkExistBoard(String boardTitle) {
-//        return boardRepository.findByBoardTitle(boardTitle).orElseThrow(() -> {
-//            throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");
-//        });
-//    }
+    
     public Board findById(Long id) {
         return boardRepository.findById(id).orElseThrow(() -> {
             throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");

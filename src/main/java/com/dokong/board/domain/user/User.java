@@ -77,10 +77,31 @@ public class User extends BaseTimeEntity {
         }
     }
 
+    public int discountByUserRole(int itemCount, int itemPrice) {
+        int totalPrice = itemCount * itemPrice;
+
+        if (getUserRole() == UserRole.BRONZE) {
+            int discountRate = totalPrice / 10;
+            return totalPrice - discountRate;
+        }
+        if (getUserRole() == UserRole.SILVER) {
+            int discountRate = totalPrice / 15;
+            return totalPrice - discountRate;
+        }
+        if (getUserRole() == UserRole.GOLD) {
+            int discountRate = totalPrice / 20;
+            return totalPrice - discountRate;
+        }
+        return totalPrice;
+    }
     public void updateUser(String password, String email, Address address) {
         this.password = password;
         this.email = email;
         this.address = address;
+    }
+
+    public void updateUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     @Builder

@@ -26,8 +26,6 @@ public class QCartProduct extends EntityPathBase<CartProduct> {
 
     public final NumberPath<Integer> cartItemCount = createNumber("cartItemCount", Integer.class);
 
-    public final StringPath cartItemName = createString("cartItemName");
-
     public final NumberPath<Integer> cartItemPrice = createNumber("cartItemPrice", Integer.class);
 
     //inherited
