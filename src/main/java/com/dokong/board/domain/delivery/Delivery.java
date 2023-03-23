@@ -30,6 +30,10 @@ public class Delivery {
         this.order = order;
     }
 
+    public void updateDeliveryStatus(DeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
+
     @Builder
     public Delivery(Address address, DeliveryStatus deliveryStatus) {
         this.address = address;

@@ -1,4 +1,4 @@
-package com.dokong.board.web.dto;
+package com.dokong.board.web.dto.deliverydto;
 
 
 import com.dokong.board.domain.Address;

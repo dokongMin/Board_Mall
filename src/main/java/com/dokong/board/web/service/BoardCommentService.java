@@ -4,7 +4,7 @@ import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.board.BoardComment;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.BoardCommentRepository;
-import com.dokong.board.web.dto.BoardCommentDto;
+import com.dokong.board.web.dto.boardcommentdto.BoardCommentDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

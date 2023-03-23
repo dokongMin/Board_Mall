@@ -1,4 +1,4 @@
-package com.dokong.board.web.dto;
+package com.dokong.board.web.dto.boardcommentdto;
 
 import com.dokong.board.domain.board.BoardComment;
 import lombok.*;

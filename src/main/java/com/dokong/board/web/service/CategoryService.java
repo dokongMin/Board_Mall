@@ -2,7 +2,7 @@ package com.dokong.board.web.service;
 
 import com.dokong.board.domain.Category;
 import com.dokong.board.repository.CategoryRepository;
-import com.dokong.board.web.dto.CategoryDto;
+import com.dokong.board.web.dto.categorydto.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

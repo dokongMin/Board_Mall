@@ -1,4 +1,4 @@
-package com.dokong.board.web.dto;
+package com.dokong.board.web.dto.categorydto;
 
 import com.dokong.board.domain.Category;
 import lombok.Builder;

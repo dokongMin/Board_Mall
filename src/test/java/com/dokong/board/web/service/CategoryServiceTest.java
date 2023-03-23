@@ -1,8 +1,7 @@
 package com.dokong.board.web.service;
 
 import com.dokong.board.domain.Category;
-import com.dokong.board.web.dto.CategoryDto;
-import org.assertj.core.api.Assertions;
+import com.dokong.board.web.dto.categorydto.CategoryDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional

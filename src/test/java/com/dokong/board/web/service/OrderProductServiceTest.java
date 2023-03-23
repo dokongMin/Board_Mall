@@ -3,22 +3,16 @@ package com.dokong.board.web.service;
 import com.dokong.board.domain.OrderProduct;
 import com.dokong.board.domain.Product;
 import com.dokong.board.repository.OrderProductRepository;
-import com.dokong.board.web.dto.CategoryDto;
-import com.dokong.board.web.dto.SaveOrderProductDto;
+import com.dokong.board.web.dto.categorydto.CategoryDto;
+import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
 import com.dokong.board.web.dto.product.SaveProductDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
