@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class JoinUserResponseDto {
 
+    private Long id;
     private String username;
     private String password;
     private String name;
@@ -23,7 +24,8 @@ public class JoinUserResponseDto {
     private UserRole userRole;
 
     @Builder
-    public JoinUserResponseDto(String username, String password, String name, String phoneNumber, String email, String gender, Address address, UserRole userRole) {
+    public JoinUserResponseDto(Long id, String username, String password, String name, String phoneNumber, String email, String gender, Address address, UserRole userRole) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -36,6 +38,7 @@ public class JoinUserResponseDto {
 
     public static JoinUserResponseDto of(User user) {
         return JoinUserResponseDto.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .name(user.getName())
@@ -46,4 +49,5 @@ public class JoinUserResponseDto {
                 .userRole(user.getUserRole())
                 .build();
     }
+
 }
