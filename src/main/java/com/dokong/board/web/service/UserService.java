@@ -1,6 +1,7 @@
 package com.dokong.board.web.service;
 
 import com.dokong.board.domain.user.User;
+import com.dokong.board.domain.user.UserRole;
 import com.dokong.board.exception.NoExistUserException;
 import com.dokong.board.repository.UserRepository;
 import com.dokong.board.web.dto.userdto.*;
@@ -26,6 +27,14 @@ public class UserService {
         User user = checkExistUser(userDto);
         user.updateUser(userDto.getPassword(), userDto.getEmail(), userDto.getAddress());
         return UpdateUserResponseDto.of(user);
+    }
+
+    @Transactional
+    public Long deleteUser(Long id) {
+        User user = findById(id);
+        user.updateUserRole(UserRole.DROP_OUT);
+        user.deleteUser();
+        return user.getId();
     }
 
     public User findById(Long id) {

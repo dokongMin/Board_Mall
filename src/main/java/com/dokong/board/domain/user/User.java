@@ -104,6 +104,16 @@ public class User extends BaseTimeEntity {
         this.userRole = userRole;
     }
 
+    public void deleteUser() {
+        this.username = null;
+        this.password = null;
+        this.name = null;
+        this.phoneNumber = null;
+        this.email = null;
+        this.gender = null;
+        this.address = null;
+    }
+
     @Builder
     public User(String username, String password, String name, String phoneNumber, String email, String gender, Address address, UserRole userRole) {
         this.username = username;
