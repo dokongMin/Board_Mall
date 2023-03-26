@@ -3,7 +3,10 @@ package com.dokong.board.web.service;
 
 import com.dokong.board.domain.OrderProduct;
 import com.dokong.board.domain.Product;
+import com.dokong.board.domain.coupon.Coupon;
+import com.dokong.board.domain.coupon.CouponStatus;
 import com.dokong.board.domain.user.User;
+import com.dokong.board.exception.CouponMinPriceException;
 import com.dokong.board.repository.OrderProductRepository;
 import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
@@ -22,14 +25,36 @@ public class OrderProductService {
     private final UserService userService;
     @Transactional
     public SaveOrderProductDto saveOrderProduct(SessionUserDto sessionUserDto, SaveOrderProductDto saveOrderProductDto, Long productId) {
-        discountPriceByUserRole(sessionUserDto, saveOrderProductDto);
+        discountByUserRole(sessionUserDto, saveOrderProductDto);
         OrderProduct orderProduct = orderProductRepository.save(saveOrderProductDto.toEntity());
         Product product = productService.findById(productId);
         orderProduct.order(product);
         return SaveOrderProductDto.of(orderProduct);
     }
 
-    private void discountPriceByUserRole(SessionUserDto sessionUserDto, SaveOrderProductDto saveOrderProductDto) {
+    @Transactional
+    public SaveOrderProductDto saveOrderProduct(SessionUserDto sessionUserDto, SaveOrderProductDto saveOrderProductDto, Long productId, Coupon coupon) {
+        discountByUserRole(sessionUserDto, saveOrderProductDto);
+        if (coupon.getCouponStatus() == CouponStatus.UNUSED) {
+            discountByCoupon(saveOrderProductDto, coupon);
+        }
+        OrderProduct orderProduct = orderProductRepository.save(saveOrderProductDto.toEntity());
+        Product product = productService.findById(productId);
+        orderProduct.order(product);
+        return SaveOrderProductDto.of(orderProduct);
+    }
+
+    private void discountByCoupon(SaveOrderProductDto saveOrderProductDto, Coupon coupon) {
+        if (saveOrderProductDto.getOrderItemPrice() < 10000) {
+            throw new CouponMinPriceException("쿠폰을 사용하기 위해서는 최소 10,000 원 이상 구매해야 합니다.");
+        }
+        int currentDiscount = saveOrderProductDto.getOrderItemPrice() / coupon.getCouponRate();
+        int currentPrice = saveOrderProductDto.getOrderItemPrice() - currentDiscount;
+        saveOrderProductDto.setOrderItemPrice(currentPrice);
+    }
+
+
+    private void discountByUserRole(SessionUserDto sessionUserDto, SaveOrderProductDto saveOrderProductDto) {
         User user = userService.findById(sessionUserDto.getId());
         int discountItemPrice = user.discountByUserRole(saveOrderProductDto.getOrderItemCount(), saveOrderProductDto.getOrderItemPrice());
         saveOrderProductDto.setOrderItemPrice(discountItemPrice);

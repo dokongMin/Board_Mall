@@ -34,6 +34,9 @@ public class Coupon extends BaseTimeEntity {
         this.user = user;
     }
 
+    public void updateCouponStatus(CouponStatus couponStatus) {
+        this.couponStatus = couponStatus;
+    }
 
     @Builder
     public Coupon(String couponName, int couponRate, String couponDetail, int minCouponPrice, CouponStatus couponStatus) {

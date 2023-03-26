@@ -8,11 +8,14 @@ import com.dokong.board.domain.delivery.DeliveryStatus;
 import com.dokong.board.domain.order.Order;
 import com.dokong.board.domain.order.OrderStatus;
 import com.dokong.board.exception.AlreadyDeliverException;
+import com.dokong.board.exception.CouponMinPriceException;
 import com.dokong.board.exception.NotEnoughStockException;
 import com.dokong.board.repository.OrderProductRepository;
 import com.dokong.board.repository.OrderRepository;
 import com.dokong.board.repository.ProductRepository;
 import com.dokong.board.web.dto.categorydto.CategoryDto;
+import com.dokong.board.web.dto.coupondto.AddCouponDto;
+import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
 import com.dokong.board.web.dto.deliverydto.SaveDeliveryDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderDto;
 import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
@@ -65,6 +68,8 @@ class OrderServiceTest {
 
     @Autowired
     OrderRepository orderRepository;
+    @Autowired
+    CouponService couponService;
 
 
     @Test
@@ -305,6 +310,99 @@ class OrderServiceTest {
                 .hasMessageContaining("수량이 부족합니다.");
     }
 
+    @Test
+    @DisplayName("쿠폰_적용_주문_생성")
+    public void createOrderIncludeCoupon () throws Exception{
+        // given
+        Address address = new Address("서울시", "000-000", "0000");
+
+        /**
+         * 유저 정보 저장 & 로그인
+         */
+        JoinUserDto joinUserDto = getJoinUserDto();
+        userService.saveUser(joinUserDto);
+
+        LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
+        SessionUserDto sessionUserDto = loginService.login(loginUserDto);
+
+        AddCouponDto addCouponDto = getCoupon();
+        AddCouponResponseDto addCouponResponseDto = couponService.addCoupon(addCouponDto, sessionUserDto);
+
+        /**
+         * 카테고리 저장 & 상품 저장
+         */
+        List<Long> productListId = getProductListId();
+        /**
+         * 주문 상품 생성
+         */
+        SaveOrderProductDto orderProductDtoApple = getOrderProductDtoApple();
+        SaveOrderProductDto orderProductDtoGrape = getOrderProductDtoGrape();
+        List<SaveOrderProductDto> orderProductListDto = new ArrayList<>();
+        orderProductListDto.add(orderProductDtoApple);
+        orderProductListDto.add(orderProductDtoGrape);
+
+        /**
+         * 배송 정보 저장
+         */
+        SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
+        SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
+        /**
+         * 주문 정보 저장 & 연관관계 편의 메소드 실행
+         */
+        SaveOrderDto saveOrderDto = getSaveOrderDto(address);
+        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto, sessionUserDto, saveDeliveryDtoEntity, productListId, orderProductListDto, addCouponResponseDto.getId());
+        Order order = orderService.findById(saveOrderDtoEntity.getId());
+
+        // then
+        assertThat(order.getOrderProducts().get(0).getOrderItemPrice()).isEqualTo(16200);
+        assertThat(order.getOrderProducts().get(1).getOrderItemPrice()).isEqualTo(64800);
+    }
+
+    @Test
+    @DisplayName("쿠폰_적용_주문_생성_예외")
+    public void createOrderIncludeCouponException () throws Exception{
+        // given
+        Address address = new Address("서울시", "000-000", "0000");
+
+        /**
+         * 유저 정보 저장 & 로그인
+         */
+        JoinUserDto joinUserDto = getJoinUserDto();
+        userService.saveUser(joinUserDto);
+
+        LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
+        SessionUserDto sessionUserDto = loginService.login(loginUserDto);
+
+        AddCouponDto addCouponDto = getCoupon();
+        AddCouponResponseDto addCouponResponseDto = couponService.addCoupon(addCouponDto, sessionUserDto);
+
+        /**
+         * 카테고리 저장 & 상품 저장
+         */
+        List<Long> productListId = getProductListId();
+        /**
+         * 주문 상품 생성
+         */
+        SaveOrderProductDto orderProductDtoApple = getOrderProductDtoAppleExCoupon();
+        SaveOrderProductDto orderProductDtoGrape = getOrderProductDtoGrapeExCoupon();
+        List<SaveOrderProductDto> orderProductListDto = new ArrayList<>();
+        orderProductListDto.add(orderProductDtoApple);
+        orderProductListDto.add(orderProductDtoGrape);
+
+        /**
+         * 배송 정보 저장
+         */
+        SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
+        SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
+        /**
+         * 주문 정보 저장 & 연관관계 편의 메소드 실행
+         */
+        SaveOrderDto saveOrderDto = getSaveOrderDto(address);
+              // then
+        assertThatThrownBy(() -> orderService.saveOrder(saveOrderDto, sessionUserDto, saveDeliveryDtoEntity, productListId, orderProductListDto, addCouponResponseDto.getId()))
+                .isExactlyInstanceOf(CouponMinPriceException.class)
+                .hasMessageContaining("쿠폰을 사용하기 위해서는 최소 10,000 원 이상 구매해야 합니다.");
+    }
 
     private SaveDeliveryDto getSaveDeliveryDto(Address address) {
         return SaveDeliveryDto.builder()
@@ -334,6 +432,19 @@ class OrderServiceTest {
         return SaveOrderProductDto.builder()
                 .orderItemCount(2000)
                 .orderItemPrice(4000)
+                .build();
+    }
+
+    private SaveOrderProductDto getOrderProductDtoAppleExCoupon() {
+        return SaveOrderProductDto.builder()
+                .orderItemCount(5)
+                .orderItemPrice(1200)
+                .build();
+    }
+    private SaveOrderProductDto getOrderProductDtoGrapeExCoupon() {
+        return SaveOrderProductDto.builder()
+                .orderItemCount(5)
+                .orderItemPrice(1500)
                 .build();
     }
 
@@ -394,5 +505,13 @@ class OrderServiceTest {
                 .map(p -> p.getId())
                 .collect(Collectors.toList());
         return productListId;
+    }
+    private AddCouponDto getCoupon() {
+        return AddCouponDto.builder()
+                .couponName("회원가입 축하 쿠폰")
+                .couponDetail("회원가입을 축하하여 드리는 쿠폰입니다.")
+                .couponRate(10)
+                .minCouponPrice(10000)
+                .build();
     }
 }
