@@ -31,6 +31,7 @@ public class AddCouponResponseDto {
 
     public static AddCouponResponseDto of(Coupon coupon) {
         return AddCouponResponseDto.builder()
+                .id(coupon.getId())
                 .couponName(coupon.getCouponName())
                 .couponDetail(coupon.getCouponDetail())
                 .couponRate(coupon.getCouponRate())
