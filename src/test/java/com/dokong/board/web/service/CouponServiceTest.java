@@ -98,17 +98,25 @@ class CouponServiceTest {
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
         User user = userRepository.findByUsername(sessionUserDto.getUsername()).get();
 
+        JoinUserDto userDto2 = getUserDto2();
+        userService.saveUser(userDto2);
+
+        LoginUserDto loginUserDto2 = getLoginUserDto(userDto2);
+
+        SessionUserDto sessionUserDto2 = loginService.login(loginUserDto2);
+        User user2 = userRepository.findByUsername(sessionUserDto2.getUsername()).get();
+
         AddCouponDto coupon1 = getCoupon();
-        AddCouponDto coupon2 = getCoupon();
         AddCouponResponseDto responseDto1 = couponService.addCoupon(coupon1, sessionUserDto);
-        AddCouponResponseDto responseDto2 = couponService.addCoupon(coupon2, sessionUserDto);
+        AddCouponResponseDto responseDto2 = couponService.addCoupon(coupon1, sessionUserDto2);
 
         // then
         UpdateCouponDto updateCouponDto = getUpdateCoupon();
         couponService.bulkUpdateCoupon(updateCouponDto);
         User perUser = userService.findById(user.getId());
+        User perUser2 = userService.findById(user2.getId());
         assertThat(perUser.getCoupons().get(0).getCouponRate()).isEqualTo(40);
-        assertThat(perUser.getCoupons().get(1).getCouponRate()).isEqualTo(40);
+        assertThat(perUser2.getCoupons().get(0).getCouponRate()).isEqualTo(40);
 
     }
 
@@ -169,6 +177,12 @@ class CouponServiceTest {
     private JoinUserDto getUserDto() {
         return JoinUserDto.builder()
                 .username("aaa")
+                .password("bbb")
+                .build();
+    }
+    private JoinUserDto getUserDto2() {
+        return JoinUserDto.builder()
+                .username("aaabb")
                 .password("bbb")
                 .build();
     }

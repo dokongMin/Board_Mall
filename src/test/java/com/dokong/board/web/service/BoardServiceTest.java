@@ -2,6 +2,7 @@ package com.dokong.board.web.service;
 
 import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.user.User;
+import com.dokong.board.exception.FiveBoardPostPerDay;
 import com.dokong.board.repository.BoardRepository;
 import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
 import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
@@ -14,12 +15,20 @@ import com.dokong.board.web.service.LoginService;
 import com.dokong.board.web.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
@@ -110,7 +119,61 @@ class BoardServiceTest {
         // then
 
      }
+    @Test
+    @DisplayName("게시글_하루_제한_예외")
+    public void fiveBoardPostPerDayException() throws Exception {
+        // given
+        JoinUserDto joinUserDto = getUserDto();
+        userService.saveUser(joinUserDto);
 
+        LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
+        SessionUserDto sessionUserDto = loginService.login(loginUserDto);
+        User user = userService.findById(sessionUserDto.getId());
+
+        SaveBoardReqDto boardDto = getBoard();
+        // when
+        SaveBoardRespDto board = boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardRespDto board2 = boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardRespDto board3 = boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardRespDto board4 = boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardRespDto board5 = boardService.saveBoard(boardDto, sessionUserDto);
+        // then
+        assertThatThrownBy(() -> boardService.saveBoard(boardDto, sessionUserDto))
+                .isExactlyInstanceOf(FiveBoardPostPerDay.class)
+                .hasMessageContaining("게시글은 하루에 5개만 작성 가능합니다.");
+    }
+//    @Test
+//    @DisplayName("게시글_쿠폰_발급")
+//    public void boardPostCouponIssue() throws Exception {
+//        // given
+//        JoinUserDto joinUserDto = getUserDto();
+//        userService.saveUser(joinUserDto);
+//
+//        LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
+//        SessionUserDto sessionUserDto = loginService.login(loginUserDto);
+//        User user = userService.findById(sessionUserDto.getId());
+//
+//        SaveBoardReqDto boardDto = getBoard();
+//        // when
+//        SaveBoardRespDto board = boardService.saveBoard(boardDto, sessionUserDto);
+//        SaveBoardRespDto board2 = boardService.saveBoard(boardDto, sessionUserDto);
+//        SaveBoardRespDto board3 = boardService.saveBoard(boardDto, sessionUserDto);
+//        SaveBoardRespDto board4 = boardService.saveBoard(boardDto, sessionUserDto);
+//        SaveBoardRespDto board5 = boardService.saveBoard(boardDto, sessionUserDto);
+////        when(clock.instant()).thenReturn(Instant.parse("2023-10-10"))
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//        boardService.saveBoard(boardDto, sessionUserDto);
+//    }
     private SaveBoardReqDto getBoard() {
         return SaveBoardReqDto.builder()
                 .boardTitle("첫 게시글")

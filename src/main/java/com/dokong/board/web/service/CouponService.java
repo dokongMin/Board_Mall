@@ -25,9 +25,8 @@ public class CouponService {
 
     @Transactional
     public AddCouponResponseDto addCoupon(AddCouponDto couponDto, SessionUserDto userDto) {
-        validCouponIssue(couponDto);
         User user = userService.findById(userDto.getId());
-        Coupon coupon = couponRepository.save(couponDto.toEntity());
+        Coupon coupon = issueCoupon(couponDto);
         user.addCoupon(coupon);
         return AddCouponResponseDto.of(coupon);
     }
@@ -47,6 +46,11 @@ public class CouponService {
         }
     }
 
+    private Coupon issueCoupon(AddCouponDto addCouponDto) {
+        validCouponIssue(addCouponDto);
+        return couponRepository.save(addCouponDto.toEntity());
+    }
+
 
     public void validCouponIssue(AddCouponDto couponDto) {
         if (couponDto.getCouponRate() > 99) {
@@ -55,6 +59,12 @@ public class CouponService {
         if (couponDto.getMinCouponPrice() < 1000) {
             throw new IllegalArgumentException("최소 금액은 1000원 이상이어야 합니다.");
         }
+    }
+
+    public Coupon findById(Long id) {
+        return couponRepository.findById(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 쿠폰은 존재하지 않습니다.");
+        });
     }
 
 }
