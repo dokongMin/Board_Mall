@@ -46,7 +46,7 @@ public class Product {
         this.itemStock += quantity;
     }
 
-    public void removeStock(int quantity) {
+    public void removeStock(final int quantity) {
         int restStock = this.itemStock - quantity;
         if (restStock < 0) {
             throw new NotEnoughStockException("수량이 부족합니다.");

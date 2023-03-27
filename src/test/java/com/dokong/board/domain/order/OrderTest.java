@@ -25,7 +25,7 @@ class OrderTest {
         Order order = createOrderDummy();
         // then
         assertThat(order.getOrderProducts().get(0).getOrderItemPrice()).isEqualTo(2000);
-        assertThat(order.getOrderProducts().get(0).getProduct().getItemStock()).isEqualTo(2);
+        assertThat(order.getOrderProducts().get(0).getProduct().getItemStock()).isEqualTo(98);
     }
 
 
@@ -38,7 +38,7 @@ class OrderTest {
         order.cancelOrder();
         // then
         assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.ORDER_CANCEL);
-        assertThat(order.getOrderProducts().get(0).getProduct().getItemStock()).isEqualTo(10);
+        assertThat(order.getOrderProducts().get(0).getProduct().getItemStock()).isEqualTo(100);
         
      }
 
@@ -73,20 +73,20 @@ class OrderTest {
 
         Product product = Product.builder()
                 .itemName("사과")
-                .itemStock(10)
+                .itemStock(100)
                 .itemPrice(2000)
                 .build();
 
         List<OrderProduct> orderProducts = new LinkedList<>();
 
         OrderProduct orderProduct1 = OrderProduct.builder()
-                .orderItemCount(5)
+                .orderItemCount(1)
                 .orderItemPrice(product.getItemPrice())
                 .build();
         orderProduct1.order(product);
 
         OrderProduct orderProduct2 = OrderProduct.builder()
-                .orderItemCount(3)
+                .orderItemCount(1)
                 .orderItemPrice(product.getItemPrice())
                 .build();
         orderProduct2.order(product);
