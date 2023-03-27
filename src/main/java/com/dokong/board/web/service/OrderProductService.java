@@ -12,6 +12,7 @@ import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -31,6 +32,8 @@ public class OrderProductService {
         orderProduct.order(product);
         return SaveOrderProductDto.of(orderProduct);
     }
+
+
 
     @Transactional
     public SaveOrderProductDto saveOrderProduct(SessionUserDto sessionUserDto, SaveOrderProductDto saveOrderProductDto, Long productId, Coupon coupon) {

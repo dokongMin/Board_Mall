@@ -7,6 +7,7 @@ import com.dokong.board.web.dto.product.SaveProductDto;
 import com.dokong.board.web.dto.product.UpdateProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -31,6 +32,7 @@ public class ProductService {
         product.updateProduct(productDto.getItemName(), productDto.getItemPrice(), productDto.getItemStock());
         return UpdateProductDto.of(product);
     }
+
 
     public Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(() -> {
