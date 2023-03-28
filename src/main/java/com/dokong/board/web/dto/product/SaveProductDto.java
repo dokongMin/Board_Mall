@@ -27,12 +27,15 @@ public class SaveProductDto {
     @NotBlank
     private int itemStock;
 
+    private String categoryName;
+
     @Builder
-    public SaveProductDto(Long id, String itemName, int itemPrice, int itemStock) {
+    public SaveProductDto(Long id, String itemName, int itemPrice, int itemStock, String categoryName) {
         this.id = id;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
+        this.categoryName = categoryName;
     }
 
     public Product toEntity() {
@@ -49,6 +52,7 @@ public class SaveProductDto {
                 .itemName(product.getItemName())
                 .itemPrice(product.getItemPrice())
                 .itemStock(product.getItemStock())
+                .categoryName(product.getCategory().getCategoryName())
                 .build();
     }
 }

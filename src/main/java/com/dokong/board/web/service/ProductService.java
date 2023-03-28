@@ -19,9 +19,9 @@ public class ProductService {
     private final CategoryService categoryService;
 
     @Transactional
-    public SaveProductDto saveProduct(SaveProductDto saveProductDto, String categoryName) {
+    public SaveProductDto saveProduct(SaveProductDto saveProductDto) {
         Product product = productRepository.save(saveProductDto.toEntity());
-        Category category = categoryService.findByCategoryName(categoryName);
+        Category category = categoryService.findByCategoryName(saveProductDto.getCategoryName());
         product.setCategory(category);
         return SaveProductDto.of(product);
     }

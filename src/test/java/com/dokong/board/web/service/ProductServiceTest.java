@@ -34,7 +34,7 @@ class ProductServiceTest {
         Category category = categoryService.findById(categoryEntity.getId());
 
         // when
-        SaveProductDto saveProductDto = productService.saveProduct(productDto, category.getCategoryName());
+        SaveProductDto saveProductDto = productService.saveProduct(productDto);
         Product product = productService.findById(saveProductDto.getId());
         // then
 
@@ -50,11 +50,11 @@ class ProductServiceTest {
     public void updateProduct() throws Exception {
         // given
         SaveProductDto productDto = getProduct();
-        CategoryDto categoryDto = getCategoryDto2();
+        CategoryDto categoryDto = getCategoryDto1();
         CategoryDto categoryEntity = categoryService.saveCategory(categoryDto);
         Category category = categoryService.findById(categoryEntity.getId());
 
-        SaveProductDto saveProductDto = productService.saveProduct(productDto, category.getCategoryName());
+        SaveProductDto saveProductDto = productService.saveProduct(productDto);
 
         UpdateProductDto updateProductDto = UpdateProductDto.builder()
                 .itemName("포도")
@@ -68,18 +68,18 @@ class ProductServiceTest {
         assertThat(product.getItemName()).isEqualTo("포도");
         assertThat(product.getItemPrice()).isEqualTo(10000);
         assertThat(product.getItemStock()).isEqualTo(1000);
-        assertThat(product.getCategory().getCategoryName()).isEqualTo("과일2");
+        assertThat(product.getCategory().getCategoryName()).isEqualTo("과일1");
     }
 
     @Test
     @DisplayName("상품_수정_예외")
     public void updateProductException() throws Exception {
         SaveProductDto productDto = getProduct();
-        CategoryDto categoryDto = getCategoryDto3();
+        CategoryDto categoryDto = getCategoryDto1();
         CategoryDto categoryEntity = categoryService.saveCategory(categoryDto);
         Category category = categoryService.findById(categoryEntity.getId());
 
-        SaveProductDto saveProductDto = productService.saveProduct(productDto, category.getCategoryName());
+        SaveProductDto saveProductDto = productService.saveProduct(productDto);
 
         UpdateProductDto updateProductDto = UpdateProductDto.builder()
                 .itemName("포도")
@@ -97,6 +97,7 @@ class ProductServiceTest {
                 .itemName("사과")
                 .itemStock(10)
                 .itemPrice(2000)
+                .categoryName("과일1")
                 .build();
     }
 
