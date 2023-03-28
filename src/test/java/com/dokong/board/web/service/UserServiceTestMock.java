@@ -58,7 +58,6 @@ class UserServiceTestMock {
 
     private UpdateUserDto updateUserDto() {
         return UpdateUserDto.builder()
-                .username("alsghks")
                 .password("bbb")
                 .email("aaa")
                 .build();
