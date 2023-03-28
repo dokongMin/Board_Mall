@@ -20,20 +20,17 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/rest")
 public class RestLoginController {
 
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Validated @RequestBody LoginUserDto loginUserDto, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity<?> loginRest(@Validated @RequestBody LoginUserDto loginUserDto, BindingResult bindingResult, HttpServletRequest request) {
 
         bindingIllegalArgumentException(bindingResult);
 
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
-
-
-        HttpSession session = request.getSession();
-        session.setAttribute(SessionUserConst.LOGIN_MEMBER, sessionUserDto);
 
         CommonResponseDto<Object> commonResponseDto = CommonResponseDto.builder()
                 .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
