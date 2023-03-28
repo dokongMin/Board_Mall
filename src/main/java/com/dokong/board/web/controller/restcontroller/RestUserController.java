@@ -17,7 +17,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -90,12 +92,25 @@ public class RestUserController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(commonResponseDto);
     }
 
-
+    @GetMapping("/find-all")
+    public ResponseEntity<?> findAllUser() {
+        List<User> allUser = userService.findAllUser();
+        List<ShowUserDto> collect = allUser.stream()
+                .map(a -> ShowUserDto.of(a))
+                .collect(Collectors.toList());
+        CommonResponseDto<Object> commonResponseDto = CommonResponseDto.builder()
+                .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
+                .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
+                .body(collect)
+                .build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(commonResponseDto);
+    }
 
     private void bindingRuntimeException(BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
-            for (FieldError fe : bindingResult.getFieldErrors()){
+            for (FieldError fe : bindingResult.getFieldErrors()) {
                 errorMap.put(fe.getField(), fe.getDefaultMessage());
             }
             throw new RuntimeException(errorMap.toString());
