@@ -23,8 +23,8 @@ public class UserService {
     }
 
     @Transactional
-    public UpdateUserResponseDto updateUser(UpdateUserDto userDto) {
-        User user = checkExistUser(userDto);
+    public UpdateUserResponseDto updateUser(Long id, UpdateUserDto userDto) {
+        User user = findById(id);
         user.updateUser(userDto.getPassword(), userDto.getEmail(), userDto.getAddress());
         return UpdateUserResponseDto.of(user);
     }
@@ -43,17 +43,13 @@ public class UserService {
         });
     }
 
+
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> {
             throw new NoExistUserException("해당 회원은 존재하지 않습니다.");
         });
     }
 
-    public User checkExistUser(UpdateUserDto userDto) {
-        return userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> {
-            throw new NoExistUserException("해당 회원은 존재하지 않습니다.");
-        });
-    }
 
     public void validateUsername(JoinUserDto userDto) {
         boolean checkUsername = userRepository.findByUsername(userDto.getUsername()).isPresent();

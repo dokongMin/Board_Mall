@@ -7,10 +7,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -24,7 +21,7 @@ public class JoinUserDto {
     @Length(min = 6, max = 15)
     @NotBlank
     private String password;
-    @NotBlank
+    @NotBlank(message = "이름은 공백일 수 없습니다.")
     private String name;
     @NotBlank
     private String phoneNumber;
