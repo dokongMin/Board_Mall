@@ -4,16 +4,31 @@ import com.dokong.board.domain.Address;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.domain.user.UserRole;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class JoinUserDto {
 
+    @Length(min = 4, max = 15)
+    @NotBlank
     private String username;
+
+    @Length(min = 6, max = 15)
+    @NotBlank
     private String password;
+    @NotBlank
     private String name;
+    @NotBlank
     private String phoneNumber;
+    @Email
     private String email;
     private String gender;
     private Address address;
