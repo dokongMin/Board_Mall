@@ -7,7 +7,7 @@ import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
 import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
 import com.dokong.board.web.dto.boardlikedto.BoardLikeRespDto;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
-import com.dokong.board.web.dto.userdto.LoginUserDto;
+import com.dokong.board.web.dto.logindto.LoginUserDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

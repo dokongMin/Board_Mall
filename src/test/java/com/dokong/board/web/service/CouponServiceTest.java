@@ -6,17 +6,12 @@ import com.dokong.board.web.dto.coupondto.AddCouponDto;
 import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
 import com.dokong.board.web.dto.coupondto.UpdateCouponDto;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
-import com.dokong.board.web.dto.userdto.LoginUserDto;
+import com.dokong.board.web.dto.logindto.LoginUserDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
-import com.dokong.board.web.service.CouponService;
-import com.dokong.board.web.service.LoginService;
-import com.dokong.board.web.service.UserService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;

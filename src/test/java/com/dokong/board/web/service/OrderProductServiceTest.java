@@ -9,7 +9,7 @@ import com.dokong.board.web.dto.categorydto.CategoryDto;
 import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
 import com.dokong.board.web.dto.product.SaveProductDto;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
-import com.dokong.board.web.dto.userdto.LoginUserDto;
+import com.dokong.board.web.dto.logindto.LoginUserDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
