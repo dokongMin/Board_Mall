@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
-    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "Invalid parameter included"),
-    RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not exists"),
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error"),
-    NO_EXIST_USER(HttpStatus.BAD_REQUEST, "No exist user")
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "Invalid Parameter Included"),
+    RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "Resource Not Exists"),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"),
+    NO_EXIST_USER(HttpStatus.BAD_REQUEST, "No Exist User")
     ;
 
     private final HttpStatus httpStatus;
