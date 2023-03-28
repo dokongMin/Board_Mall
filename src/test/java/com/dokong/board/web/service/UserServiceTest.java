@@ -90,16 +90,15 @@ class UserServiceTest {
 
         JoinUserDto userDto = getJoinUserDto(address);
 
-        userService.saveUser(userDto);
+        JoinUserResponseDto joinUserResponseDto = userService.saveUser(userDto);
 
         UpdateUserDto updateUserDto = UpdateUserDto.builder()
-                .username(userDto.getUsername())
                 .password("999")
                 .address(newAddress)
                 .email("9999@naver.com")
                 .build();
         // when
-        userService.updateUser(updateUserDto);
+        userService.updateUser(joinUserResponseDto.getId(), updateUserDto);
         User findUser = userRepository.findByUsername("alsghks").get();
         // then
         assertThat(findUser.getPassword()).isEqualTo("999");

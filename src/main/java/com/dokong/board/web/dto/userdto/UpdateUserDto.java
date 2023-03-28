@@ -4,20 +4,25 @@ import com.dokong.board.domain.Address;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.domain.user.UserRole;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class UpdateUserDto {
 
-    private String username;
+    @Length(min = 4, max = 15)
+    @NotBlank
     private String password;
+    @Email
     private String email;
     private Address address;
 
     @Builder
-    public UpdateUserDto(String username, String password, String email, Address address) {
-        this.username = username;
+    public UpdateUserDto(String password, String email, Address address) {
         this.password = password;
         this.email = email;
         this.address = address;
@@ -25,7 +30,6 @@ public class UpdateUserDto {
 
     public User toEntity() {
         return User.builder()
-                .username(username)
                 .password(password)
                 .email(email)
                 .address(address)
