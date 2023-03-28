@@ -8,27 +8,16 @@ import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
 import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
 import com.dokong.board.web.dto.boarddto.UpdateBoardDto;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
-import com.dokong.board.web.dto.userdto.LoginUserDto;
+import com.dokong.board.web.dto.logindto.LoginUserDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
-import com.dokong.board.web.service.BoardService;
-import com.dokong.board.web.service.LoginService;
-import com.dokong.board.web.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
