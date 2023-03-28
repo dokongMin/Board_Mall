@@ -52,7 +52,7 @@ class OrderProductServiceTest {
         CategoryDto categoryDto = categoryService.saveCategory(getCategoryDto);
 
         SaveProductDto getSaveProductDto = getSaveProductDto();
-        SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto, categoryDto.getCategoryName());
+        SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto);
         Product product = productService.findById(saveProductDto.getId());
 
         SaveOrderProductDto saveOrderProductDto = getSaveOrderProductDto();
@@ -81,7 +81,7 @@ class OrderProductServiceTest {
         CategoryDto categoryDto = categoryService.saveCategory(getCategoryDto);
 
         SaveProductDto getSaveProductDto = getSaveProductDto();
-        SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto, categoryDto.getCategoryName());
+        SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto);
         Product product = productService.findById(saveProductDto.getId());
 
         SaveOrderProductDto saveOrderProductDto = getSaveOrderProductDto();
@@ -114,7 +114,7 @@ class OrderProductServiceTest {
         CategoryDto categoryDto = categoryService.saveCategory(getCategoryDto);
 
         SaveProductDto getSaveProductDto = getSaveProductDto();
-        SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto, categoryDto.getCategoryName());
+        SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto);
         Product product = productService.findById(saveProductDto.getId());
 
         SaveOrderProductDto saveOrderProductDto = getSaveOrderProductDto();
@@ -147,7 +147,7 @@ class OrderProductServiceTest {
          CategoryDto categoryDto = categoryService.saveCategory(getCategoryDto);
 
          SaveProductDto getSaveProductDto = getSaveProductDto();
-         SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto, categoryDto.getCategoryName());
+         SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto);
          Product product = productService.findById(saveProductDto.getId());
 
          SaveOrderProductDto saveOrderProductDto = getSaveOrderProductDto();
@@ -181,6 +181,7 @@ class OrderProductServiceTest {
                 .itemName("사과")
                 .itemPrice(10000)
                 .itemStock(100)
+                .categoryName("과일")
                 .build();
     }
     private LoginUserDto getLoginUserDto(JoinUserDto joinUserDto) {

@@ -48,7 +48,7 @@ class CartProductServiceTest {
         categoryService.saveCategory(categoryDto);
 
         SaveProductDto saveProductDto = getSaveProductDtoApple();
-        SaveProductDto savedProduct = productService.saveProduct(saveProductDto, categoryDto.getCategoryName());
+        SaveProductDto savedProduct = productService.saveProduct(saveProductDto);
         Product product = productService.findById(savedProduct.getId());
 
         SaveCartProductDto saveCartProductDto = getSaveCartProductDto();
@@ -95,6 +95,7 @@ class CartProductServiceTest {
                 .itemName("사과")
                 .itemPrice(2000)
                 .itemStock(100)
+                .categoryName("과일")
                 .build();
     }
 

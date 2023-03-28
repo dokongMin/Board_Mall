@@ -145,11 +145,11 @@ class OrderServiceTest {
         categoryService.saveCategory(categoryDto);
 
         SaveProductDto saveProductDto = getSaveProductDtoApple();
-        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto, categoryDto.getCategoryName());
+        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto);
         Product productApple = productService.findById(saveProductDtoEntity.getId());
 
         SaveProductDto saveProductDtoGrape = getSaveProductDtoGrape();
-        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape, categoryDto.getCategoryName());
+        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape);
         Product productGrape = productService.findById(saveProductDtoEntityGrape.getId());
 
         List<Product> productList = productRepository.findAll();
@@ -205,11 +205,11 @@ class OrderServiceTest {
         categoryService.saveCategory(categoryDto);
 
         SaveProductDto saveProductDto = getSaveProductDtoApple();
-        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto, categoryDto.getCategoryName());
+        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto);
         Product productApple = productService.findById(saveProductDtoEntity.getId());
 
         SaveProductDto saveProductDtoGrape = getSaveProductDtoGrape();
-        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape, categoryDto.getCategoryName());
+        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape);
         Product productGrape = productService.findById(saveProductDtoEntityGrape.getId());
 
         List<Product> productList = productRepository.findAll();
@@ -271,11 +271,11 @@ class OrderServiceTest {
         categoryService.saveCategory(categoryDto);
 
         SaveProductDto saveProductDto = getSaveProductDtoApple();
-        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto, categoryDto.getCategoryName());
+        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto);
         Product productApple = productService.findById(saveProductDtoEntity.getId());
 
         SaveProductDto saveProductDtoGrape = getSaveProductDtoGrape();
-        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape, categoryDto.getCategoryName());
+        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape);
         Product productGrape = productService.findById(saveProductDtoEntityGrape.getId());
 
         List<Product> productList = productRepository.findAll();
@@ -458,6 +458,7 @@ class OrderServiceTest {
                 .itemName("사과")
                 .itemPrice(2000)
                 .itemStock(100)
+                .categoryName("과일")
                 .build();
     }
     private SaveProductDto getSaveProductDtoGrape() {
@@ -465,6 +466,7 @@ class OrderServiceTest {
                 .itemName("포도")
                 .itemPrice(4000)
                 .itemStock(100)
+                .categoryName("과일")
                 .build();
     }
 
@@ -492,11 +494,11 @@ class OrderServiceTest {
         categoryService.saveCategory(categoryDto);
 
         SaveProductDto saveProductDto = getSaveProductDtoApple();
-        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto, categoryDto.getCategoryName());
+        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto);
         productService.findById(saveProductDtoEntity.getId());
 
         SaveProductDto saveProductDtoGrape = getSaveProductDtoGrape();
-        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape, categoryDto.getCategoryName());
+        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape);
         productService.findById(saveProductDtoEntityGrape.getId());
 
         List<Product> productList = productRepository.findAll();
