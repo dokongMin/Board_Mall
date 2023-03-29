@@ -1,7 +1,6 @@
 package com.dokong.board.web.service;
 
 import com.dokong.board.domain.OrderProduct;
-import com.dokong.board.domain.Product;
 import com.dokong.board.domain.coupon.Coupon;
 import com.dokong.board.domain.coupon.CouponStatus;
 import com.dokong.board.domain.delivery.Delivery;
@@ -10,7 +9,6 @@ import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.OrderRepository;
 import com.dokong.board.web.dto.deliverydto.SaveDeliveryDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderDto;
-import com.dokong.board.web.dto.orderproductdto.OrderProductRespDto;
 import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -38,10 +35,10 @@ public class OrderService {
     @Transactional
     public SaveOrderDto saveOrder(SaveOrderDto saveOrderDto, SessionUserDto sessionUserDto, SaveDeliveryDto deliveryDto,
                                   List<Long> productIds, List<SaveOrderProductDto> saveOrderProductDtos) {
-        Order order = orderRepository.save(saveOrderDto.toEntity());
         User user = userService.findById(sessionUserDto.getId());
         Delivery delivery = deliveryService.findById(deliveryDto.getId());
         List<OrderProduct> orderProducts = getOrderProducts(sessionUserDto, productIds, saveOrderProductDtos);
+        Order order = orderRepository.save(saveOrderDto.toEntity());
         order.createOrder(user, delivery, orderProducts);
         return SaveOrderDto.of(order);
     }

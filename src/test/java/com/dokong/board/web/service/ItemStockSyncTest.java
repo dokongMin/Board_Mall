@@ -2,7 +2,7 @@
 //
 //import com.dokong.board.domain.Address;
 //import com.dokong.board.domain.OrderProduct;
-//import com.dokong.board.domain.Product;
+//import com.dokong.board.domain.product.Product;
 //import com.dokong.board.domain.order.Order;
 //import com.dokong.board.repository.OrderProductRepository;
 //import com.dokong.board.repository.OrderRepository;

@@ -24,7 +24,7 @@ public class QCategory extends EntityPathBase<Category> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final ListPath<Product, QProduct> products = this.<Product, QProduct>createList("products", Product.class, QProduct.class, PathInits.DIRECT2);
+    public final ListPath<com.dokong.board.domain.product.Product, com.dokong.board.domain.product.QProduct> products = this.<com.dokong.board.domain.product.Product, com.dokong.board.domain.product.QProduct>createList("products", com.dokong.board.domain.product.Product.class, com.dokong.board.domain.product.QProduct.class, PathInits.DIRECT2);
 
     public QCategory(String variable) {
         super(Category.class, forVariable(variable));

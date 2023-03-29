@@ -2,7 +2,7 @@ package com.dokong.board.web.service;
 
 import com.dokong.board.domain.Address;
 import com.dokong.board.domain.OrderProduct;
-import com.dokong.board.domain.Product;
+import com.dokong.board.domain.product.Product;
 import com.dokong.board.domain.delivery.Delivery;
 import com.dokong.board.domain.delivery.DeliveryStatus;
 import com.dokong.board.domain.order.Order;

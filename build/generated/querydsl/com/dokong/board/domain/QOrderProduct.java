@@ -30,7 +30,7 @@ public class QOrderProduct extends EntityPathBase<OrderProduct> {
 
     public final NumberPath<Integer> orderItemPrice = createNumber("orderItemPrice", Integer.class);
 
-    public final QProduct product;
+    public final com.dokong.board.domain.product.QProduct product;
 
     public QOrderProduct(String variable) {
         this(OrderProduct.class, forVariable(variable), INITS);
@@ -51,7 +51,7 @@ public class QOrderProduct extends EntityPathBase<OrderProduct> {
     public QOrderProduct(Class<? extends OrderProduct> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.order = inits.isInitialized("order") ? new com.dokong.board.domain.order.QOrder(forProperty("order"), inits.get("order")) : null;
-        this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
+        this.product = inits.isInitialized("product") ? new com.dokong.board.domain.product.QProduct(forProperty("product"), inits.get("product")) : null;
     }
 
 }

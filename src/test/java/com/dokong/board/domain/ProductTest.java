@@ -1,9 +1,7 @@
 package com.dokong.board.domain;
 
+import com.dokong.board.domain.product.Product;
 import com.dokong.board.exception.NotEnoughStockException;
-import org.aspectj.lang.annotation.Before;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,5 +1,8 @@
-package com.dokong.board.domain;
+package com.dokong.board.domain.product;
 
+import com.dokong.board.domain.CartProduct;
+import com.dokong.board.domain.Category;
+import com.dokong.board.domain.OrderProduct;
 import com.dokong.board.exception.NotEnoughStockException;
 import lombok.*;
 
@@ -21,6 +24,8 @@ public class Product {
     private String itemName;
     private int itemPrice;
     private int itemStock;
+
+    private ProductStatus productStatus;
 
     @OneToMany(mappedBy = "product")
     private List<OrderProduct> orderProducts = new ArrayList<>();
@@ -60,13 +65,21 @@ public class Product {
         this.itemStock = itemStock;
     }
 
+    public void deleteProduct() {
+        itemName = null;
+        itemPrice = 0;
+        itemStock = 0;
+        productStatus = ProductStatus.DELETE;
+    }
+
     /**
      * Builder
      */
     @Builder
-    public Product(String itemName, int itemPrice, int itemStock) {
+    public Product(String itemName, int itemPrice, int itemStock, ProductStatus productStatus) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
+        this.productStatus = productStatus;
     }
 }

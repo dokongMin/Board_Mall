@@ -1,5 +1,6 @@
 package com.dokong.board.domain;
 
+import com.dokong.board.domain.product.Product;
 import com.dokong.board.domain.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

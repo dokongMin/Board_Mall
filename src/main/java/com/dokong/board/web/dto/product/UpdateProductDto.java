@@ -1,6 +1,6 @@
 package com.dokong.board.web.dto.product;
 
-import com.dokong.board.domain.Product;
+import com.dokong.board.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

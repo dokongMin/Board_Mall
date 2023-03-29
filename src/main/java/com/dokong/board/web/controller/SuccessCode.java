@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 public enum SuccessCode {
 
     CREATE_REQUEST_SUCCESS(HttpStatus.CREATED, "Create Request Success"),
+    UPDATE_REQUEST_SUCCESS(HttpStatus.CREATED, "Update Request Success"),
+    DELETE_REQUEST_SUCCESS(HttpStatus.CREATED, "Delete Request Success"),
     REQUEST_SUCCESS(HttpStatus.OK, "Request Success");
 
     private final HttpStatus httpStatus;

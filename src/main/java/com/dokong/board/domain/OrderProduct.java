@@ -1,11 +1,10 @@
 package com.dokong.board.domain;
 
 import com.dokong.board.domain.order.Order;
+import com.dokong.board.domain.product.Product;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
