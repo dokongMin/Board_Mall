@@ -25,6 +25,7 @@ public class Product {
     private int itemPrice;
     private int itemStock;
 
+    @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
 
     @OneToMany(mappedBy = "product")

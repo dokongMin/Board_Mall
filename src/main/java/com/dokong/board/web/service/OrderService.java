@@ -29,15 +29,11 @@ public class OrderService {
     private final DeliveryService deliveryService;
     private final OrderProductService orderProductService;
 
-    private final CouponService couponService;
-    private final ProductService productService;
-
     @Transactional
-    public SaveOrderDto saveOrder(SaveOrderDto saveOrderDto, SessionUserDto sessionUserDto, SaveDeliveryDto deliveryDto,
-                                  List<Long> productIds, List<SaveOrderProductDto> saveOrderProductDtos) {
-        User user = userService.findById(sessionUserDto.getId());
-        Delivery delivery = deliveryService.findById(deliveryDto.getId());
-        List<OrderProduct> orderProducts = getOrderProducts(sessionUserDto, productIds, saveOrderProductDtos);
+    public SaveOrderDto saveOrder(SaveOrderDto saveOrderDto) {
+        User user = userService.findById(saveOrderDto.getUserId());
+        Delivery delivery = deliveryService.findById(saveOrderDto.getSaveDeliveryDto().getId());
+        List<OrderProduct> orderProducts = getOrderProducts(saveOrderDto.getSaveOrderProductDtos());
         Order order = orderRepository.save(saveOrderDto.toEntity());
         order.createOrder(user, delivery, orderProducts);
         return SaveOrderDto.of(order);
@@ -50,42 +46,11 @@ public class OrderService {
         order.cancelOrder();
     }
 
-    private List<OrderProduct> getOrderProducts(SessionUserDto sessionUserDto, List<Long> productIds, List<SaveOrderProductDto> saveOrderProductDtos) {
+    private List<OrderProduct> getOrderProducts(List<SaveOrderProductDto> saveOrderProductDtos) {
         List<OrderProduct> orderProducts = new ArrayList<>();
-        for (int i = 0; i < productIds.size(); i++) {
-            Long productId = productIds.get(i);
+        for (int i = 0; i < saveOrderProductDtos.size(); i++) {
             SaveOrderProductDto orderProductDto = saveOrderProductDtos.get(i);
-            SaveOrderProductDto saveOrderProductDto = orderProductService.saveOrderProduct(sessionUserDto, orderProductDto, productId);
-            OrderProduct orderProduct = orderProductService.findById(saveOrderProductDto.getId());
-            orderProducts.add(orderProduct);
-        }
-        return orderProducts;
-    }
-
-    /**
-     * 쿠폰 적용 주문
-     */
-    @Transactional
-    public SaveOrderDto saveOrder(SaveOrderDto saveOrderDto, SessionUserDto sessionUserDto, SaveDeliveryDto deliveryDto,
-                                  List<Long> productIds, List<SaveOrderProductDto> saveOrderProductDtos, Long couponId) {
-
-        Order order = orderRepository.save(saveOrderDto.toEntity());
-        User user = userService.findById(sessionUserDto.getId());
-        Delivery delivery = deliveryService.findById(deliveryDto.getId());
-        Coupon coupon = couponService.findById(couponId);
-        List<OrderProduct> orderProducts = getOrderProducts(sessionUserDto, productIds, saveOrderProductDtos, coupon);
-        coupon.updateCouponStatus(CouponStatus.USED);
-        order.createOrder(user, delivery, orderProducts);
-        return SaveOrderDto.of(order);
-
-    }
-
-    private List<OrderProduct> getOrderProducts(SessionUserDto sessionUserDto, List<Long> productIds, List<SaveOrderProductDto> saveOrderProductDtos, Coupon coupon) {
-        List<OrderProduct> orderProducts = new ArrayList<>();
-        for (int i = 0; i < productIds.size(); i++) {
-            Long productId = productIds.get(i);
-            SaveOrderProductDto orderProductDto = saveOrderProductDtos.get(i);
-            SaveOrderProductDto saveOrderProductDto = orderProductService.saveOrderProduct(sessionUserDto, orderProductDto, productId, coupon);
+            SaveOrderProductDto saveOrderProductDto = orderProductService.saveOrderProduct(orderProductDto);
             OrderProduct orderProduct = orderProductService.findById(saveOrderProductDto.getId());
             orderProducts.add(orderProduct);
         }
