@@ -19,15 +19,15 @@ public class AddCouponDto {
     private int minCouponPrice;
     private CouponStatus couponStatus;
 
-    private User user;
+    private Long userId;
 
     @Builder
-    public AddCouponDto(String couponName, int couponRate, String couponDetail, int minCouponPrice, CouponStatus couponStatus, User user) {
+    public AddCouponDto(String couponName, int couponRate, String couponDetail, int minCouponPrice, CouponStatus couponStatus) {
         this.couponName = couponName;
         this.couponRate = couponRate;
         this.couponDetail = couponDetail;
         this.minCouponPrice = minCouponPrice;
-        this.couponStatus = CouponStatus.UNUSED;
+        this.couponStatus = couponStatus;
     }
 
     public Coupon toEntity() {
@@ -36,7 +36,7 @@ public class AddCouponDto {
                 .couponRate(couponRate)
                 .couponDetail(couponDetail)
                 .minCouponPrice(minCouponPrice)
-                .couponStatus(couponStatus)
+                .couponStatus(CouponStatus.UNUSED)
                 .build();
     }
 }

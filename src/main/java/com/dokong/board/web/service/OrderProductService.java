@@ -46,6 +46,13 @@ public class OrderProductService {
         return SaveOrderProductDto.of(orderProduct);
     }
 
+    @Transactional
+    public void cancelOrderProduct(Long orderProductId) {
+        OrderProduct orderProduct = findById(orderProductId);
+        orderProduct.cancel();
+        orderProductRepository.delete(orderProduct);
+    }
+
     private void discountByCoupon(SaveOrderProductDto saveOrderProductDto, Coupon coupon) {
         if (saveOrderProductDto.getOrderItemPrice() < 10000) {
             throw new CouponMinPriceException("쿠폰을 사용하기 위해서는 최소 10,000 원 이상 구매해야 합니다.");
@@ -62,12 +69,6 @@ public class OrderProductService {
         saveOrderProductDto.setOrderItemPrice(discountItemPrice);
     }
 
-    @Transactional
-    public void cancelOrderProduct(Long orderProductId) {
-        OrderProduct orderProduct = findById(orderProductId);
-        orderProduct.cancel();
-        orderProductRepository.delete(orderProduct);
-    }
 
     public OrderProduct findById(Long id) {
        return orderProductRepository.findById(id).orElseThrow(() -> {

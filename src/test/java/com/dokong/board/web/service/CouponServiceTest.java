@@ -53,7 +53,7 @@ class CouponServiceTest {
 
         AddCouponDto coupon = getCoupon();
         // when
-        AddCouponResponseDto responseDto = couponService.addCoupon(coupon, sessionUserDto);
+        AddCouponResponseDto responseDto = couponService.addCouponByBoard(coupon, sessionUserDto);
         // then
         assertThat(coupon.getCouponName()).isEqualTo(responseDto.getCouponName());
         assertThat(coupon.getCouponRate()).isEqualTo(responseDto.getCouponRate());
@@ -75,7 +75,7 @@ class CouponServiceTest {
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
         AddCouponDto coupon = getExceptionCoupon();
         // then
-        assertThatThrownBy(() -> couponService.addCoupon(coupon, sessionUserDto))
+        assertThatThrownBy(() -> couponService.addCouponByBoard(coupon, sessionUserDto))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("할인율은 99보다 클 수 없습니다.");
 
@@ -102,8 +102,8 @@ class CouponServiceTest {
         User user2 = userRepository.findByUsername(sessionUserDto2.getUsername()).get();
 
         AddCouponDto coupon1 = getCoupon();
-        AddCouponResponseDto responseDto1 = couponService.addCoupon(coupon1, sessionUserDto);
-        AddCouponResponseDto responseDto2 = couponService.addCoupon(coupon1, sessionUserDto2);
+        AddCouponResponseDto responseDto1 = couponService.addCouponByBoard(coupon1, sessionUserDto);
+        AddCouponResponseDto responseDto2 = couponService.addCouponByBoard(coupon1, sessionUserDto2);
 
         // then
         UpdateCouponDto updateCouponDto = getUpdateCoupon();

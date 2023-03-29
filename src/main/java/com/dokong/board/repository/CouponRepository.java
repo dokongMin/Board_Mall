@@ -16,4 +16,8 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
     @Modifying(clearAutomatically = true)
     @Query("update Coupon c set c.couponRate = :couponRate where c.couponName = :couponName")
     int bulkUpdateCouponRate(@Param("couponRate") int couponRate, @Param("couponName") String couponName);
+
+    @Query("select c from Coupon c")
+    List<Coupon> findAll();
+
 }

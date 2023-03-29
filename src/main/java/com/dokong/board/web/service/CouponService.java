@@ -8,6 +8,7 @@ import com.dokong.board.repository.UserRepository;
 import com.dokong.board.web.dto.coupondto.AddCouponDto;
 import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
 import com.dokong.board.web.dto.coupondto.UpdateCouponDto;
+import com.dokong.board.web.dto.coupondto.UpdateCouponRespDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class CouponService {
     private final UserService userService;
 
     @Transactional
-    public AddCouponResponseDto addCoupon(AddCouponDto couponDto, SessionUserDto userDto) {
+    public AddCouponResponseDto addCouponByBoard(AddCouponDto couponDto, SessionUserDto userDto) {
         User user = userService.findById(userDto.getId());
         Coupon coupon = issueCoupon(couponDto);
         user.addCoupon(coupon);
@@ -32,10 +33,20 @@ public class CouponService {
     }
 
     @Transactional
-    public int bulkUpdateCoupon(UpdateCouponDto couponDto) {
+    public AddCouponResponseDto addCoupon(AddCouponDto couponDto) {
+        Long userId = couponDto.getUserId();
+        User user = userService.findById(userId);
+        Coupon coupon = issueCoupon(couponDto);
+        user.addCoupon(coupon);
+        return AddCouponResponseDto.of(coupon);
+    }
+
+
+    @Transactional
+    public List<Coupon> bulkUpdateCoupon(UpdateCouponDto couponDto) {
         checkExistCoupon(couponDto.getCouponName());
-        int resultCount = couponRepository.bulkUpdateCouponRate(couponDto.getCouponRate(), couponDto.getCouponName());
-        return resultCount;
+        couponRepository.bulkUpdateCouponRate(couponDto.getCouponRate(), couponDto.getCouponName());
+        return couponRepository.findByCouponName(couponDto.getCouponName());
     }
 
 
@@ -67,4 +78,7 @@ public class CouponService {
         });
     }
 
+    public List<Coupon> findAll() {
+        return couponRepository.findAll();
+    }
 }
