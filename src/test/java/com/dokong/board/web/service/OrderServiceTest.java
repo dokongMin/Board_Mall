@@ -325,7 +325,7 @@ class OrderServiceTest {
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
         AddCouponDto addCouponDto = getCoupon();
-        AddCouponResponseDto addCouponResponseDto = couponService.addCoupon(addCouponDto, sessionUserDto);
+        AddCouponResponseDto addCouponResponseDto = couponService.addCouponByBoard(addCouponDto, sessionUserDto);
 
         /**
          * 카테고리 저장 & 상품 저장
@@ -373,7 +373,7 @@ class OrderServiceTest {
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
         AddCouponDto addCouponDto = getCoupon();
-        AddCouponResponseDto addCouponResponseDto = couponService.addCoupon(addCouponDto, sessionUserDto);
+        AddCouponResponseDto addCouponResponseDto = couponService.addCouponByBoard(addCouponDto, sessionUserDto);
 
         /**
          * 카테고리 저장 & 상품 저장

@@ -61,7 +61,7 @@ public class BoardService {
                     .minCouponPrice(10000)
                     .couponDetail("게시글을 "+ count +" 개 작성할 때마다 드리는 쿠폰입니다.")
                     .build();
-            couponService.addCoupon(addCouponDto, sessionUserDto);
+            couponService.addCouponByBoard(addCouponDto, sessionUserDto);
         }
     }
 
