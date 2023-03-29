@@ -36,7 +36,7 @@ public class QCartProduct extends EntityPathBase<CartProduct> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
-    public final QProduct product;
+    public final com.dokong.board.domain.product.QProduct product;
 
     public final com.dokong.board.domain.user.QUser user;
 
@@ -58,7 +58,7 @@ public class QCartProduct extends EntityPathBase<CartProduct> {
 
     public QCartProduct(Class<? extends CartProduct> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
+        this.product = inits.isInitialized("product") ? new com.dokong.board.domain.product.QProduct(forProperty("product"), inits.get("product")) : null;
         this.user = inits.isInitialized("user") ? new com.dokong.board.domain.user.QUser(forProperty("user"), inits.get("user")) : null;
     }
 

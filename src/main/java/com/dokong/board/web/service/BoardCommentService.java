@@ -22,9 +22,9 @@ public class BoardCommentService {
     private final BoardService boardService;
     @Transactional
     public BoardCommentDto saveBoardComment(BoardCommentDto boardCommentDto, SessionUserDto sessionUserDto, Long boardId) {
-        BoardComment boardComment = boardCommentRepository.save(boardCommentDto.toEntity());
         User user = userService.findById(sessionUserDto.getId());
         Board board = boardService.findById(boardId);
+        BoardComment boardComment = boardCommentRepository.save(boardCommentDto.toEntity());
         boardComment.writeComment(user, board);
         return BoardCommentDto.of(boardComment);
     }

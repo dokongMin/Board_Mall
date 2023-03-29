@@ -52,7 +52,7 @@ public class RestUserController {
                 .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
                 .body(showUserDto)
                 .build();
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(commonResponseDto);
+        return ResponseEntity.status(SuccessCode.CREATE_REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
     @PostMapping("/my-page/modify/{id}")
@@ -62,11 +62,11 @@ public class RestUserController {
 
         UpdateUserResponseDto updateUserResponseDto = userService.updateUser(id, updateUserDto);
         CommonResponseDto<Object> commonResponseDto = CommonResponseDto.builder()
-                .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
-                .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
+                .code(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus())
+                .msg(SuccessCode.UPDATE_REQUEST_SUCCESS.getMessage())
                 .body(updateUserResponseDto)
                 .build();
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(commonResponseDto);
+        return ResponseEntity.status(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
     @PostMapping("/my-page/delete/{id}")
@@ -77,7 +77,7 @@ public class RestUserController {
                 .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
                 .body(userId)
                 .build();
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(commonResponseDto);
+        return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
     @GetMapping("/find-pw/{username}")
@@ -89,10 +89,10 @@ public class RestUserController {
                 .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
                 .body(passwordDto)
                 .build();
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(commonResponseDto);
+        return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
-    @GetMapping("/find-all")
+    @GetMapping("/user-list")
     public ResponseEntity<?> findAllUser() {
         List<User> allUser = userService.findAllUser();
         List<ShowUserDto> collect = allUser.stream()
@@ -103,7 +103,7 @@ public class RestUserController {
                 .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
                 .body(collect)
                 .build();
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(commonResponseDto);
+        return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
     private void bindingRuntimeException(BindingResult bindingResult) {

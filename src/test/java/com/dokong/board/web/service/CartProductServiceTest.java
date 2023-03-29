@@ -1,7 +1,7 @@
 package com.dokong.board.web.service;
 
 import com.dokong.board.domain.CartProduct;
-import com.dokong.board.domain.Product;
+import com.dokong.board.domain.product.Product;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.web.dto.categorydto.CategoryDto;
 import com.dokong.board.web.dto.product.SaveProductDto;

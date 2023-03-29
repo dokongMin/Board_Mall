@@ -33,10 +33,10 @@ public class BoardService {
 
     @Transactional
     public SaveBoardRespDto saveBoard(SaveBoardReqDto boardReqDto, SessionUserDto sessionUserDto) {
+        User user = userService.findById(sessionUserDto.getId());
         fiveBoardPostCheck();
         boardPostCouponIssue(sessionUserDto);
         Board board = boardRepository.save(boardReqDto.toEntity());
-        User user = userService.findById(sessionUserDto.getId());
         board.writeBoard(user);
         return SaveBoardRespDto.of(board);
     }

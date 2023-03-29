@@ -2,7 +2,7 @@ package com.dokong.board.web.service;
 
 
 import com.dokong.board.domain.OrderProduct;
-import com.dokong.board.domain.Product;
+import com.dokong.board.domain.product.Product;
 import com.dokong.board.domain.coupon.Coupon;
 import com.dokong.board.domain.coupon.CouponStatus;
 import com.dokong.board.domain.user.User;
@@ -12,7 +12,6 @@ import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -26,9 +25,9 @@ public class OrderProductService {
     private final UserService userService;
     @Transactional
     public SaveOrderProductDto saveOrderProduct(SessionUserDto sessionUserDto, SaveOrderProductDto saveOrderProductDto, Long productId) {
+        Product product = productService.findById(productId);
         discountByUserRole(sessionUserDto, saveOrderProductDto);
         OrderProduct orderProduct = orderProductRepository.save(saveOrderProductDto.toEntity());
-        Product product = productService.findById(productId);
         orderProduct.order(product);
         return SaveOrderProductDto.of(orderProduct);
     }
