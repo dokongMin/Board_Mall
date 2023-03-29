@@ -27,6 +27,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -93,33 +94,41 @@ class OrderServiceTest {
         /**
          * 주문 상품 생성
          */
-        SaveOrderProductDto orderProductDtoApple = getOrderProductDtoApple();
-        SaveOrderProductDto orderProductDtoGrape = getOrderProductDtoGrape();
-        List<SaveOrderProductDto> orderProductListDto = new ArrayList<>();
-        orderProductListDto.add(orderProductDtoApple);
-        orderProductListDto.add(orderProductDtoGrape);
+
+        List<SaveOrderProductDto> saveOrderProductDtos = new ArrayList<>();
+        SaveOrderProductDto saveOrderProductDto1 = getSaveOrderProductDto1(sessionUserDto, productListId);
+        SaveOrderProductDto saveOrderProductDto2 = getSaveOrderProductDto2(sessionUserDto, productListId);
+        saveOrderProductDtos.add(saveOrderProductDto1);
+        saveOrderProductDtos.add(saveOrderProductDto2);
 
         /**
          * 배송 정보 저장
          */
         SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
         SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
-        /**
-         * 주문 정보 저장 & 연관관계 편의 메소드 실행
-         */
-        SaveOrderDto saveOrderDto = getSaveOrderDto(address);
-        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto, sessionUserDto, saveDeliveryDtoEntity, productListId, orderProductListDto);
+//        /**
+//         * 주문 정보 저장 & 연관관계 편의 메소드 실행
+//         */
+        SaveOrderDto saveOrderDto = SaveOrderDto.builder()
+                .address(address)
+                .userId(sessionUserDto.getId())
+                .saveDeliveryDto(saveDeliveryDtoEntity)
+                .saveOrderProductDtos(saveOrderProductDtos)
+                .build();
+        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
         Order order = orderService.findById(saveOrderDtoEntity.getId());
 
         // then
         assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.ORDER_COMPLETE);
         assertThat(order.getOrderProducts().get(0).getOrderItemCount()).isEqualTo(10);
-
+        assertThat(order.getOrderProducts().get(1).getOrderItemCount()).isEqualTo(20);
+//
         List<OrderProduct> allOrderProduct = orderProductRepository.findAll();
         assertThat(allOrderProduct.get(0).getOrder().getId()).isEqualTo(order.getId());
         assertThat(allOrderProduct.get(1).getOrder().getId()).isEqualTo(order.getId());
 
      }
+
 
 
 
@@ -141,47 +150,39 @@ class OrderServiceTest {
         /**
          * 카테고리 저장 & 상품 저장
          */
-        CategoryDto categoryDto = getCategoryDto();
-        categoryService.saveCategory(categoryDto);
-
-        SaveProductDto saveProductDto = getSaveProductDtoApple();
-        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto);
-        Product productApple = productService.findById(saveProductDtoEntity.getId());
-
-        SaveProductDto saveProductDtoGrape = getSaveProductDtoGrape();
-        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape);
-        Product productGrape = productService.findById(saveProductDtoEntityGrape.getId());
-
-        List<Product> productList = productRepository.findAll();
-        List<Long> productListId = productList.stream()
-                .map(p -> p.getId())
-                .collect(Collectors.toList());
+        List<Long> productListId = getProductListId();
         /**
          * 주문 상품 생성
          */
-        SaveOrderProductDto orderProductDtoApple = getOrderProductDtoApple();
-        SaveOrderProductDto orderProductDtoGrape = getOrderProductDtoGrape();
-        List<SaveOrderProductDto> orderProductListDto = new ArrayList<>();
-        orderProductListDto.add(orderProductDtoApple);
-        orderProductListDto.add(orderProductDtoGrape);
+
+        List<SaveOrderProductDto> saveOrderProductDtos = new ArrayList<>();
+        SaveOrderProductDto saveOrderProductDto1 = getSaveOrderProductDto1(sessionUserDto, productListId);
+        SaveOrderProductDto saveOrderProductDto2 = getSaveOrderProductDto2(sessionUserDto, productListId);
+        saveOrderProductDtos.add(saveOrderProductDto1);
+        saveOrderProductDtos.add(saveOrderProductDto2);
 
         /**
          * 배송 정보 저장
          */
         SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
         SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
-        /**
-         * 주문 정보 저장 & 연관관계 편의 메소드 실행
-         */
-        SaveOrderDto saveOrderDto = getSaveOrderDto(address);
-        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto, sessionUserDto, saveDeliveryDtoEntity, productListId, orderProductListDto);
+//        /**
+//         * 주문 정보 저장 & 연관관계 편의 메소드 실행
+//         */
+        SaveOrderDto saveOrderDto = SaveOrderDto.builder()
+                .address(address)
+                .userId(sessionUserDto.getId())
+                .saveDeliveryDto(saveDeliveryDtoEntity)
+                .saveOrderProductDtos(saveOrderProductDtos)
+                .build();
+        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
         Order order = orderService.findById(saveOrderDtoEntity.getId());
-        orderService.cancelOrder(order.getId());
+        order.cancelOrder();
 
 
         // then
         assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.ORDER_CANCEL);
-        assertThat(productList.get(0).getOrderProducts()).isEmpty();
+        assertThat(order.getOrderProducts().get(0).getProduct().getItemStock()).isEqualTo(100);
     }
     @Test
     @DisplayName("주문_취소_예외")
@@ -197,52 +198,42 @@ class OrderServiceTest {
 
         LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
-
         /**
          * 카테고리 저장 & 상품 저장
          */
-        CategoryDto categoryDto = getCategoryDto();
-        categoryService.saveCategory(categoryDto);
-
-        SaveProductDto saveProductDto = getSaveProductDtoApple();
-        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto);
-        Product productApple = productService.findById(saveProductDtoEntity.getId());
-
-        SaveProductDto saveProductDtoGrape = getSaveProductDtoGrape();
-        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape);
-        Product productGrape = productService.findById(saveProductDtoEntityGrape.getId());
-
-        List<Product> productList = productRepository.findAll();
-        List<Long> productListId = productList.stream()
-                .map(p -> p.getId())
-                .collect(Collectors.toList());
+        List<Long> productListId = getProductListId();
         /**
          * 주문 상품 생성
          */
-        SaveOrderProductDto orderProductDtoApple = getOrderProductDtoApple();
-        SaveOrderProductDto orderProductDtoGrape = getOrderProductDtoGrape();
-        List<SaveOrderProductDto> orderProductListDto = new ArrayList<>();
-        orderProductListDto.add(orderProductDtoApple);
-        orderProductListDto.add(orderProductDtoGrape);
+
+        List<SaveOrderProductDto> saveOrderProductDtos = new ArrayList<>();
+        SaveOrderProductDto saveOrderProductDto1 = getSaveOrderProductDto1(sessionUserDto, productListId);
+        SaveOrderProductDto saveOrderProductDto2 = getSaveOrderProductDto2(sessionUserDto, productListId);
+        saveOrderProductDtos.add(saveOrderProductDto1);
+        saveOrderProductDtos.add(saveOrderProductDto2);
 
         /**
          * 배송 정보 저장
          */
         SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
         SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
-        Delivery delivery = deliveryService.findById(saveDeliveryDtoEntity.getId());
-        /**
-         * 주문 정보 저장 & 연관관계 편의 메소드 실행
-         */
-        SaveOrderDto saveOrderDto = getSaveOrderDto(address);
-        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto, sessionUserDto, saveDeliveryDtoEntity, productListId, orderProductListDto);
+//        /**
+//         * 주문 정보 저장 & 연관관계 편의 메소드 실행
+//         */
+        SaveOrderDto saveOrderDto = SaveOrderDto.builder()
+                .address(address)
+                .userId(sessionUserDto.getId())
+                .saveDeliveryDto(saveDeliveryDtoEntity)
+                .saveOrderProductDtos(saveOrderProductDtos)
+                .build();
+        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
         Order order = orderService.findById(saveOrderDtoEntity.getId());
 
         /**
          * 배송 상태 변경
          */
         order.updateOrderStatus(OrderStatus.PAY_COMPLETE);
-        delivery.updateDeliveryStatus(DeliveryStatus.DELIVER_PROCEED);
+        order.getDelivery().updateDeliveryStatus(DeliveryStatus.DELIVER_PROCEED);
         // then
         assertThat(order.getDelivery().getDeliveryStatus()).isEqualTo(DeliveryStatus.DELIVER_PROCEED);
         assertThatThrownBy(() -> orderService.cancelOrder(order.getId()))
@@ -267,44 +258,35 @@ class OrderServiceTest {
         /**
          * 카테고리 저장 & 상품 저장
          */
-        CategoryDto categoryDto = getCategoryDto();
-        categoryService.saveCategory(categoryDto);
-
-        SaveProductDto saveProductDto = getSaveProductDtoApple();
-        SaveProductDto saveProductDtoEntity = productService.saveProduct(saveProductDto);
-        Product productApple = productService.findById(saveProductDtoEntity.getId());
-
-        SaveProductDto saveProductDtoGrape = getSaveProductDtoGrape();
-        SaveProductDto saveProductDtoEntityGrape = productService.saveProduct(saveProductDtoGrape);
-        Product productGrape = productService.findById(saveProductDtoEntityGrape.getId());
-
-        List<Product> productList = productRepository.findAll();
-        List<Long> productListId = productList.stream()
-                .map(p -> p.getId())
-                .collect(Collectors.toList());
+        List<Long> productListId = getProductListId();
         /**
          * 주문 상품 생성
          */
-        SaveOrderProductDto orderProductDtoApple = getOrderProductDtoAppleEx();
-        SaveOrderProductDto orderProductDtoGrape = getOrderProductDtoGrapeEx();
-        List<SaveOrderProductDto> orderProductListDto = new ArrayList<>();
-        orderProductListDto.add(orderProductDtoApple);
-        orderProductListDto.add(orderProductDtoGrape);
+
+        List<SaveOrderProductDto> saveOrderProductDtos = new ArrayList<>();
+        SaveOrderProductDto saveOrderProductDto1 = getSaveOrderProductDto1Ex(sessionUserDto, productListId);
+        SaveOrderProductDto saveOrderProductDto2 = getSaveOrderProductDto2(sessionUserDto, productListId);
+        saveOrderProductDtos.add(saveOrderProductDto1);
+        saveOrderProductDtos.add(saveOrderProductDto2);
 
         /**
          * 배송 정보 저장
          */
         SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
         SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
-        Delivery delivery = deliveryService.findById(saveDeliveryDtoEntity.getId());
-        /**
-         * 주문 정보 저장 & 연관관계 편의 메소드 실행
-         */
-        SaveOrderDto saveOrderDto = getSaveOrderDto(address);
+//        /**
+//         * 주문 정보 저장 & 연관관계 편의 메소드 실행
+//         */
+        SaveOrderDto saveOrderDto = SaveOrderDto.builder()
+                .address(address)
+                .userId(sessionUserDto.getId())
+                .saveDeliveryDto(saveDeliveryDtoEntity)
+                .saveOrderProductDtos(saveOrderProductDtos)
+                .build();
 
         // then
 
-        assertThatThrownBy(() -> orderService.saveOrder(saveOrderDto, sessionUserDto, saveDeliveryDtoEntity, productListId, orderProductListDto))
+        assertThatThrownBy(() -> orderService.saveOrder(saveOrderDto))
                 .isExactlyInstanceOf(NotEnoughStockException.class)
                 .hasMessageContaining("수량이 부족합니다.");
     }
@@ -324,8 +306,8 @@ class OrderServiceTest {
         LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
-        AddCouponDto addCouponDto = getCoupon();
-        AddCouponResponseDto addCouponResponseDto = couponService.addCouponByBoard(addCouponDto, sessionUserDto);
+        AddCouponDto addCouponDto = getCoupon(sessionUserDto);
+        AddCouponResponseDto addCouponResponseDto = couponService.addCoupon(addCouponDto);
 
         /**
          * 카테고리 저장 & 상품 저장
@@ -334,28 +316,37 @@ class OrderServiceTest {
         /**
          * 주문 상품 생성
          */
-        SaveOrderProductDto orderProductDtoApple = getOrderProductDtoApple();
-        SaveOrderProductDto orderProductDtoGrape = getOrderProductDtoGrape();
-        List<SaveOrderProductDto> orderProductListDto = new ArrayList<>();
-        orderProductListDto.add(orderProductDtoApple);
-        orderProductListDto.add(orderProductDtoGrape);
+
+        List<SaveOrderProductDto> saveOrderProductDtos = new ArrayList<>();
+        SaveOrderProductDto saveOrderProductDto1 = getSaveOrderProductDtoCoupon(sessionUserDto, productListId, addCouponResponseDto.getId());
+        SaveOrderProductDto saveOrderProductDto2 = getSaveOrderProductDto2(sessionUserDto, productListId);
+        saveOrderProductDtos.add(saveOrderProductDto1);
+        saveOrderProductDtos.add(saveOrderProductDto2);
 
         /**
          * 배송 정보 저장
          */
         SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
         SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
-        /**
-         * 주문 정보 저장 & 연관관계 편의 메소드 실행
-         */
-        SaveOrderDto saveOrderDto = getSaveOrderDto(address);
-        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto, sessionUserDto, saveDeliveryDtoEntity, productListId, orderProductListDto, addCouponResponseDto.getId());
+//        /**
+//         * 주문 정보 저장 & 연관관계 편의 메소드 실행
+//         */
+        SaveOrderDto saveOrderDto = SaveOrderDto.builder()
+                .address(address)
+                .userId(sessionUserDto.getId())
+                .saveDeliveryDto(saveDeliveryDtoEntity)
+                .saveOrderProductDtos(saveOrderProductDtos)
+                .build();
+
+        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
         Order order = orderService.findById(saveOrderDtoEntity.getId());
 
         // then
-        assertThat(order.getOrderProducts().get(0).getOrderItemPrice()).isEqualTo(16200);
-        assertThat(order.getOrderProducts().get(1).getOrderItemPrice()).isEqualTo(64800);
+        assertThat(order.getOrderProducts().get(0).getOrderItemPrice()).isEqualTo(8910);
+        assertThat(order.getOrderProducts().get(1).getOrderItemPrice()).isEqualTo(36000);
     }
+
+
 
     @Test
     @DisplayName("쿠폰_적용_주문_생성_예외")
@@ -372,8 +363,9 @@ class OrderServiceTest {
         LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
-        AddCouponDto addCouponDto = getCoupon();
-        AddCouponResponseDto addCouponResponseDto = couponService.addCouponByBoard(addCouponDto, sessionUserDto);
+        AddCouponDto addCouponDto = getCoupon(sessionUserDto);
+        AddCouponResponseDto addCouponResponseDto = couponService.addCoupon(addCouponDto);
+
 
         /**
          * 카테고리 저장 & 상품 저장
@@ -382,55 +374,97 @@ class OrderServiceTest {
         /**
          * 주문 상품 생성
          */
-        SaveOrderProductDto orderProductDtoApple = getOrderProductDtoAppleExCoupon();
-        SaveOrderProductDto orderProductDtoGrape = getOrderProductDtoGrapeExCoupon();
-        List<SaveOrderProductDto> orderProductListDto = new ArrayList<>();
-        orderProductListDto.add(orderProductDtoApple);
-        orderProductListDto.add(orderProductDtoGrape);
+
+        List<SaveOrderProductDto> saveOrderProductDtos = new ArrayList<>();
+        SaveOrderProductDto saveOrderProductDto1 = getSaveOrderProductDtoCouponEx(sessionUserDto, productListId, addCouponResponseDto.getId());
+        SaveOrderProductDto saveOrderProductDto2 = getSaveOrderProductDto2(sessionUserDto, productListId);
+        saveOrderProductDtos.add(saveOrderProductDto1);
+        saveOrderProductDtos.add(saveOrderProductDto2);
 
         /**
          * 배송 정보 저장
          */
         SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
         SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
-        /**
-         * 주문 정보 저장 & 연관관계 편의 메소드 실행
-         */
-        SaveOrderDto saveOrderDto = getSaveOrderDto(address);
+//        /**
+//         * 주문 정보 저장 & 연관관계 편의 메소드 실행
+//         */
+        SaveOrderDto saveOrderDto = SaveOrderDto.builder()
+                .address(address)
+                .userId(sessionUserDto.getId())
+                .saveDeliveryDto(saveDeliveryDtoEntity)
+                .saveOrderProductDtos(saveOrderProductDtos)
+                .build();
+
+
               // then
-        assertThatThrownBy(() -> orderService.saveOrder(saveOrderDto, sessionUserDto, saveDeliveryDtoEntity, productListId, orderProductListDto, addCouponResponseDto.getId()))
+        assertThatThrownBy(() ->orderService.saveOrder(saveOrderDto))
                 .isExactlyInstanceOf(CouponMinPriceException.class)
                 .hasMessageContaining("쿠폰을 사용하기 위해서는 최소 10,000 원 이상 구매해야 합니다.");
+    }
+
+    private AddCouponDto getCoupon(SessionUserDto sessionUserDto) {
+        return AddCouponDto.builder()
+                .couponName("회원가입 축하 쿠폰")
+                .couponDetail("회원가입을 축하하여 드리는 쿠폰입니다.")
+                .couponRate(10)
+                .minCouponPrice(10000)
+                .userId(sessionUserDto.getId())
+                .build();
+    }
+    private SaveOrderProductDto getSaveOrderProductDto2(SessionUserDto sessionUserDto, List<Long> productListId) {
+        SaveOrderProductDto saveOrderProductDto2 = SaveOrderProductDto.builder()
+                .orderItemPrice(2000)
+                .orderItemCount(20)
+                .userId(sessionUserDto.getId())
+                .productId(productListId.get(1))
+                .build();
+        return saveOrderProductDto2;
+    }
+
+    private SaveOrderProductDto getSaveOrderProductDto1(SessionUserDto sessionUserDto, List<Long> productListId) {
+        SaveOrderProductDto saveOrderProductDto1 = SaveOrderProductDto.builder()
+                .orderItemPrice(1000)
+                .orderItemCount(10)
+                .userId(sessionUserDto.getId())
+                .productId(productListId.get(0))
+                .build();
+        return saveOrderProductDto1;
+    }
+    private SaveOrderProductDto getSaveOrderProductDtoCoupon(SessionUserDto sessionUserDto, List<Long> productListId, Long couponId) {
+        SaveOrderProductDto saveOrderProductDto1 = SaveOrderProductDto.builder()
+                .orderItemPrice(1000)
+                .orderItemCount(11)
+                .userId(sessionUserDto.getId())
+                .productId(productListId.get(0))
+                .couponId(couponId)
+                .build();
+        return saveOrderProductDto1;
+    }
+    private SaveOrderProductDto getSaveOrderProductDtoCouponEx(SessionUserDto sessionUserDto, List<Long> productListId, Long couponId) {
+        SaveOrderProductDto saveOrderProductDto1 = SaveOrderProductDto.builder()
+                .orderItemPrice(1000)
+                .orderItemCount(9)
+                .userId(sessionUserDto.getId())
+                .productId(productListId.get(0))
+                .couponId(couponId)
+                .build();
+        return saveOrderProductDto1;
+    }
+
+    private SaveOrderProductDto getSaveOrderProductDto1Ex(SessionUserDto sessionUserDto, List<Long> productListId) {
+        SaveOrderProductDto saveOrderProductDto1 = SaveOrderProductDto.builder()
+                .orderItemPrice(1000)
+                .orderItemCount(1000)
+                .userId(sessionUserDto.getId())
+                .productId(productListId.get(0))
+                .build();
+        return saveOrderProductDto1;
     }
 
     private SaveDeliveryDto getSaveDeliveryDto(Address address) {
         return SaveDeliveryDto.builder()
                 .address(address)
-                .build();
-    }
-
-    private SaveOrderProductDto getOrderProductDtoApple() {
-        return SaveOrderProductDto.builder()
-                .orderItemCount(10)
-                .orderItemPrice(2000)
-                .build();
-    }
-    private SaveOrderProductDto getOrderProductDtoGrape() {
-        return SaveOrderProductDto.builder()
-                .orderItemCount(20)
-                .orderItemPrice(4000)
-                .build();
-    }
-    private SaveOrderProductDto getOrderProductDtoAppleEx() {
-        return SaveOrderProductDto.builder()
-                .orderItemCount(1000)
-                .orderItemPrice(2000)
-                .build();
-    }
-    private SaveOrderProductDto getOrderProductDtoGrapeEx() {
-        return SaveOrderProductDto.builder()
-                .orderItemCount(2000)
-                .orderItemPrice(4000)
                 .build();
     }
 
@@ -484,11 +518,6 @@ class OrderServiceTest {
                 .build();
     }
 
-    private SaveOrderDto getSaveOrderDto(Address address) {
-        return SaveOrderDto.builder()
-                .address(address)
-                .build();
-    }
     private List<Long> getProductListId() {
         CategoryDto categoryDto = getCategoryDto();
         categoryService.saveCategory(categoryDto);
@@ -506,13 +535,5 @@ class OrderServiceTest {
                 .map(p -> p.getId())
                 .collect(Collectors.toList());
         return productListId;
-    }
-    private AddCouponDto getCoupon() {
-        return AddCouponDto.builder()
-                .couponName("회원가입 축하 쿠폰")
-                .couponDetail("회원가입을 축하하여 드리는 쿠폰입니다.")
-                .couponRate(10)
-                .minCouponPrice(10000)
-                .build();
     }
 }

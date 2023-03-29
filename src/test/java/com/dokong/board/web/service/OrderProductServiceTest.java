@@ -55,15 +55,16 @@ class OrderProductServiceTest {
         SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto);
         Product product = productService.findById(saveProductDto.getId());
 
-        SaveOrderProductDto saveOrderProductDto = getSaveOrderProductDto();
-        SaveOrderProductDto saveOrderProductDtoEntity = orderProductService.saveOrderProduct(sessionUserDto, saveOrderProductDto, product.getId());
-        OrderProduct orderProduct = orderProductService.findById(saveOrderProductDtoEntity.getId());
+        SaveOrderProductDto saveOrderProductDto1 = getOrderProductDto1(sessionUserDto, product);
+        SaveOrderProductDto saveOrderProductDto = orderProductService.saveOrderProduct(saveOrderProductDto1);
 
         // then
-        assertThat(orderProduct.getOrderItemPrice()).isEqualTo(90000);
-        assertThat(orderProduct.getOrderItemCount()).isEqualTo(10);
+        assertThat(saveOrderProductDto.getOrderItemPrice()).isEqualTo(90000);
+        assertThat(saveOrderProductDto.getOrderItemCount()).isEqualTo(10);
         assertThat(product.getItemStock()).isEqualTo(90);
      }
+
+
 
     @Test
     @DisplayName("실버_회원_주문_상품_저장")
@@ -84,17 +85,11 @@ class OrderProductServiceTest {
         SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto);
         Product product = productService.findById(saveProductDto.getId());
 
-        SaveOrderProductDto saveOrderProductDto = getSaveOrderProductDto();
-        int price = saveOrderProductDto.getOrderItemPrice() * saveOrderProductDto.getOrderItemCount();
-        int discountPrice = price / 15;
-        int expectPrice = price - discountPrice;
-
-        SaveOrderProductDto saveOrderProductDtoEntity = orderProductService.saveOrderProduct(sessionUserDto, saveOrderProductDto, product.getId());
-        OrderProduct orderProduct = orderProductService.findById(saveOrderProductDtoEntity.getId());
+        SaveOrderProductDto saveOrderProductDto1 = getOrderProductDto1(sessionUserDto, product);
+        SaveOrderProductDto saveOrderProductDto = orderProductService.saveOrderProduct(saveOrderProductDto1);
 
         // then
-        assertThat(orderProduct.getOrderItemPrice()).isEqualTo(expectPrice);
-        assertThat(orderProduct.getOrderItemCount()).isEqualTo(10);
+        assertThat(saveOrderProductDto.getOrderItemCount()).isEqualTo(10);
         assertThat(product.getItemStock()).isEqualTo(90);
     }
     @Test
@@ -117,19 +112,11 @@ class OrderProductServiceTest {
         SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto);
         Product product = productService.findById(saveProductDto.getId());
 
-        SaveOrderProductDto saveOrderProductDto = getSaveOrderProductDto();
-
-        int price = saveOrderProductDto.getOrderItemPrice() * saveOrderProductDto.getOrderItemCount();
-        int discountPrice = price / 20;
-        int expectPrice = price - discountPrice;
-
-        SaveOrderProductDto saveOrderProductDtoEntity = orderProductService.saveOrderProduct(sessionUserDto, saveOrderProductDto, product.getId());
-        OrderProduct orderProduct = orderProductService.findById(saveOrderProductDtoEntity.getId());
-
+        SaveOrderProductDto saveOrderProductDto1 = getOrderProductDto1(sessionUserDto, product);
+        SaveOrderProductDto saveOrderProductDto = orderProductService.saveOrderProduct(saveOrderProductDto1);
 
         // then
-        assertThat(orderProduct.getOrderItemPrice()).isEqualTo(expectPrice);
-        assertThat(orderProduct.getOrderItemCount()).isEqualTo(10);
+        assertThat(saveOrderProductDto.getOrderItemCount()).isEqualTo(10);
         assertThat(product.getItemStock()).isEqualTo(90);
     }
 
@@ -150,9 +137,9 @@ class OrderProductServiceTest {
          SaveProductDto saveProductDto = productService.saveProduct(getSaveProductDto);
          Product product = productService.findById(saveProductDto.getId());
 
-         SaveOrderProductDto saveOrderProductDto = getSaveOrderProductDto();
-         SaveOrderProductDto saveOrderProductDtoEntity = orderProductService.saveOrderProduct(sessionUserDto, saveOrderProductDto, product.getId());
-         OrderProduct orderProduct = orderProductService.findById(saveOrderProductDtoEntity.getId());
+         SaveOrderProductDto saveOrderProductDto1 = getOrderProductDto1(sessionUserDto, product);
+         SaveOrderProductDto saveOrderProductDto = orderProductService.saveOrderProduct(saveOrderProductDto1);
+         OrderProduct orderProduct = orderProductService.findById(saveOrderProductDto.getId());
          //when
          orderProductService.cancelOrderProduct(orderProduct.getId());
          // then
@@ -162,14 +149,14 @@ class OrderProductServiceTest {
       }
 
 
-
-    private SaveOrderProductDto getSaveOrderProductDto() {
+    private SaveOrderProductDto getOrderProductDto1(SessionUserDto sessionUserDto, Product product) {
         return SaveOrderProductDto.builder()
-                .orderItemPrice(10000)
+                .orderItemPrice(product.getItemPrice())
                 .orderItemCount(10)
+                .userId(sessionUserDto.getId())
+                .productId(product.getId())
                 .build();
     }
-
     private CategoryDto getCategoryDto() {
         return CategoryDto.builder()
                 .categoryName("과일")

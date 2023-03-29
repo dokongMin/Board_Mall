@@ -1,26 +1,21 @@
 package com.dokong.board.web.dto.orderproductdto;
 
 import com.dokong.board.domain.OrderProduct;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SaveOrderProductDto {
 
     private Long id;
     private int orderItemPrice;
     private int orderItemCount;
 
-    @Builder
-    public SaveOrderProductDto(Long id, int orderItemPrice, int orderItemCount) {
-        this.id = id;
-        this.orderItemPrice = orderItemPrice;
-        this.orderItemCount = orderItemCount;
-    }
+    private Long userId;
+    private Long productId;
+    private Long couponId;
 
     public OrderProduct toEntity(){
         return OrderProduct.builder()

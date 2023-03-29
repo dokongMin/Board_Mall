@@ -1,32 +1,33 @@
 package com.dokong.board.web.dto.orderdto;
 
 import com.dokong.board.domain.Address;
+import com.dokong.board.domain.delivery.Delivery;
+import com.dokong.board.domain.delivery.DeliveryStatus;
 import com.dokong.board.domain.order.Order;
 import com.dokong.board.domain.order.OrderStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.dokong.board.web.dto.deliverydto.SaveDeliveryDto;
+import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
+import lombok.*;
 
-@Getter
-@Setter
+import java.util.List;
+
+
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SaveOrderDto {
 
     private Long id;
     private OrderStatus orderStatus;
     private Address address;
-
-    @Builder
-    public SaveOrderDto(Long id, OrderStatus orderStatus, Address address) {
-        this.id = id;
-        this.orderStatus = OrderStatus.ORDER_COMPLETE;
-        this.address = address;
-    }
+    private Long userId;
+    private SaveDeliveryDto saveDeliveryDto;
+    private List<SaveOrderProductDto> saveOrderProductDtos;
 
     public Order toEntity(){
         return Order.builder()
-                .orderStatus(orderStatus)
+                .orderStatus(OrderStatus.ORDER_COMPLETE)
                 .address(address)
                 .build();
     }
