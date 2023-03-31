@@ -5,12 +5,16 @@ import com.dokong.board.domain.CartProduct;
 import com.dokong.board.domain.product.Product;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.CartProductRepository;
+import com.dokong.board.web.dto.savecartproductdto.DeleteCartProductDto;
 import com.dokong.board.web.dto.savecartproductdto.SaveCartProductDto;
 import com.dokong.board.web.dto.savecartproductdto.SaveCartProductRespDto;
-import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Delete;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +28,24 @@ public class CartProductService {
     private final UserService userService;
 
     @Transactional
-    public SaveCartProductRespDto saveCartProduct(SaveCartProductDto saveCartProductDto, SessionUserDto sessionUserDto, Long productId) {
-        User user = userService.findById(sessionUserDto.getId());
-        Product product = productService.findById(productId);
+    public SaveCartProductRespDto saveCartProduct(SaveCartProductDto saveCartProductDto) {
+        User user = userService.findById(saveCartProductDto.getUserId());
+        Product product = productService.findById(saveCartProductDto.getProductId());
         CartProduct cartProduct = cartProductRepository.save(saveCartProductDto.toEntity());
         cartProduct.createCartOrder(user, product);
         return SaveCartProductRespDto.of(cartProduct, user, product);
+    }
+
+    @Transactional
+    public DeleteCartProductDto deleteCartProduct(DeleteCartProductDto deleteCartProductDto) {
+        List<CartProduct> collect = deleteCartProductDto.getCartProductDto().stream()
+                .map(c -> findById(c.getId()))
+                .collect(Collectors.toList());
+
+        collect.stream()
+                .forEach(c -> cartProductRepository.delete(c));
+
+        return deleteCartProductDto;
     }
 
     public CartProduct findById(Long id) {

@@ -1,27 +1,20 @@
 package com.dokong.board.web.dto.savecartproductdto;
 
 import com.dokong.board.domain.CartProduct;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-
+@AllArgsConstructor
+@Builder
 public class SaveCartProductDto {
 
     private Long id;
     private int cartItemCount;
     private int cartItemPrice;
+    private Long userId;
+    private Long productId;
 
-    @Builder
-    public SaveCartProductDto(Long id, int cartItemCount, int cartItemPrice) {
-        this.id = id;
-        this.cartItemCount = cartItemCount;
-        this.cartItemPrice = cartItemPrice;
-    }
 
     public CartProduct toEntity() {
         return CartProduct.builder()
