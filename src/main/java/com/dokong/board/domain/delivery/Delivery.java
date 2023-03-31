@@ -39,6 +39,10 @@ public class Delivery {
         this.deliveryStatus = deliveryStatus;
     }
 
+    public void cancelDelivery() {
+        this.deliveryStatus = DeliveryStatus.DELIVER_CANCEL;
+    }
+
     @Builder
     public Delivery(Address address, DeliveryStatus deliveryStatus) {
         this.address = address;

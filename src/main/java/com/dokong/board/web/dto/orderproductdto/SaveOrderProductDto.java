@@ -3,6 +3,8 @@ package com.dokong.board.web.dto.orderproductdto;
 import com.dokong.board.domain.OrderProduct;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -10,7 +12,9 @@ import lombok.*;
 public class SaveOrderProductDto {
 
     private Long id;
+    @NotNull
     private int orderItemPrice;
+    @NotNull
     private int orderItemCount;
 
     private Long userId;

@@ -7,7 +7,8 @@ public enum DeliveryStatus {
 
     DELIVER_READY("배송 준비"),
     DELIVER_PROCEED("배송 진행"),
-    DELIVER_COMPLETE("배송 완료");
+    DELIVER_COMPLETE("배송 완료"),
+    DELIVER_CANCEL("배송 취소");
 
     private String deliveryStatusDescription;
 
