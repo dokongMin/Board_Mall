@@ -9,6 +9,7 @@ import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.OrderRepository;
 import com.dokong.board.web.dto.deliverydto.SaveDeliveryDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderDto;
+import com.dokong.board.web.dto.orderdto.SaveOrderRespDto;
 import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
@@ -26,24 +27,23 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final UserService userService;
-    private final DeliveryService deliveryService;
     private final OrderProductService orderProductService;
 
     @Transactional
-    public SaveOrderDto saveOrder(SaveOrderDto saveOrderDto) {
-        User user = userService.findById(saveOrderDto.getUserId());
-        Delivery delivery = deliveryService.findById(saveOrderDto.getSaveDeliveryDto().getId());
-        List<OrderProduct> orderProducts = getOrderProducts(saveOrderDto.getSaveOrderProductDtos());
+    public SaveOrderRespDto saveOrder(SaveOrderDto saveOrderDto) {
         Order order = orderRepository.save(saveOrderDto.toEntity());
-        order.createOrder(user, delivery, orderProducts);
-        return SaveOrderDto.of(order);
+        List<OrderProduct> orderProducts = getOrderProducts(saveOrderDto.getSaveOrderProductDtos());
+        User user = userService.findById(saveOrderDto.getUserId());
+        order.createOrder(user, saveOrderDto.getSaveDeliveryDto().toEntity(), orderProducts);
+        return SaveOrderRespDto.of(order);
     }
 
 
     @Transactional
-    public void cancelOrder(Long orderId) {
+    public Long cancelOrder(Long orderId) {
         Order order = findById(orderId);
         order.cancelOrder();
+        return orderId;
     }
 
     private List<OrderProduct> getOrderProducts(List<SaveOrderProductDto> saveOrderProductDtos) {

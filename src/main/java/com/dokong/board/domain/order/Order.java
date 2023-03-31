@@ -37,7 +37,7 @@ public class Order extends BaseTimeEntity {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "deliveryId")
     private Delivery delivery;
 
@@ -79,6 +79,7 @@ public class Order extends BaseTimeEntity {
             throw new AlreadyDeliverException("배송 중이거나 배송 완료 된 제품은 주문 취소가 불가합니다.");
         }
         this.orderStatus = OrderStatus.ORDER_CANCEL;
+        this.delivery.cancelDelivery();
         for (OrderProduct orderProduct : this.orderProducts) {
             orderProduct.cancel();
         }

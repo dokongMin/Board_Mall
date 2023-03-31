@@ -18,6 +18,7 @@ import com.dokong.board.web.dto.coupondto.AddCouponDto;
 import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
 import com.dokong.board.web.dto.deliverydto.SaveDeliveryDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderDto;
+import com.dokong.board.web.dto.orderdto.SaveOrderRespDto;
 import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
 import com.dokong.board.web.dto.product.SaveProductDto;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
@@ -105,17 +106,17 @@ class OrderServiceTest {
          * 배송 정보 저장
          */
         SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
-        SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
+//        SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
 //        /**
 //         * 주문 정보 저장 & 연관관계 편의 메소드 실행
 //         */
         SaveOrderDto saveOrderDto = SaveOrderDto.builder()
                 .address(address)
                 .userId(sessionUserDto.getId())
-                .saveDeliveryDto(saveDeliveryDtoEntity)
+                .saveDeliveryDto(saveDeliveryDto)
                 .saveOrderProductDtos(saveOrderProductDtos)
                 .build();
-        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
+        SaveOrderRespDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
         Order order = orderService.findById(saveOrderDtoEntity.getId());
 
         // then
@@ -175,8 +176,9 @@ class OrderServiceTest {
                 .saveDeliveryDto(saveDeliveryDtoEntity)
                 .saveOrderProductDtos(saveOrderProductDtos)
                 .build();
-        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
+        SaveOrderRespDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
         Order order = orderService.findById(saveOrderDtoEntity.getId());
+
         order.cancelOrder();
 
 
@@ -226,8 +228,9 @@ class OrderServiceTest {
                 .saveDeliveryDto(saveDeliveryDtoEntity)
                 .saveOrderProductDtos(saveOrderProductDtos)
                 .build();
-        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
+        SaveOrderRespDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
         Order order = orderService.findById(saveOrderDtoEntity.getId());
+
 
         /**
          * 배송 상태 변경
@@ -327,19 +330,20 @@ class OrderServiceTest {
          * 배송 정보 저장
          */
         SaveDeliveryDto saveDeliveryDto = getSaveDeliveryDto(address);
-        SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
+//        SaveDeliveryDto saveDeliveryDtoEntity = deliveryService.saveDelivery(saveDeliveryDto);
 //        /**
 //         * 주문 정보 저장 & 연관관계 편의 메소드 실행
 //         */
         SaveOrderDto saveOrderDto = SaveOrderDto.builder()
                 .address(address)
                 .userId(sessionUserDto.getId())
-                .saveDeliveryDto(saveDeliveryDtoEntity)
+                .saveDeliveryDto(saveDeliveryDto)
                 .saveOrderProductDtos(saveOrderProductDtos)
                 .build();
 
-        SaveOrderDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
+        SaveOrderRespDto saveOrderDtoEntity = orderService.saveOrder(saveOrderDto);
         Order order = orderService.findById(saveOrderDtoEntity.getId());
+
 
         // then
         assertThat(order.getOrderProducts().get(0).getOrderItemPrice()).isEqualTo(8910);
