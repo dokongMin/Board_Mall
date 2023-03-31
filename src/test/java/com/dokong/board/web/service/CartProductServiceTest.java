@@ -51,8 +51,14 @@ class CartProductServiceTest {
         SaveProductDto savedProduct = productService.saveProduct(saveProductDto);
         Product product = productService.findById(savedProduct.getId());
 
-        SaveCartProductDto saveCartProductDto = getSaveCartProductDto();
-        SaveCartProductRespDto saveCartProductRespDto = cartProductService.saveCartProduct(saveCartProductDto, sessionUserDto, product.getId());
+        SaveCartProductDto saveCartProductDto = SaveCartProductDto.builder()
+                .cartItemPrice(2000)
+                .cartItemCount(10)
+                .userId(sessionUserDto.getId())
+                .productId(product.getId())
+                .build();
+
+        SaveCartProductRespDto saveCartProductRespDto = cartProductService.saveCartProduct(saveCartProductDto);
 
 
         User user = userService.findById(sessionUserDto.getId());
