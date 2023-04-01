@@ -8,6 +8,8 @@ import com.dokong.board.domain.order.Order;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.OrderRepository;
 import com.dokong.board.web.dto.deliverydto.SaveDeliveryDto;
+import com.dokong.board.web.dto.orderdto.FindOrderStatusDto;
+import com.dokong.board.web.dto.orderdto.FindOrderStatusRespDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderRespDto;
 import com.dokong.board.web.dto.orderproductdto.SaveOrderProductDto;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -61,5 +64,23 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> {
             throw new IllegalArgumentException("해당 주문은 존재하지 않습니다.");
         });
+    }
+
+    public List<SaveOrderRespDto> findAll() {
+        return orderRepository.findAll().stream()
+                .map(o -> SaveOrderRespDto.of(o))
+                .collect(Collectors.toList());
+    }
+
+    public List<FindOrderStatusRespDto> findAllByOrderStatus(FindOrderStatusDto orderStatusDto) {
+        return orderRepository.findAllByOrderStatus(orderStatusDto.getOrderStatus()).stream()
+                .map(o -> FindOrderStatusRespDto.of(o))
+                .collect(Collectors.toList());
+    }
+
+    public List<FindOrderStatusRespDto> findAllByUserId(Long userId) {
+        return orderRepository.findAllByUserId(userId).stream()
+                .map(o -> FindOrderStatusRespDto.of(o))
+                .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,8 @@ package com.dokong.board.web.controller.restcontroller;
 
 import com.dokong.board.web.controller.CommonResponseDto;
 import com.dokong.board.web.controller.SuccessCode;
+import com.dokong.board.web.dto.orderdto.FindOrderStatusDto;
+import com.dokong.board.web.dto.orderdto.FindOrderStatusRespDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderRespDto;
 import com.dokong.board.web.service.OrderService;
@@ -14,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -52,16 +55,49 @@ public class RestOrderController {
         return ResponseEntity.status(SuccessCode.DELETE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
-    /**
-     * 주문완료 상품만 보여주는 쿼리
-     */
+    @GetMapping("/find-all")
+    public ResponseEntity<?> findAllOrder() {
+        List<SaveOrderRespDto> all = orderService.findAll();
 
-    /**
-     * 주문 취소 상품만 보여주는 쿼리
-     */
+        CommonResponseDto<Object> body = CommonResponseDto.builder()
+                .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
+                .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
+                .body(all)
+                .build();
+
+        return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
+    }
+
+    @GetMapping("/find-all/order-status")
+    public ResponseEntity<?> findAllByOrderStatus(@RequestBody FindOrderStatusDto findOrderStatusDto, BindingResult bindingResult) {
+        bindingIllegalArgumentException(bindingResult);
+        List<FindOrderStatusRespDto> allByOrderStatus = orderService.findAllByOrderStatus(findOrderStatusDto);
+
+        CommonResponseDto<Object> body = CommonResponseDto.builder()
+                .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
+                .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
+                .body(allByOrderStatus)
+                .build();
+
+        return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
+    }
+
+    @GetMapping("/find-all/{id}")
+    public ResponseEntity<?> findAllByUserId(@PathVariable("id") Long userId) {
+        List<FindOrderStatusRespDto> allByUserId = orderService.findAllByUserId(userId);
+
+        CommonResponseDto<Object> body = CommonResponseDto.builder()
+                .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
+                .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
+                .body(allByUserId)
+                .build();
+
+        return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
+    }
 
 
     private void bindingIllegalArgumentException(BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             for (FieldError fe : bindingResult.getFieldErrors()) {
