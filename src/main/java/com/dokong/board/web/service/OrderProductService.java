@@ -33,6 +33,7 @@ public class OrderProductService {
             Coupon coupon = couponService.findById(saveOrderProductDto.getCouponId());
             if (coupon.getCouponStatus() == CouponStatus.UNUSED) {
                 discountByCoupon(saveOrderProductDto, coupon);
+                coupon.updateCouponStatus(CouponStatus.USED);
             }
         }
         discountByUserRole(saveOrderProductDto.getUserId(), saveOrderProductDto);
