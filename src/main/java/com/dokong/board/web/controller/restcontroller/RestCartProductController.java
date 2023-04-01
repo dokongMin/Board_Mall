@@ -11,12 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -53,6 +51,17 @@ public class RestCartProductController {
                 .build();
         return ResponseEntity.status(SuccessCode.DELETE_REQUEST_SUCCESS.getHttpStatus()).body(body);
 
+    }
+
+    @GetMapping("/cart/find-all/{id}")
+    public ResponseEntity<?> findAllByUserId(@PathVariable Long id) {
+        List<SaveCartProductRespDto> allByUserId = cartProductService.findAllByUserId(id);
+        CommonResponseDto<Object> body = CommonResponseDto.builder()
+                .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
+                .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
+                .body(allByUserId)
+                .build();
+        return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
     private void bindingIllegalArgumentException(BindingResult bindingResult) {

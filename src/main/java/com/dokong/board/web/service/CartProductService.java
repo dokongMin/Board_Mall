@@ -13,6 +13,7 @@ import org.hibernate.sql.Delete;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ public class CartProductService {
     public SaveCartProductRespDto saveCartProduct(SaveCartProductDto saveCartProductDto) {
         User user = userService.findById(saveCartProductDto.getUserId());
         Product product = productService.findById(saveCartProductDto.getProductId());
+        checkExistCartProduct(user.getId(), product.getId());
         CartProduct cartProduct = cartProductRepository.save(saveCartProductDto.toEntity());
         cartProduct.createCartOrder(user, product);
         return SaveCartProductRespDto.of(cartProduct, user, product);
@@ -46,6 +48,19 @@ public class CartProductService {
                 .forEach(c -> cartProductRepository.delete(c));
 
         return deleteCartProductDto;
+    }
+
+    public List<SaveCartProductRespDto> findAllByUserId(Long userId) {
+        List<CartProduct> findAll = cartProductRepository.findAllByUserId(userId);
+        return findAll.stream()
+                .map(f -> SaveCartProductRespDto.of(f, f.getUser(), f.getProduct()))
+                .collect(Collectors.toList());
+    }
+
+    public void checkExistCartProduct(Long userId, Long productId) {
+        if (cartProductRepository.checkExistCartProduct(userId, productId).isPresent()) {
+            throw new IllegalArgumentException("장바구니에 이미 존재하는 상품입니다.");
+        }
     }
 
     public CartProduct findById(Long id) {
