@@ -13,35 +13,38 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SaveCartProductRespDto {
 
-
-    private Long userId;
-    private String username;
+    private Long cartId;
     private Long productId;
     private String itemName;
-    private Long cartId;
     private int cartItemCount;
     private int cartItemPrice;
 
+    private Long userId;
+    private String username;
+
+
+
+
     @Builder
     public SaveCartProductRespDto(Long userId, String username, Long productId, String itemName, Long cartId, int cartItemCount, int cartItemPrice) {
-        this.userId = userId;
-        this.username = username;
+        this.cartId = cartId;
         this.productId = productId;
         this.itemName = itemName;
-        this.cartId = cartId;
         this.cartItemCount = cartItemCount;
         this.cartItemPrice = cartItemPrice;
+        this.userId = userId;
+        this.username = username;
     }
 
     public static SaveCartProductRespDto of(CartProduct cartProduct, User user, Product product) {
         return SaveCartProductRespDto.builder()
-                .userId(user.getId())
-                .username(user.getUsername())
+                .cartId(cartProduct.getId())
                 .productId(product.getId())
                 .itemName(product.getItemName())
-                .cartId(cartProduct.getId())
                 .cartItemPrice(cartProduct.getCartItemPrice())
                 .cartItemCount(cartProduct.getCartItemCount())
+                .userId(user.getId())
+                .username(user.getUsername())
                 .build();
     }
 }
