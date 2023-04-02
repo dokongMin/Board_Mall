@@ -23,6 +23,8 @@ public class Board extends BaseEntity {
     private String boardContent;
     private long likeCount;
 
+    @Enumerated(EnumType.STRING)
+    private BoardStatus boardStatus;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
@@ -65,10 +67,15 @@ public class Board extends BaseEntity {
         this.boardContent = boardContent;
     }
 
+    public void deleteBoard() {
+        this.boardStatus = BoardStatus.DELETED;
+    }
+
     @Builder
-    public Board(String boardTitle, String boardContent, long likeCount) {
+    public Board(String boardTitle, String boardContent, long likeCount, BoardStatus boardStatus) {
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
         this.likeCount = likeCount;
+        this.boardStatus = boardStatus;
     }
 }

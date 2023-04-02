@@ -1,6 +1,7 @@
 package com.dokong.board.repository;
 
 import com.dokong.board.domain.board.Board;
+import com.dokong.board.domain.board.BoardStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +21,9 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("select count(b) from Board b where b.user.id = :userId")
     int findByUserId(@Param("userId") Long userId);
 
+    @Query("select b from Board b")
+    List<Board> findAll();
+
+    @Query("select b from Board b where b.boardStatus = :boardStatus")
+    List<Board> findAllByBoardStatus(@Param("boardStatus")BoardStatus boardStatus);
 }

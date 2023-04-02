@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,11 +43,11 @@ class BoardServiceTest {
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
 
-        SaveBoardReqDto boardDto = getBoard();
+        SaveBoardReqDto boardDto = getBoard(sessionUserDto.getId());
         // when
-        SaveBoardRespDto board = boardService.saveBoard(boardDto, sessionUserDto);
-        SaveBoardRespDto board2 = boardService.saveBoard(boardDto, sessionUserDto);
-        SaveBoardRespDto board3 = boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardRespDto board = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board2 = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board3 = boardService.saveBoard(boardDto);
         // then
         assertThat(boardDto.getBoardContent()).isEqualTo(board.getBoardContent());
         assertThat(boardDto.getBoardTitle()).isEqualTo(board.getBoardTitle());
@@ -65,8 +66,8 @@ class BoardServiceTest {
         LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
-        SaveBoardReqDto boardDto = getBoard();
-        boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardReqDto boardDto = getBoard(sessionUserDto.getId());
+        boardService.saveBoard(boardDto);
 
         UpdateBoardDto updateBoardDto = UpdateBoardDto.builder()
                 .boardTitle("바뀐내용")
@@ -93,8 +94,8 @@ class BoardServiceTest {
         LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
-        SaveBoardReqDto boardDto = getBoard();
-        boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardReqDto boardDto = getBoard(sessionUserDto.getId());
+        boardService.saveBoard(boardDto);
 
         UpdateBoardDto updateBoardDto = UpdateBoardDto.builder()
                 .boardTitle("바뀐내용")
@@ -119,37 +120,37 @@ class BoardServiceTest {
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
         User user = userService.findById(sessionUserDto.getId());
 
-        SaveBoardReqDto boardDto = getBoard();
+        SaveBoardReqDto boardDto = getBoard(user.getId());
         // when
-        SaveBoardRespDto board = boardService.saveBoard(boardDto, sessionUserDto);
-        SaveBoardRespDto board2 = boardService.saveBoard(boardDto, sessionUserDto);
-        SaveBoardRespDto board3 = boardService.saveBoard(boardDto, sessionUserDto);
-        SaveBoardRespDto board4 = boardService.saveBoard(boardDto, sessionUserDto);
-        SaveBoardRespDto board5 = boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardRespDto board = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board2 = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board3 = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board4 = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board5 = boardService.saveBoard(boardDto);
         // then
-        assertThatThrownBy(() -> boardService.saveBoard(boardDto, sessionUserDto))
+        assertThatThrownBy(() -> boardService.saveBoard(boardDto))
                 .isExactlyInstanceOf(FiveBoardPostPerDay.class)
                 .hasMessageContaining("게시글은 하루에 5개만 작성 가능합니다.");
     }
-//    @Test
-//    @DisplayName("게시글_쿠폰_발급")
-//    public void boardPostCouponIssue() throws Exception {
-//        // given
-//        JoinUserDto joinUserDto = getUserDto();
-//        userService.saveUser(joinUserDto);
-//
-//        LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
-//        SessionUserDto sessionUserDto = loginService.login(loginUserDto);
-//        User user = userService.findById(sessionUserDto.getId());
-//
-//        SaveBoardReqDto boardDto = getBoard();
-//        // when
-//        SaveBoardRespDto board = boardService.saveBoard(boardDto, sessionUserDto);
-//        SaveBoardRespDto board2 = boardService.saveBoard(boardDto, sessionUserDto);
-//        SaveBoardRespDto board3 = boardService.saveBoard(boardDto, sessionUserDto);
-//        SaveBoardRespDto board4 = boardService.saveBoard(boardDto, sessionUserDto);
-//        SaveBoardRespDto board5 = boardService.saveBoard(boardDto, sessionUserDto);
-////        when(clock.instant()).thenReturn(Instant.parse("2023-10-10"))
+    @Test
+    @DisplayName("게시글_쿠폰_발급")
+    public void boardPostCouponIssue() throws Exception {
+        // given
+        JoinUserDto joinUserDto = getUserDto();
+        userService.saveUser(joinUserDto);
+
+        LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
+        SessionUserDto sessionUserDto = loginService.login(loginUserDto);
+        User user = userService.findById(sessionUserDto.getId());
+
+        SaveBoardReqDto boardDto = getBoard(user.getId());
+        // when
+        SaveBoardRespDto board = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board2 = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board3 = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board4 = boardService.saveBoard(boardDto);
+        SaveBoardRespDto board5 = boardService.saveBoard(boardDto);
+//        when(clock.instant()).thenReturn(Instant.parse("2023-10-10"))
 //        boardService.saveBoard(boardDto, sessionUserDto);
 //        boardService.saveBoard(boardDto, sessionUserDto);
 //        boardService.saveBoard(boardDto, sessionUserDto);
@@ -162,11 +163,13 @@ class BoardServiceTest {
 //        boardService.saveBoard(boardDto, sessionUserDto);
 //        boardService.saveBoard(boardDto, sessionUserDto);
 //        boardService.saveBoard(boardDto, sessionUserDto);
-//    }
-    private SaveBoardReqDto getBoard() {
+        assertThat(user.getCoupons().size()).isEqualTo(1);
+    }
+    private SaveBoardReqDto getBoard(Long userId) {
         return SaveBoardReqDto.builder()
                 .boardTitle("첫 게시글")
                 .boardContent("안녕하세요.")
+                .userId(userId)
                 .build();
     }
 
