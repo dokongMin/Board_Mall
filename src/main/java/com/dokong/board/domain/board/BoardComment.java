@@ -20,6 +20,9 @@ public class BoardComment extends BaseEntity {
 
     private String commentContent;
 
+    @Enumerated(EnumType.STRING)
+    private BoardCommentStatus boardCommentStatus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "boardId")
     private Board board;
@@ -43,8 +46,13 @@ public class BoardComment extends BaseEntity {
         this.commentContent = commentContent;
     }
 
+    public void deleteComment() {
+        this.boardCommentStatus = BoardCommentStatus.DELETED;
+    }
+
     @Builder
-    public BoardComment(String commentContent) {
+    public BoardComment(String commentContent, BoardCommentStatus boardCommentStatus) {
         this.commentContent = commentContent;
+        this.boardCommentStatus = boardCommentStatus;
     }
 }

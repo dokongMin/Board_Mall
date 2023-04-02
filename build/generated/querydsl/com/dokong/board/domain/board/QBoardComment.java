@@ -26,6 +26,8 @@ public class QBoardComment extends EntityPathBase<BoardComment> {
 
     public final QBoard board;
 
+    public final EnumPath<BoardCommentStatus> boardCommentStatus = createEnum("boardCommentStatus", BoardCommentStatus.class);
+
     public final StringPath commentContent = createString("commentContent");
 
     //inherited
