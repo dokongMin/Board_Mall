@@ -1,12 +1,11 @@
 package com.dokong.board.web.service;
 
 import com.dokong.board.domain.board.Board;
+import com.dokong.board.domain.board.BoardStatus;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.exception.FiveBoardPostPerDay;
 import com.dokong.board.repository.BoardRepository;
-import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
-import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
-import com.dokong.board.web.dto.boarddto.UpdateBoardDto;
+import com.dokong.board.web.dto.boarddto.*;
 import com.dokong.board.web.dto.boardlikedto.BoardDateDto;
 import com.dokong.board.web.dto.coupondto.AddCouponDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
@@ -32,11 +31,11 @@ public class BoardService {
     private final CouponService couponService;
 
     @Transactional
-    public SaveBoardRespDto saveBoard(SaveBoardReqDto boardReqDto, SessionUserDto sessionUserDto) {
-        User user = userService.findById(sessionUserDto.getId());
+    public SaveBoardRespDto saveBoard(SaveBoardReqDto boardReqDto) {
+        User user = userService.findById(boardReqDto.getUserId());
         fiveBoardPostCheck();
-        boardPostCouponIssue(sessionUserDto);
         Board board = boardRepository.save(boardReqDto.toEntity());
+        boardPostCouponIssue(user.getId());
         board.writeBoard(user);
         return SaveBoardRespDto.of(board);
     }
@@ -52,16 +51,18 @@ public class BoardService {
         }
     }
 
-    private void boardPostCouponIssue(SessionUserDto sessionUserDto) {
-        int count = boardRepository.findByUserId(sessionUserDto.getId());
+    private void boardPostCouponIssue(Long userId) {
+        int count = boardRepository.findByUserId(userId) + 1;
+        System.out.println("count = " + count);
         if (count > 0 && count % 5 == 0) {
             AddCouponDto addCouponDto = AddCouponDto.builder()
                     .couponName("게시글 " + count + " 개 작성 쿠폰")
                     .couponRate(10 + (count / 5))
                     .minCouponPrice(10000)
                     .couponDetail("게시글을 "+ count +" 개 작성할 때마다 드리는 쿠폰입니다.")
+                    .userId(userId)
                     .build();
-            couponService.addCouponByBoard(addCouponDto, sessionUserDto);
+            couponService.addCouponByBoard(addCouponDto);
         }
     }
 
@@ -70,6 +71,25 @@ public class BoardService {
         Board board = findById(id);
         board.updateBoard(boardReqDto.getBoardTitle(), boardReqDto.getBoardContent());
         return UpdateBoardDto.of(board);
+    }
+
+    @Transactional
+    public DeleteBoardRespDto deleteBoard(Long id) {
+        Board board = findById(id);
+        board.deleteBoard();
+        return DeleteBoardRespDto.of(board);
+    }
+
+    public List<FindBoardDto> findAll() {
+        return boardRepository.findAll().stream()
+                .map(b -> FindBoardDto.of(b))
+                .collect(Collectors.toList());
+    }
+
+    public List<FindBoardDto> findAllByBoardStatus(FindBoardDto findBoardDto) {
+        return boardRepository.findAllByBoardStatus(findBoardDto.getBoardStatus()).stream()
+                .map(b -> FindBoardDto.of(b))
+                .collect(Collectors.toList());
     }
     
     public Board findById(Long id) {

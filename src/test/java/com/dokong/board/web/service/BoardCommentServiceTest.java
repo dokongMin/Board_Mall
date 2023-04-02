@@ -48,8 +48,8 @@ class BoardCommentServiceTest {
 
         User user = userService.findById(sessionUserDto.getId());
 
-        SaveBoardReqDto saveBoardReqDto = getSaveBoardReqDto();
-        SaveBoardRespDto boardRespDto = boardService.saveBoard(saveBoardReqDto, sessionUserDto);
+        SaveBoardReqDto saveBoardReqDto = getSaveBoardReqDto(user.getId());
+        SaveBoardRespDto boardRespDto = boardService.saveBoard(saveBoardReqDto);
         Board board = boardService.findById(boardRespDto.getId());
 
         BoardCommentDto boardCommentDto = getBoardComment();
@@ -76,8 +76,8 @@ class BoardCommentServiceTest {
 
         User user = userService.findById(sessionUserDto.getId());
 
-        SaveBoardReqDto saveBoardReqDto = getSaveBoardReqDto();
-        SaveBoardRespDto boardRespDto = boardService.saveBoard(saveBoardReqDto, sessionUserDto);
+        SaveBoardReqDto saveBoardReqDto = getSaveBoardReqDto(user.getId());
+        SaveBoardRespDto boardRespDto = boardService.saveBoard(saveBoardReqDto);
         Board board = boardService.findById(boardRespDto.getId());
 
         BoardCommentDto boardCommentDto = getBoardComment();
@@ -105,8 +105,8 @@ class BoardCommentServiceTest {
 
         User user = userService.findById(sessionUserDto.getId());
 
-        SaveBoardReqDto saveBoardReqDto = getSaveBoardReqDto();
-        SaveBoardRespDto boardRespDto = boardService.saveBoard(saveBoardReqDto, sessionUserDto);
+        SaveBoardReqDto saveBoardReqDto = getSaveBoardReqDto(user.getId());
+        SaveBoardRespDto boardRespDto = boardService.saveBoard(saveBoardReqDto);
         Board board = boardService.findById(boardRespDto.getId());
 
         BoardCommentDto boardComment = getBoardComment();
@@ -129,10 +129,11 @@ class BoardCommentServiceTest {
                 .build();
     }
 
-    private SaveBoardReqDto getSaveBoardReqDto() {
+    private SaveBoardReqDto getSaveBoardReqDto(Long userId) {
         return SaveBoardReqDto.builder()
                 .boardTitle("더미 제목")
                 .boardContent("더미 내용")
+                .userId(userId)
                 .build();
     }
 

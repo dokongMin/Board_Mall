@@ -43,8 +43,8 @@ class BoardLikeServiceTest {
         LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
-        SaveBoardReqDto boardDto = getBoard();
-        SaveBoardRespDto saveBoardRespDto = boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardReqDto boardDto = getBoard(sessionUserDto.getId());
+        SaveBoardRespDto saveBoardRespDto = boardService.saveBoard(boardDto);
         Board board = boardService.findById(saveBoardRespDto.getId());
         boardLikeService.pushBoardLike(sessionUserDto, board.getId());
         boardLikeService.pushBoardLike(sessionUserDto, board.getId());
@@ -67,8 +67,8 @@ class BoardLikeServiceTest {
         LoginUserDto loginUserDto = getLoginUserDto(joinUserDto);
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
-        SaveBoardReqDto boardDto = getBoard();
-        SaveBoardRespDto saveBoardRespDto = boardService.saveBoard(boardDto, sessionUserDto);
+        SaveBoardReqDto boardDto = getBoard(sessionUserDto.getId());
+        SaveBoardRespDto saveBoardRespDto = boardService.saveBoard(boardDto);
         Board board = boardService.findById(saveBoardRespDto.getId());
         boardLikeService.pushBoardLike(sessionUserDto, board.getId());
         boardLikeService.pushBoardLike(sessionUserDto, board.getId());
@@ -77,10 +77,11 @@ class BoardLikeServiceTest {
         assertThat(board.getBoardLikes().size()).isEqualTo(0);
     }
 
-    private SaveBoardReqDto getBoard() {
+    private SaveBoardReqDto getBoard(Long userId) {
         return SaveBoardReqDto.builder()
                 .boardTitle("첫 게시글")
                 .boardContent("안녕하세요.")
+                .userId(userId)
                 .build();
     }
 

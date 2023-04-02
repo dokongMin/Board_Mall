@@ -30,6 +30,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final ListPath<BoardLike, QBoardLike> boardLikes = this.<BoardLike, QBoardLike>createList("boardLikes", BoardLike.class, QBoardLike.class, PathInits.DIRECT2);
 
+    public final EnumPath<BoardStatus> boardStatus = createEnum("boardStatus", BoardStatus.class);
+
     public final StringPath boardTitle = createString("boardTitle");
 
     //inherited

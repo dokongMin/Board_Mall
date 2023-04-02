@@ -51,9 +51,9 @@ class CouponServiceTest {
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
         User user = userRepository.findByUsername(sessionUserDto.getUsername()).get();
 
-        AddCouponDto coupon = getCoupon();
+        AddCouponDto coupon = getCoupon(user.getId());
         // when
-        AddCouponResponseDto responseDto = couponService.addCouponByBoard(coupon, sessionUserDto);
+        AddCouponResponseDto responseDto = couponService.addCouponByBoard(coupon);
         // then
         assertThat(coupon.getCouponName()).isEqualTo(responseDto.getCouponName());
         assertThat(coupon.getCouponRate()).isEqualTo(responseDto.getCouponRate());
@@ -73,9 +73,9 @@ class CouponServiceTest {
         LoginUserDto loginUserDto = getLoginUserDto(userDto);
 
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
-        AddCouponDto coupon = getExceptionCoupon();
+        AddCouponDto coupon = getExceptionCoupon(sessionUserDto.getId());
         // then
-        assertThatThrownBy(() -> couponService.addCouponByBoard(coupon, sessionUserDto))
+        assertThatThrownBy(() -> couponService.addCouponByBoard(coupon))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("할인율은 99보다 클 수 없습니다.");
 
@@ -101,9 +101,10 @@ class CouponServiceTest {
         SessionUserDto sessionUserDto2 = loginService.login(loginUserDto2);
         User user2 = userRepository.findByUsername(sessionUserDto2.getUsername()).get();
 
-        AddCouponDto coupon1 = getCoupon();
-        AddCouponResponseDto responseDto1 = couponService.addCouponByBoard(coupon1, sessionUserDto);
-        AddCouponResponseDto responseDto2 = couponService.addCouponByBoard(coupon1, sessionUserDto2);
+        AddCouponDto coupon1 = getCoupon(user.getId());
+        AddCouponResponseDto responseDto1 = couponService.addCouponByBoard(coupon1);
+        AddCouponDto coupon2 = getCoupon(user2.getId());
+        AddCouponResponseDto responseDto2 = couponService.addCouponByBoard(coupon2);
 
         // then
         UpdateCouponDto updateCouponDto = getUpdateCoupon();
@@ -129,21 +130,23 @@ class CouponServiceTest {
     }
 
 
-    private AddCouponDto getCoupon() {
+    private AddCouponDto getCoupon(Long userId) {
         return AddCouponDto.builder()
                 .couponName("회원가입 축하 쿠폰")
                 .couponDetail("회원가입을 축하하여 드리는 쿠폰입니다.")
                 .couponRate(15)
                 .minCouponPrice(10000)
+                .userId(userId)
                 .build();
     }
 
-    private AddCouponDto getExceptionCoupon() {
+    private AddCouponDto getExceptionCoupon(Long userId) {
         return AddCouponDto.builder()
                 .couponName("회원가입 축하 쿠폰")
                 .couponDetail("회원가입을 축하하여 드리는 쿠폰입니다.")
                 .couponRate(101)
                 .minCouponPrice(100)
+                .userId(userId)
                 .build();
     }
 

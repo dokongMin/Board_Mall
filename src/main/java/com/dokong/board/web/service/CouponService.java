@@ -25,8 +25,8 @@ public class CouponService {
     private final UserService userService;
 
     @Transactional
-    public AddCouponResponseDto addCouponByBoard(AddCouponDto couponDto, SessionUserDto userDto) {
-        User user = userService.findById(userDto.getId());
+    public AddCouponResponseDto addCouponByBoard(AddCouponDto couponDto) {
+        User user = userService.findById(couponDto.getUserId());
         Coupon coupon = issueCoupon(couponDto);
         user.addCoupon(coupon);
         return AddCouponResponseDto.of(coupon);
