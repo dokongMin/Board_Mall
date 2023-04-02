@@ -26,14 +26,13 @@ public class BoardLikeService {
     private final BoardService boardService;
 
     @Transactional
-    public BoardLikeRespDto pushBoardLike(SessionUserDto sessionUserDto, Long boardId) {
+    public BoardLikeRespDto pushBoardLike(Long boardId, BoardLikeDto boardLikeDto) {
         Board board = boardService.findById(boardId);
-        User user = userService.findById(sessionUserDto.getId());
+        User user = userService.findById(boardLikeDto.getUserId());
 
         if (checkExistBoardLike(board, user))
             return BoardLikeRespDto.builder().errorDescription("좋아요를 취소하였습니다.").build();
 
-        BoardLikeDto boardLikeDto = BoardLikeDto.builder().build();
         BoardLike boardLike = boardLikeRepository.save(boardLikeDto.toEntity());
 
         board.pushBoardLike(user, boardLike);
@@ -49,6 +48,10 @@ public class BoardLikeService {
             return true;
         }
         return false;
+    }
+
+    public long countBoardLike(Long boardId) {
+        return boardLikeRepository.countBoardLike(boardId);
     }
 
     public BoardLike findById(Long id) {

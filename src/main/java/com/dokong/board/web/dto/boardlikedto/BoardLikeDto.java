@@ -1,24 +1,19 @@
 package com.dokong.board.web.dto.boardlikedto;
 
 import com.dokong.board.domain.board.BoardLike;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class BoardLikeDto {
 
-    private Long id;
-
-    @Builder
-    public BoardLikeDto(Long id) {
-        this.id = id;
-    }
+    private Long userId;
+    private Long boardId;
 
     public BoardLike toEntity() {
-        return BoardLike.builder().build();
+        return BoardLike.builder()
+                .build();
     }
 }
