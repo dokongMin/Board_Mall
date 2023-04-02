@@ -4,6 +4,7 @@ import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.BoardCommentRepository;
 import com.dokong.board.web.dto.boardcommentdto.BoardCommentDto;
+import com.dokong.board.web.dto.boardcommentdto.UpdateBoardCommentDto;
 import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
 import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
@@ -52,8 +53,8 @@ class BoardCommentServiceTest {
         SaveBoardRespDto boardRespDto = boardService.saveBoard(saveBoardReqDto);
         Board board = boardService.findById(boardRespDto.getId());
 
-        BoardCommentDto boardCommentDto = getBoardComment();
-        boardCommentService.saveBoardComment(boardCommentDto, sessionUserDto, board.getId());
+        BoardCommentDto boardCommentDto = getBoardComment(user.getId(), board.getId());
+        boardCommentService.saveBoardComment(boardCommentDto, board.getId());
         // then
         assertThat(boardCommentRepository.findAll().get(0).getCommentContent()).isEqualTo(boardCommentDto.getCommentContent());
         assertThat(user.getBoardComments().get(0).getCommentContent()).isEqualTo("댓글입니다.");
@@ -80,10 +81,10 @@ class BoardCommentServiceTest {
         SaveBoardRespDto boardRespDto = boardService.saveBoard(saveBoardReqDto);
         Board board = boardService.findById(boardRespDto.getId());
 
-        BoardCommentDto boardCommentDto = getBoardComment();
-        boardCommentService.saveBoardComment(boardCommentDto, sessionUserDto, board.getId());
+        BoardCommentDto boardCommentDto = getBoardComment(user.getId(), board.getId());
+        boardCommentService.saveBoardComment(boardCommentDto, board.getId());
 
-        BoardCommentDto updateBoardCommentDto = BoardCommentDto.builder()
+        UpdateBoardCommentDto updateBoardCommentDto = UpdateBoardCommentDto.builder()
                 .commentContent("수정된 댓글입니다.")
                 .build();
         boardCommentService.updateBoardComment(boardCommentRepository.findAll().get(0).getId(), updateBoardCommentDto);
@@ -109,10 +110,10 @@ class BoardCommentServiceTest {
         SaveBoardRespDto boardRespDto = boardService.saveBoard(saveBoardReqDto);
         Board board = boardService.findById(boardRespDto.getId());
 
-        BoardCommentDto boardComment = getBoardComment();
-        boardCommentService.saveBoardComment(boardComment, sessionUserDto, board.getId());
+        BoardCommentDto boardCommentDto = getBoardComment(user.getId(), board.getId());
+        boardCommentService.saveBoardComment(boardCommentDto, board.getId());
         // when
-        BoardCommentDto updateBoardCommentDto = BoardCommentDto.builder()
+        UpdateBoardCommentDto updateBoardCommentDto = UpdateBoardCommentDto.builder()
                 .commentContent("수정된 댓글입니다.")
                 .build();
         //then
@@ -123,8 +124,10 @@ class BoardCommentServiceTest {
     }
 
 
-    private BoardCommentDto getBoardComment() {
+    private BoardCommentDto getBoardComment(Long userId, Long boardId) {
         return BoardCommentDto.builder()
+                .userId(userId)
+                .boardId(boardId)
                 .commentContent("댓글입니다.")
                 .build();
     }

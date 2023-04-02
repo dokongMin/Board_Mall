@@ -4,36 +4,26 @@ import com.dokong.board.domain.board.BoardComment;
 import com.dokong.board.domain.board.BoardCommentStatus;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BoardCommentDto {
+public class FindBoardCommentRespDto {
 
-    @NotNull
     private Long userId;
+    private String username;
     private Long boardId;
-    @NotBlank
     private String commentContent;
     private BoardCommentStatus boardCommentStatus;
 
-    public BoardComment toEntity() {
-        return BoardComment.builder()
-                .commentContent(commentContent)
-                .boardCommentStatus(BoardCommentStatus.CREATED)
-                .build();
-    }
-
-    public static BoardCommentDto of(BoardComment boardComment) {
-        return BoardCommentDto.builder()
+    public static FindBoardCommentRespDto of(BoardComment boardComment) {
+        return FindBoardCommentRespDto.builder()
                 .userId(boardComment.getUser().getId())
+                .username(boardComment.getUser().getUsername())
                 .boardId(boardComment.getBoard().getId())
                 .commentContent(boardComment.getCommentContent())
                 .boardCommentStatus(boardComment.getBoardCommentStatus())
                 .build();
     }
+
 }
