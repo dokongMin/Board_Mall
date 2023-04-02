@@ -5,6 +5,7 @@ import com.dokong.board.domain.board.BoardLike;
 import com.dokong.board.repository.BoardLikeRepository;
 import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
 import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
+import com.dokong.board.web.dto.boardlikedto.BoardLikeDto;
 import com.dokong.board.web.dto.boardlikedto.BoardLikeRespDto;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
 import com.dokong.board.web.dto.logindto.LoginUserDto;
@@ -46,9 +47,14 @@ class BoardLikeServiceTest {
         SaveBoardReqDto boardDto = getBoard(sessionUserDto.getId());
         SaveBoardRespDto saveBoardRespDto = boardService.saveBoard(boardDto);
         Board board = boardService.findById(saveBoardRespDto.getId());
-        boardLikeService.pushBoardLike(sessionUserDto, board.getId());
-        boardLikeService.pushBoardLike(sessionUserDto, board.getId());
-        BoardLikeRespDto boardLikeRespDto = boardLikeService.pushBoardLike(sessionUserDto, board.getId());
+
+        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+                .boardId(board.getId())
+                .userId(sessionUserDto.getId())
+                .build();
+        boardLikeService.pushBoardLike(board.getId(), boardLikeDto);
+        boardLikeService.pushBoardLike(board.getId(), boardLikeDto);
+        BoardLikeRespDto boardLikeRespDto = boardLikeService.pushBoardLike(board.getId(), boardLikeDto);
 
         BoardLike boardLike = boardLikeService.findById(boardLikeRespDto.getBoardLikeId());
         // then
@@ -70,8 +76,12 @@ class BoardLikeServiceTest {
         SaveBoardReqDto boardDto = getBoard(sessionUserDto.getId());
         SaveBoardRespDto saveBoardRespDto = boardService.saveBoard(boardDto);
         Board board = boardService.findById(saveBoardRespDto.getId());
-        boardLikeService.pushBoardLike(sessionUserDto, board.getId());
-        boardLikeService.pushBoardLike(sessionUserDto, board.getId());
+        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+                .boardId(board.getId())
+                .userId(sessionUserDto.getId())
+                .build();
+        boardLikeService.pushBoardLike(board.getId(), boardLikeDto);
+        boardLikeService.pushBoardLike(board.getId(), boardLikeDto);
         // then
         assertThat(boardLikeRepository.findAll().size()).isEqualTo(0);
         assertThat(board.getBoardLikes().size()).isEqualTo(0);
