@@ -1,6 +1,7 @@
 package com.dokong.board.web.dto.userdto;
 
 import com.dokong.board.domain.user.User;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import java.util.List;
@@ -32,6 +33,14 @@ public class ShowUserDto {
                         .collect(Collectors.toList()))
                 .build();
     }
+
+//    @QueryProjection
+//    public ShowUserDto(String username, String name, String phoneNumber, String email) {
+//        this.username = username;
+//        this.name = name;
+//        this.phoneNumber = phoneNumber;
+//        this.email = email;
+//    }
 
     @Getter
     public static class FindCouponNameDto{
