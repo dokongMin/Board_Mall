@@ -6,7 +6,7 @@
 //import com.dokong.board.domain.order.Order;
 //import com.dokong.board.repository.OrderProductRepository;
 //import com.dokong.board.repository.OrderRepository;
-//import com.dokong.board.repository.ProductRepository;
+//import com.dokong.board.repository.product.ProductRepository;
 //import com.dokong.board.web.dto.categorydto.CategoryDto;
 //import com.dokong.board.web.dto.coupondto.AddCouponDto;
 //import com.dokong.board.web.dto.deliverydto.SaveDeliveryDto;

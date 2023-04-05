@@ -1,24 +1,19 @@
 package com.dokong.board.web.service;
 
 import com.dokong.board.domain.board.Board;
-import com.dokong.board.domain.board.BoardStatus;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.exception.FiveBoardPostPerDay;
-import com.dokong.board.repository.BoardRepository;
+import com.dokong.board.repository.board.BoardRepository;
 import com.dokong.board.web.dto.boarddto.*;
-import com.dokong.board.web.dto.boardlikedto.BoardDateDto;
 import com.dokong.board.web.dto.coupondto.AddCouponDto;
-import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.LongStream;
 
 @Service
 @RequiredArgsConstructor

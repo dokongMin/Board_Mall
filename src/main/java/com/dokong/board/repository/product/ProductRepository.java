@@ -1,4 +1,4 @@
-package com.dokong.board.repository;
+package com.dokong.board.repository.product;
 
 import com.dokong.board.domain.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,7 @@ import javax.persistence.LockModeType;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Product> findById(Long id);

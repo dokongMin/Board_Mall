@@ -1,10 +1,15 @@
 package com.dokong.board.web.controller.restcontroller;
 
+import com.dokong.board.repository.board.BoardRepository;
 import com.dokong.board.web.controller.CommonResponseDto;
 import com.dokong.board.web.controller.SuccessCode;
 import com.dokong.board.web.dto.boarddto.*;
+import com.dokong.board.web.dto.boardlikedto.BoardSearchCondition;
+import com.dokong.board.web.dto.boardlikedto.SearchBoardDto;
 import com.dokong.board.web.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -21,6 +26,7 @@ import java.util.Map;
 public class RestBoardController {
 
     private final BoardService boardService;
+    private final BoardRepository boardRepository;
 
     @PostMapping("/write")
     public ResponseEntity<?> saveBoard(@Validated @RequestBody SaveBoardReqDto saveBoardReqDto, BindingResult bindingResult) {
@@ -86,6 +92,15 @@ public class RestBoardController {
         return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @GetMapping("/list-search")
+    public List<SearchBoardDto> searchBoard(BoardSearchCondition condition) {
+        return boardRepository.search(condition);
+    }
+
+    @GetMapping("/list/page")
+    public Page<SearchBoardDto> searchBoardPage(BoardSearchCondition condition, Pageable pageable) {
+        return boardRepository.searchPage(condition, pageable);
+    }
 
     private void bindingIllegalArgumentException(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

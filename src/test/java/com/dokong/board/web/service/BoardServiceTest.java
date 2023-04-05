@@ -3,7 +3,7 @@ package com.dokong.board.web.service;
 import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.exception.FiveBoardPostPerDay;
-import com.dokong.board.repository.BoardRepository;
+import com.dokong.board.repository.board.BoardRepository;
 import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
 import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
 import com.dokong.board.web.dto.boarddto.UpdateBoardDto;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;

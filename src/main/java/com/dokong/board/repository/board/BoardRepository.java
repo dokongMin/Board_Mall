@@ -1,4 +1,4 @@
-package com.dokong.board.repository;
+package com.dokong.board.repository.board;
 
 import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.board.BoardStatus;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardRepositoryCustom {
 
     Optional<Board> findByBoardTitle(String boardTitle);
 
