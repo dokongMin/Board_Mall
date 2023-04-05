@@ -3,7 +3,7 @@ package com.dokong.board.web.service;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.domain.user.UserRole;
 import com.dokong.board.exception.NoExistUserException;
-import com.dokong.board.repository.UserRepository;
+import com.dokong.board.repository.user.UserRepository;
 import com.dokong.board.web.dto.userdto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

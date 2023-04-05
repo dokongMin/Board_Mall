@@ -2,7 +2,7 @@ package com.dokong.board.web.service;
 
 import com.dokong.board.domain.user.User;
 import com.dokong.board.exception.NoExistUserException;
-import com.dokong.board.repository.UserRepository;
+import com.dokong.board.repository.user.UserRepository;
 import com.dokong.board.web.dto.logindto.LoginUserDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import lombok.RequiredArgsConstructor;

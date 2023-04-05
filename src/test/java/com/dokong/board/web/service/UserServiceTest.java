@@ -3,14 +3,12 @@ package com.dokong.board.web.service;
 import com.dokong.board.domain.Address;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.domain.user.UserRole;
-import com.dokong.board.repository.UserRepository;
+import com.dokong.board.repository.user.UserRepository;
 import com.dokong.board.web.dto.userdto.*;
-import com.dokong.board.web.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

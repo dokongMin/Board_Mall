@@ -1,7 +1,7 @@
 package com.dokong.board.web.controller.restcontroller;
 
 import com.dokong.board.domain.user.User;
-import com.dokong.board.repository.UserRepository;
+import com.dokong.board.repository.user.UserRepository;
 import com.dokong.board.web.controller.CommonResponseDto;
 import com.dokong.board.web.controller.SuccessCode;
 import com.dokong.board.web.dto.userdto.*;

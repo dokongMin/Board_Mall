@@ -1,7 +1,7 @@
-package com.dokong.board.repository;
+package com.dokong.board.repository.user;
 
 import com.dokong.board.domain.user.User;
-import org.springframework.data.domain.Page;
+import com.dokong.board.repository.user.UserRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,11 +1,10 @@
 package com.dokong.board.web.service;
 
 import com.dokong.board.domain.user.User;
-import com.dokong.board.repository.UserRepository;
+import com.dokong.board.repository.user.UserRepository;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
 import com.dokong.board.web.dto.userdto.JoinUserResponseDto;
 import com.dokong.board.web.dto.userdto.UpdateUserDto;
-import com.dokong.board.web.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

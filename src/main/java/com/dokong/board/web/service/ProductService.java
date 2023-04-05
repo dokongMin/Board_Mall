@@ -2,7 +2,7 @@ package com.dokong.board.web.service;
 
 import com.dokong.board.domain.Category;
 import com.dokong.board.domain.product.Product;
-import com.dokong.board.repository.ProductRepository;
+import com.dokong.board.repository.product.ProductRepository;
 import com.dokong.board.web.dto.product.DeleteProductRespDto;
 import com.dokong.board.web.dto.product.SaveProductDto;
 import com.dokong.board.web.dto.product.UpdateProductDto;

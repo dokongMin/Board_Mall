@@ -1,13 +1,14 @@
 package com.dokong.board.web.controller.restcontroller;
 
 import com.dokong.board.domain.product.Product;
+import com.dokong.board.repository.product.ProductRepository;
 import com.dokong.board.web.controller.CommonResponseDto;
 import com.dokong.board.web.controller.SuccessCode;
-import com.dokong.board.web.dto.product.DeleteProductRespDto;
-import com.dokong.board.web.dto.product.SaveProductDto;
-import com.dokong.board.web.dto.product.UpdateProductDto;
+import com.dokong.board.web.dto.product.*;
 import com.dokong.board.web.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 public class RestProductController {
 
     private final ProductService productService;
+
+    private final ProductRepository productRepository;
     @PostMapping("/add")
     public ResponseEntity<?> saveProduct(@Validated @RequestBody SaveProductDto saveProductDto, BindingResult bindingResult) {
         getBindingResult(bindingResult);
@@ -78,6 +81,15 @@ public class RestProductController {
         return ResponseEntity.status(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @GetMapping("/item-list/search")
+    public List<SearchProductDto> search(ProductSearchCondition condition) {
+        return productRepository.search(condition);
+    }
+
+    @GetMapping("/item-list/search/page")
+    public Page<SearchProductDto> searchPage(ProductSearchCondition condition, Pageable pageable) {
+        return productRepository.searchPage(condition, pageable);
+    }
     private void getBindingResult(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
