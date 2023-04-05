@@ -1,6 +1,7 @@
 package com.dokong.board.web.controller.restcontroller;
 
 import com.dokong.board.domain.user.User;
+import com.dokong.board.repository.UserRepository;
 import com.dokong.board.web.controller.CommonResponseDto;
 import com.dokong.board.web.controller.SuccessCode;
 import com.dokong.board.web.dto.userdto.*;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 public class RestUserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping("/sign-in")
     public ResponseEntity<?> joinUser(@RequestBody @Validated JoinUserDto joinUserDto, BindingResult bindingResult) {
@@ -104,6 +106,11 @@ public class RestUserController {
                 .body(collect)
                 .build();
         return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
+    }
+
+    @GetMapping("/search")
+    public List<SearchUserDto> searchUser(UserSearchCondition condition) {
+        return userRepository.search(condition);
     }
 
     private void bindingRuntimeException(BindingResult bindingResult) {

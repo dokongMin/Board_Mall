@@ -16,8 +16,8 @@ public class BoardApplication {
 		SpringApplication.run(BoardApplication.class, args);
 	}
 
-	@Bean
-	JPAQueryFactory jpaQueryFactory(EntityManager em){
-		return new JPAQueryFactory(em);
-	}
+//	@Bean
+//	JPAQueryFactory jpaQueryFactory(EntityManager em){
+//		return new JPAQueryFactory(em);
+//	}
 }

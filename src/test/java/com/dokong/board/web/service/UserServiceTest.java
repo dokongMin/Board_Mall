@@ -4,9 +4,7 @@ import com.dokong.board.domain.Address;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.domain.user.UserRole;
 import com.dokong.board.repository.UserRepository;
-import com.dokong.board.web.dto.userdto.JoinUserDto;
-import com.dokong.board.web.dto.userdto.UpdateUserDto;
-import com.dokong.board.web.dto.userdto.JoinUserResponseDto;
+import com.dokong.board.web.dto.userdto.*;
 import com.dokong.board.web.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -125,6 +125,22 @@ class UserServiceTest {
         assertThat(user2.getUserRole()).isEqualTo(UserRole.DROP_OUT);
         assertThat(user2.getUsername()).isEqualTo(null);
      }
+
+     @Test
+     public void searchTest () throws Exception{
+         // given
+         Address address = new Address("서울", "110-332", "0000");
+         JoinUserDto joinUserDto = getJoinUserDto(address);
+         JoinUserResponseDto joinUserResponseDto = userService.saveUser(joinUserDto);
+
+         UserSearchCondition userSearchCondition = new UserSearchCondition();
+         userSearchCondition.setUsername("alsghks");
+         // when
+         List<SearchUserDto> search = userRepository.search(userSearchCondition);
+         // then
+         assertThat(search).extracting("username").containsExactly("alsghks");
+
+      }
 
     private JoinUserDto getJoinUserDto(Address address) {
         JoinUserDto userDto = JoinUserDto.builder()
