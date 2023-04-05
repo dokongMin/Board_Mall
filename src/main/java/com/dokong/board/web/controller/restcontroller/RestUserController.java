@@ -6,10 +6,10 @@ import com.dokong.board.web.controller.CommonResponseDto;
 import com.dokong.board.web.controller.SuccessCode;
 import com.dokong.board.web.dto.userdto.*;
 import com.dokong.board.web.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -111,6 +111,11 @@ public class RestUserController {
     @GetMapping("/search")
     public List<SearchUserDto> searchUser(UserSearchCondition condition) {
         return userRepository.search(condition);
+    }
+
+    @GetMapping("/user-list/page")
+    public Page<SearchUserDto> searchUserPage(UserSearchCondition condition, Pageable pageable) {
+        return userRepository.searchPageComplex(condition, pageable);
     }
 
     private void bindingRuntimeException(BindingResult bindingResult) {
