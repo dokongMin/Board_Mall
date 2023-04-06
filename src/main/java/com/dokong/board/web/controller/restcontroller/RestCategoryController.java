@@ -5,6 +5,8 @@ import com.dokong.board.web.controller.CommonResponseDto;
 import com.dokong.board.web.controller.SuccessCode;
 import com.dokong.board.web.dto.categorydto.CategoryDto;
 import com.dokong.board.web.service.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/category")
+@Tag(name = "Category", description = "Category API Document")
 public class RestCategoryController {
     private final CategoryService categoryService;
 
+    @Operation(summary = "카테고리 저장 API")
     @PostMapping("/add")
     public ResponseEntity<?> saveCategory(@Validated @RequestBody CategoryDto categoryDto, BindingResult bindingResult) {
         bindingIllegalArgumentException(bindingResult);
@@ -36,6 +40,7 @@ public class RestCategoryController {
         return ResponseEntity.status(SuccessCode.CREATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "카테고리 전체 조회 API")
     @GetMapping("/category-list")
     public ResponseEntity<?> findAllCategory() {
         List<Category> all = categoryService.findAll();

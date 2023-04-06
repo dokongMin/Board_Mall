@@ -5,6 +5,8 @@ import com.dokong.board.web.controller.SuccessCode;
 import com.dokong.board.web.dto.boardlikedto.BoardLikeDto;
 import com.dokong.board.web.dto.boardlikedto.BoardLikeRespDto;
 import com.dokong.board.web.service.BoardLikeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,10 +20,12 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/board")
+@Tag(name = "BoardLike", description = "BoardLike API Document")
 public class RestBoardLikeController {
 
     private final BoardLikeService boardLikeService;
 
+    @Operation(summary = "게시글 좋아요 API")
     @PostMapping("/{id}/push")
     public ResponseEntity<?> pushBoardLike(@PathVariable("id") Long boardId, @Validated @RequestBody BoardLikeDto boardLikeDto, BindingResult bindingResult) {
         bindingIllegalArgumentException(bindingResult);
@@ -36,6 +40,7 @@ public class RestBoardLikeController {
         return ResponseEntity.status(SuccessCode.CREATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "게시글 좋아요 개수 API")
     @GetMapping("/{id}/count")
     public ResponseEntity<?> countBoardLike(@PathVariable("id") Long boardId) {
         long count = boardLikeService.countBoardLike(boardId);

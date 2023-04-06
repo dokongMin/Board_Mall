@@ -31,6 +31,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'

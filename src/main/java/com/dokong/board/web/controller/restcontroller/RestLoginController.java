@@ -6,6 +6,8 @@ import com.dokong.board.web.controller.SuccessCode;
 import com.dokong.board.web.dto.logindto.LoginUserDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import com.dokong.board.web.service.LoginService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,10 +23,12 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rest")
+@Tag(name = "Login", description = "Login API Document")
 public class RestLoginController {
 
     private final LoginService loginService;
 
+    @Operation(summary = "로그인 API")
     @PostMapping("/login")
     public ResponseEntity<?> loginRest(@Validated @RequestBody LoginUserDto loginUserDto, BindingResult bindingResult, HttpServletRequest request) {
 

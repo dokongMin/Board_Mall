@@ -6,6 +6,8 @@ import com.dokong.board.web.controller.CommonResponseDto;
 import com.dokong.board.web.controller.SuccessCode;
 import com.dokong.board.web.dto.userdto.*;
 import com.dokong.board.web.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,11 +28,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 @Slf4j
+@Tag(name = "User", description = "User API Document")
 public class RestUserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
 
+
+    @Operation(summary = "회원 저장 API")
     @PostMapping("/sign-in")
     public ResponseEntity<?> joinUser(@RequestBody @Validated JoinUserDto joinUserDto, BindingResult bindingResult) {
 
@@ -45,6 +50,7 @@ public class RestUserController {
         return new ResponseEntity<>(commonResponseDto, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "회원 조회 API")
     @GetMapping("/my-page/{id}")
     public ResponseEntity<?> findUser(@PathVariable Long id) {
         User user = userService.findById(id);
@@ -57,6 +63,7 @@ public class RestUserController {
         return ResponseEntity.status(SuccessCode.CREATE_REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
+    @Operation(summary = "회원 수정 API")
     @PostMapping("/my-page/modify/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @Validated @RequestBody UpdateUserDto updateUserDto, BindingResult bindingResult) {
 
@@ -71,6 +78,7 @@ public class RestUserController {
         return ResponseEntity.status(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
+    @Operation(summary = "회원 삭제 API")
     @PostMapping("/my-page/delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         Long userId = userService.deleteUser(id);
@@ -82,6 +90,7 @@ public class RestUserController {
         return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
+    @Operation(summary = "회원 비밀번호 찾기 API")
     @GetMapping("/find-pw/{username}")
     public ResponseEntity<?> findUserByPassword(@PathVariable String username) {
         User user = userService.findByUsername(username);
@@ -94,6 +103,7 @@ public class RestUserController {
         return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
+    @Operation(summary = "회원 전체 조회 API")
     @GetMapping("/user-list")
     public ResponseEntity<?> findAllUser() {
         List<User> allUser = userService.findAllUser();
@@ -108,11 +118,13 @@ public class RestUserController {
         return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
+    @Operation(summary = "회원 검색 API")
     @GetMapping("/search")
     public List<SearchUserDto> searchUser(UserSearchCondition condition) {
         return userRepository.search(condition);
     }
 
+    @Operation(summary = "회원 페이징 API")
     @GetMapping("/user-list/page")
     public Page<SearchUserDto> searchUserPage(UserSearchCondition condition, Pageable pageable) {
         return userRepository.searchPageComplex(condition, pageable);
