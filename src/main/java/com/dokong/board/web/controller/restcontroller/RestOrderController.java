@@ -8,6 +8,8 @@ import com.dokong.board.web.dto.orderdto.FindOrderStatusRespDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderDto;
 import com.dokong.board.web.dto.orderdto.SaveOrderRespDto;
 import com.dokong.board.web.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,10 +24,12 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/order")
+@Tag(name = "Order", description = "Order API Document")
 public class RestOrderController {
 
     private final OrderService orderService;
 
+    @Operation(summary = "주문 생성 API")
     @PostMapping("/add")
     public ResponseEntity<?> createOrder(@RequestBody SaveOrderDto saveOrderDto, BindingResult bindingResult) {
         bindingIllegalArgumentException(bindingResult);
@@ -41,6 +45,7 @@ public class RestOrderController {
         return ResponseEntity.status(SuccessCode.CREATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "주문 취소 API")
     @PostMapping("/cancel/{id}")
     public ResponseEntity<?> cancelOrder(@PathVariable Long id) {
 
@@ -55,6 +60,7 @@ public class RestOrderController {
         return ResponseEntity.status(SuccessCode.DELETE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "주문 전체 조회 API")
     @GetMapping("/find-all")
     public ResponseEntity<?> findAllOrder() {
         List<SaveOrderRespDto> all = orderService.findAll();
@@ -68,6 +74,7 @@ public class RestOrderController {
         return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "주문 상태 별 조회 API", description = "주문 상태에 따라 조회")
     @GetMapping("/find-all/order-status")
     public ResponseEntity<?> findAllByOrderStatus(@RequestBody FindOrderStatusDto findOrderStatusDto, BindingResult bindingResult) {
         bindingIllegalArgumentException(bindingResult);
@@ -82,6 +89,7 @@ public class RestOrderController {
         return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "주문 유저 별 조회 API")
     @GetMapping("/find-all/{id}")
     public ResponseEntity<?> findAllByUserId(@PathVariable("id") Long userId) {
         List<FindOrderStatusRespDto> allByUserId = orderService.findAllByUserId(userId);

@@ -9,6 +9,8 @@ import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
 import com.dokong.board.web.dto.coupondto.UpdateCouponDto;
 import com.dokong.board.web.dto.coupondto.UpdateCouponRespDto;
 import com.dokong.board.web.service.CouponService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +28,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
+@Tag(name = "Coupon", description = "Coupon API Document")
 public class RestCouponController {
 
     private final CouponService couponService;
 
+    @Operation(summary = "쿠폰 저장 API")
     @PostMapping("/coupon/add")
     public ResponseEntity<?> saveCoupon(@Validated @RequestBody AddCouponDto addCouponDto, BindingResult bindingResult) {
 
@@ -44,6 +48,7 @@ public class RestCouponController {
         return ResponseEntity.status(SuccessCode.CREATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "쿠폰 벌크 수정 API")
     @PostMapping("/coupon/update")
     public ResponseEntity<?> updateCoupon(@Validated @RequestBody UpdateCouponDto updateCouponDto, BindingResult bindingResult) {
         bindingIllegalArgumentException(bindingResult);
@@ -55,6 +60,7 @@ public class RestCouponController {
         return ResponseEntity.status(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus()).body(collect);
     }
 
+    @Operation(summary = "쿠폰 전체 조회 API")
     @GetMapping("/coupon/coupon-list")
     public ResponseEntity<?> findAllCoupon() {
         List<Coupon> allCoupon = couponService.findAll();

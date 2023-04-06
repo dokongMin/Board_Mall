@@ -1,10 +1,11 @@
 package com.dokong.board.web.controller.restcontroller;
 
-import com.dokong.board.domain.user.User;
 import com.dokong.board.web.controller.SessionUserConst;
 import com.dokong.board.web.dto.logindto.LoginUserDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
 import com.dokong.board.web.service.LoginService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -6,6 +6,8 @@ import com.dokong.board.web.controller.CommonResponseDto;
 import com.dokong.board.web.controller.SuccessCode;
 import com.dokong.board.web.dto.product.*;
 import com.dokong.board.web.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,11 +26,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/items")
+@Tag(name = "Product", description = "Product API Document")
 public class RestProductController {
 
     private final ProductService productService;
 
     private final ProductRepository productRepository;
+
+    @Operation(summary = "상품 저장 API")
     @PostMapping("/add")
     public ResponseEntity<?> saveProduct(@Validated @RequestBody SaveProductDto saveProductDto, BindingResult bindingResult) {
         getBindingResult(bindingResult);
@@ -41,6 +46,7 @@ public class RestProductController {
         return ResponseEntity.status(SuccessCode.CREATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "상품 수정 API")
     @PostMapping("/update/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody UpdateProductDto updateProductDto, BindingResult bindingResult) {
         getBindingResult(bindingResult);
@@ -54,6 +60,7 @@ public class RestProductController {
         return ResponseEntity.status(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "상품 전체 조회 API")
     @GetMapping("/item-list")
     public ResponseEntity<?> findAllProduct() {
         List<Product> allProduct = productService.findAll();
@@ -69,6 +76,7 @@ public class RestProductController {
         return ResponseEntity.status(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "상품 삭제 API")
     @PostMapping("/delete/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         DeleteProductRespDto deleteProductRespDto = productService.deleteProduct(id);
@@ -81,11 +89,13 @@ public class RestProductController {
         return ResponseEntity.status(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "상품 검색 API")
     @GetMapping("/item-list/search")
     public List<SearchProductDto> search(ProductSearchCondition condition) {
         return productRepository.search(condition);
     }
 
+    @Operation(summary = "상품 페이징 API")
     @GetMapping("/item-list/search/page")
     public Page<SearchProductDto> searchPage(ProductSearchCondition condition, Pageable pageable) {
         return productRepository.searchPage(condition, pageable);

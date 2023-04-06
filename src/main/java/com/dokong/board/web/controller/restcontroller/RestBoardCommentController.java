@@ -6,6 +6,8 @@ import com.dokong.board.web.dto.boardcommentdto.BoardCommentDto;
 import com.dokong.board.web.dto.boardcommentdto.FindBoardCommentRespDto;
 import com.dokong.board.web.dto.boardcommentdto.UpdateBoardCommentDto;
 import com.dokong.board.web.service.BoardCommentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,10 +22,12 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/board/comment")
+@Tag(name = "BoardComment", description = "BoardComment API Document")
 public class RestBoardCommentController {
 
     private final BoardCommentService boardCommentService;
 
+    @Operation(summary = "댓글 작성 API")
     @PostMapping("/write/{id}")
     public ResponseEntity<?> writeBoardComment(@PathVariable("id") Long boardId, @Validated @RequestBody BoardCommentDto boardCommentDto, BindingResult bindingResult) {
         bindingIllegalArgumentException(bindingResult);
@@ -36,7 +40,7 @@ public class RestBoardCommentController {
                 .build();
         return ResponseEntity.status(SuccessCode.CREATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
-
+    @Operation(summary = "댓글 수정 API")
     @PostMapping("/modify/{id}")
     public ResponseEntity<?> updateBoardComment(@PathVariable("id") Long boardCommentId, @Validated @RequestBody UpdateBoardCommentDto boardCommentDto, BindingResult bindingResult) {
         bindingIllegalArgumentException(bindingResult);
@@ -50,6 +54,7 @@ public class RestBoardCommentController {
         return ResponseEntity.status(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "댓글 1개 조회 API")
     @GetMapping("/{id}")
     public ResponseEntity<?> findByBoardId(@PathVariable("id") Long boardId) {
         List<FindBoardCommentRespDto> byBoardId = boardCommentService.findByBoardId(boardId);
@@ -62,6 +67,7 @@ public class RestBoardCommentController {
         return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    @Operation(summary = "댓글 삭제 API")
     @PutMapping("{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Long boardCommentId) {
         FindBoardCommentRespDto findBoardCommentRespDto = boardCommentService.deleteBoard(boardCommentId);
