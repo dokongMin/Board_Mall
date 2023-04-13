@@ -5,6 +5,11 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+## redis configuration
+  redis:
+    host: localhost
+    password:
+    port: 6379
 
   jpa:
     hibernate:
@@ -36,3 +41,4 @@ springdoc:
       enabled: true
   cache:
     disabled: true
+
