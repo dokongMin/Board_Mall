@@ -13,12 +13,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 @RequiredArgsConstructor
 public class RedisConfig {
 
-//    @Value("${spring.redis.host}")
-//    private String host;
-//
-//    @Value("${spring.redis.port}")
-//    private int port;
-
     private final RedisProperty redisProperty;
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {

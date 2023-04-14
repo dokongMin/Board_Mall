@@ -18,6 +18,7 @@ public class FindBoardDto {
     private String boardTitle;
     private String boardContent;
     private Long likeCount;
+    private Long viewCount;
     private BoardStatus boardStatus;
 
     public static FindBoardDto of(Board board) {
@@ -26,6 +27,7 @@ public class FindBoardDto {
                 .boardTitle(board.getBoardTitle())
                 .boardContent(board.getBoardContent())
                 .likeCount(board.getLikeCount())
+                .viewCount(board.getViewCount())
                 .boardStatus(board.getBoardStatus())
                 .build();
     }
