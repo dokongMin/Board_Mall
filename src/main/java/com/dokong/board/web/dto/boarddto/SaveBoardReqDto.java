@@ -21,6 +21,7 @@ public class SaveBoardReqDto {
     @NotBlank
     private String boardContent;
     private long likeCount;
+    private long viewCount;
     private BoardStatus boardStatus;
     @NotNull
     private Long userId;
@@ -31,6 +32,7 @@ public class SaveBoardReqDto {
                 .boardTitle(boardTitle)
                 .boardContent(boardContent)
                 .likeCount(0)
+                .viewCount(0)
                 .boardStatus(BoardStatus.CREATED)
                 .build();
     }

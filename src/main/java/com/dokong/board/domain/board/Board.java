@@ -23,6 +23,8 @@ public class Board extends BaseEntity {
     private String boardContent;
     private long likeCount;
 
+    private long viewCount;
+
     @Enumerated(EnumType.STRING)
     private BoardStatus boardStatus;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -62,6 +64,10 @@ public class Board extends BaseEntity {
         this.likeCount -= 1;
     }
 
+    public void addViewCount() {
+        this.viewCount += 1;
+    }
+
     public void updateBoard(String boardTitle, String boardContent) {
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
@@ -72,10 +78,11 @@ public class Board extends BaseEntity {
     }
 
     @Builder
-    public Board(String boardTitle, String boardContent, long likeCount, BoardStatus boardStatus) {
+    public Board(String boardTitle, String boardContent, long likeCount, long viewCount, BoardStatus boardStatus) {
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
         this.likeCount = likeCount;
+        this.viewCount = viewCount;
         this.boardStatus = boardStatus;
     }
 }

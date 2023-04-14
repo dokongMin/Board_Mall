@@ -24,6 +24,7 @@ public class BoardService {
     private final UserService userService;
 
     private final CouponService couponService;
+    private final RedisService redisService;
 
     @Transactional
     public SaveBoardRespDto saveBoard(SaveBoardReqDto boardReqDto) {
@@ -33,6 +34,16 @@ public class BoardService {
         boardPostCouponIssue(user.getId());
         board.writeBoard(user);
         return SaveBoardRespDto.of(board);
+    }
+
+    @Transactional
+    public FindBoardDto addViewCount(Long boardId, String username) {
+        Board board = findById(boardId);
+        if (redisService.checkDuplicateRequest(username, boardId)) {
+            throw new IllegalStateException("해당 유저는 이미 조회수를 증가시켰습니다.");
+        }
+        board.addViewCount();
+        return FindBoardDto.of(board);
     }
 
     private void fiveBoardPostCheck() {
