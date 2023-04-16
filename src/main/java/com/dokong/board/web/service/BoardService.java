@@ -6,6 +6,7 @@ import com.dokong.board.exception.FiveBoardPostPerDay;
 import com.dokong.board.repository.board.BoardRepository;
 import com.dokong.board.web.dto.boarddto.*;
 import com.dokong.board.web.dto.coupondto.AddCouponDto;
+import com.dokong.board.web.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
