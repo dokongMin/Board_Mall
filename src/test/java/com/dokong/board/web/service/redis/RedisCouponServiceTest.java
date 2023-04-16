@@ -37,9 +37,6 @@ class RedisCouponServiceTest {
     private RedisCouponService redisCouponService;
 
     @Autowired
-    private CouponService couponService;
-
-    @Autowired
     private UserService userService;
 
     private final int REPEAT = 100;
@@ -47,21 +44,14 @@ class RedisCouponServiceTest {
     private final int LIMIT = 30;
 
     @Test
-//    @Transactional
-//    @Rollback(value = false)
     public void eventCouponTest() throws Exception {
 
+        EventCoupon eventCouponEntity = getEventCoupon();
+
         for (int i = 0; i < REPEAT; i++) {
-
-            JoinUserDto joinUserDto = getJoinUserDto(i);
-            JoinUserResponseDto joinUserResponseDto = userService.saveUser(joinUserDto);
-
-            AddCouponDto eventCoupon = getAddCouponDto(joinUserResponseDto.getId());
-            couponService.addCoupon(eventCoupon);
+            JoinUserDto joinUserDto = getJoinUserDto(i+1);
+            userService.saveUser(joinUserDto);
         }
-
-        EventCoupon eventCoupon = new EventCoupon(COUPON_NAME, LIMIT);
-        redisCouponService.setEventCoupon(eventCoupon);
 
         List<User> allUser = userService.findAllUser();
         int threadCount = 100;
@@ -81,10 +71,20 @@ class RedisCouponServiceTest {
             });
         }
         latch.await();
-        while (redisCouponService.publishFirstComeCoupon(COUPON_NAME)) {
-//            redisCouponService.publishFirstComeCoupon(COUPON_NAME);
+        while (redisCouponService.publishFirstComeCoupon(eventCouponEntity)) {
             redisCouponService.checkWaiting(COUPON_NAME);
         }
+    }
+
+    private EventCoupon getEventCoupon() {
+        return EventCoupon.builder()
+                .couponName(COUPON_NAME)
+                .couponDetail("선착순으로 발급된 쿠폰입니다.")
+                .couponRate(20)
+                .minCouponPrice(10000)
+                .limit(LIMIT)
+                .build();
+
     }
 
     private JoinUserDto getJoinUserDto(int i) {
@@ -94,17 +94,6 @@ class RedisCouponServiceTest {
                 .name("min" + i)
                 .email("alsghks@naver.com" + i)
                 .build();
-    }
-
-    private AddCouponDto getAddCouponDto(Long id) {
-        AddCouponDto eventCoupon = AddCouponDto.builder()
-                .couponName(COUPON_NAME)
-                .couponDetail("선착순으로 발급된 쿠폰입니다.")
-                .couponRate(20)
-                .minCouponPrice(10000)
-                .userId(id)
-                .build();
-        return eventCoupon;
     }
 
 }

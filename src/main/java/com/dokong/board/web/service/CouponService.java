@@ -6,6 +6,7 @@ import com.dokong.board.repository.CouponRepository;
 import com.dokong.board.web.dto.coupondto.AddCouponDto;
 import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
 import com.dokong.board.web.dto.coupondto.UpdateCouponDto;
+import com.dokong.board.web.dto.eventcoupon.EventCoupon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,13 @@ public class CouponService {
         return AddCouponResponseDto.of(coupon);
     }
 
+    @Transactional
+    public EventCoupon addEventCoupon(EventCoupon eventCoupon, String username) {
+        Coupon coupon = couponRepository.save(eventCoupon.toEntity());
+        User user = userService.findByUsername(username);
+        user.addEventCoupon(coupon);
+        return EventCoupon.of(coupon);
+    }
 
     @Transactional
     public List<Coupon> bulkUpdateCoupon(UpdateCouponDto couponDto) {
