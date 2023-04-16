@@ -68,6 +68,11 @@ public class User extends BaseTimeEntity {
         coupon.setUser(this);
     }
 
+    public void addEventCoupon(Coupon coupon) {
+        this.coupons.add(coupon);
+        coupon.setUser(this);
+    }
+
     private void checkJoinTime() {
         LocalDateTime joinDateTime = this.getCreatedDate();
         LocalDateTime now = LocalDateTime.of(2024,05,10,3,10);
