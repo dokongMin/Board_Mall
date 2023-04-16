@@ -4,6 +4,7 @@ import com.dokong.board.domain.coupon.CouponStatus;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.user.UserRedisRepository;
 import com.dokong.board.web.dto.coupondto.AddCouponDto;
+import com.dokong.board.web.dto.eventcoupon.EventCoupon;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
 import com.dokong.board.web.dto.userdto.JoinUserResponseDto;
 import com.dokong.board.web.dto.userdto.UserDtoRedis;
@@ -42,7 +43,8 @@ class RedisCouponServiceTest {
     private UserService userService;
 
     private final int REPEAT = 100;
-
+    private final String COUPON_NAME = "EVENT_COUPON";
+    private final int LIMIT = 30;
 
     @Test
 //    @Transactional
@@ -57,6 +59,10 @@ class RedisCouponServiceTest {
             AddCouponDto eventCoupon = getAddCouponDto(joinUserResponseDto.getId());
             couponService.addCoupon(eventCoupon);
         }
+
+        EventCoupon eventCoupon = new EventCoupon(COUPON_NAME, LIMIT);
+        redisCouponService.setEventCoupon(eventCoupon);
+
         List<User> allUser = userService.findAllUser();
         int threadCount = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(10);
@@ -67,7 +73,7 @@ class RedisCouponServiceTest {
                     Random random = new Random();
                     random.setSeed(System.currentTimeMillis());
                     int rand = (int) Math.floor(Math.random() * REPEAT);
-                    redisCouponService.addQueue("coupon", allUser.get(rand).getUsername());
+                    redisCouponService.addQueue(COUPON_NAME, allUser.get(rand).getUsername());
                 }
                 finally {
                     latch.countDown();
@@ -75,7 +81,10 @@ class RedisCouponServiceTest {
             });
         }
         latch.await();
-
+        while (redisCouponService.publishFirstComeCoupon(COUPON_NAME)) {
+//            redisCouponService.publishFirstComeCoupon(COUPON_NAME);
+            redisCouponService.checkWaiting(COUPON_NAME);
+        }
     }
 
     private JoinUserDto getJoinUserDto(int i) {
@@ -89,7 +98,7 @@ class RedisCouponServiceTest {
 
     private AddCouponDto getAddCouponDto(Long id) {
         AddCouponDto eventCoupon = AddCouponDto.builder()
-                .couponName("이벤트 쿠폰")
+                .couponName(COUPON_NAME)
                 .couponDetail("선착순으로 발급된 쿠폰입니다.")
                 .couponRate(20)
                 .minCouponPrice(10000)
