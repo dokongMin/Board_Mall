@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 @Slf4j
@@ -26,11 +24,14 @@ public class RedisCouponService {
     private static final long LAST_ELEMENT = -1;
     private static final long LAST_INDEX = 9;
 
+    private EventCoupon eventCoupon;
+
+    public void setEventCoupon(EventCoupon eventCoupon) {
+        this.eventCoupon = eventCoupon;
+    }
 
     public void addQueue(String couponName, String username) {
         long now = System.currentTimeMillis();
-        String randoms = String.valueOf( (int) Math.floor(Math.random() * 1000) + 1 );
-        log.info("randoms = {}", randoms);
         redisTemplate.opsForZSet().add(couponName, username, now);
     }
 
@@ -42,11 +43,18 @@ public class RedisCouponService {
         }
     }
 
-    public void publishFirstComeCoupon(String couponName) {
+    public Boolean publishFirstComeCoupon(String couponName) {
         Set<Object> queue = redisTemplate.opsForZSet().range(couponName, FIRST_ELEMENT, LAST_INDEX);
+        if (eventCoupon.endCount()) {
+            log.info("선착순 이벤트가 종료되었습니다. 남은 쿠폰 개수 : {}", eventCoupon.getLimit());
+            redisTemplate.opsForZSet().removeRange(couponName, FIRST_ELEMENT, LAST_ELEMENT);
+            return false;
+        }
         for (Object user : queue) {
             log.info("'{}' 님에게 쿠폰이 발급됐습니다.", user);
             redisTemplate.opsForZSet().remove(couponName, user);
+            this.eventCoupon.decreaseCount();
         }
+        return true;
     }
 }

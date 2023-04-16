@@ -10,16 +10,16 @@ import lombok.*;
 public class EventCoupon {
 
     private String couponName;
-    private int couponCount;
+    private int limit;
 
     private static final int END = 0;
 
     public void decreaseCount() {
-        this.couponCount--;
+        this.limit--;
     }
 
     public boolean endCount() {
-        return END == this.couponCount;
+        return END == this.limit;
     }
 
 }
