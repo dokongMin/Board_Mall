@@ -149,21 +149,9 @@ class BoardServiceTest {
         SaveBoardRespDto board3 = boardService.saveBoard(boardDto);
         SaveBoardRespDto board4 = boardService.saveBoard(boardDto);
         SaveBoardRespDto board5 = boardService.saveBoard(boardDto);
-//        when(clock.instant()).thenReturn(Instant.parse("2023-10-10"))
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
-//        boardService.saveBoard(boardDto, sessionUserDto);
         assertThat(user.getCoupons().size()).isEqualTo(1);
     }
+
     private SaveBoardReqDto getBoard(Long userId) {
         return SaveBoardReqDto.builder()
                 .boardTitle("첫 게시글")

@@ -1,4 +1,4 @@
-package com.dokong.board.web.service;
+package com.dokong.board.web.service.redis;
 
 
 import lombok.RequiredArgsConstructor;
