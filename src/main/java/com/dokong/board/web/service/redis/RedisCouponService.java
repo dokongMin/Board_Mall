@@ -1,17 +1,16 @@
 package com.dokong.board.web.service.redis;
 
-import com.dokong.board.domain.coupon.CouponStatus;
-import com.dokong.board.domain.user.User;
-import com.dokong.board.web.dto.coupondto.AddCouponDto;
 import com.dokong.board.web.dto.eventcoupon.EventCoupon;
 import com.dokong.board.web.service.CouponService;
-import com.dokong.board.web.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -25,7 +24,8 @@ public class RedisCouponService {
     private static final long LAST_INDEX = 9;
 
     private final CouponService couponService;
-    private final UserService userService;
+
+    private final RedissonClient redissonClient;
 
     public void addQueue(String couponName, String username) {
         long now = System.currentTimeMillis();
@@ -40,19 +40,45 @@ public class RedisCouponService {
         }
     }
 
-    public Boolean publishFirstComeCoupon(EventCoupon eventCoupon) {
-        Set<Object> queue = redisTemplate.opsForZSet().range(eventCoupon.getCouponName(), FIRST_ELEMENT, LAST_INDEX);
-        if (eventCoupon.endCount()) {
-            log.info("선착순 이벤트가 종료되었습니다. 남은 쿠폰 개수 : {}", eventCoupon.getLimit());
-            redisTemplate.opsForZSet().removeRange(eventCoupon.getCouponName(), FIRST_ELEMENT, LAST_ELEMENT);
-            return false;
+    public void publishFirstComeCoupon(EventCoupon eventCoupon) {
+        RLock lock = redissonClient.getLock("COUPON_KEY");
+        try {
+            boolean isLocked = lock.tryLock(10, 3, TimeUnit.SECONDS);
+            if (!isLocked) {
+                throw new IllegalArgumentException("Lock error");
+            }
+            Set<Object> queue = redisTemplate.opsForZSet().range(eventCoupon.getCouponName(), FIRST_ELEMENT, LAST_INDEX);
+            if (eventCoupon.endCount()) {
+                log.info("선착순 이벤트가 종료되었습니다. 남은 쿠폰 개수 : {}", eventCoupon.getLimit());
+                redisTemplate.opsForZSet().removeRange(eventCoupon.getCouponName(), FIRST_ELEMENT, LAST_ELEMENT);
+                throw new RuntimeException("aa");
+//            return false;
+            }
+            for (Object user : queue) {
+                couponService.addEventCoupon(eventCoupon, user.toString());
+                log.info("'{}' 님에게 쿠폰이 발급됐습니다.", user);
+                redisTemplate.opsForZSet().remove(eventCoupon.getCouponName(), user);
+                eventCoupon.decreaseCount();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
         }
-        for (Object user : queue) {
-            couponService.addEventCoupon(eventCoupon, user.toString());
-            log.info("'{}' 님에게 쿠폰이 발급됐습니다.", user);
-            redisTemplate.opsForZSet().remove(eventCoupon.getCouponName(), user);
-            eventCoupon.decreaseCount();
-        }
-        return true;
     }
+//    public Boolean publishFirstComeCoupon(EventCoupon eventCoupon) {
+//        Set<Object> queue = redisTemplate.opsForZSet().range(eventCoupon.getCouponName(), FIRST_ELEMENT, LAST_INDEX);
+//        if (eventCoupon.endCount()) {
+//            log.info("선착순 이벤트가 종료되었습니다. 남은 쿠폰 개수 : {}", eventCoupon.getLimit());
+//            redisTemplate.opsForZSet().removeRange(eventCoupon.getCouponName(), FIRST_ELEMENT, LAST_ELEMENT);
+//            return false;
+//        }
+//        for (Object user : queue) {
+//            couponService.addEventCoupon(eventCoupon, user.toString());
+//            log.info("'{}' 님에게 쿠폰이 발급됐습니다.", user);
+//            redisTemplate.opsForZSet().remove(eventCoupon.getCouponName(), user);
+//            eventCoupon.decreaseCount();
+//        }
+//        return true;
+//    }
 }
