@@ -43,21 +43,4 @@ public class RedisService {
         return username + " : "  + boardId;
     }
 
-    @Transactional
-    public void getLock(String username, Coupon coupon) {
-        RLock lock = redissonClient.getLock(coupon.getCouponName());
-        try {
-            boolean isLocked = lock.tryLock(3, 3, TimeUnit.SECONDS);
-            if (!isLocked) {
-                return;
-            }
-            User user = userService.findByUsername(username);
-            user.addEventCoupon(coupon);
-            return;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
-        }
-    }
 }

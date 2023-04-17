@@ -50,7 +50,6 @@ public class CouponService {
         Coupon coupon = couponRepository.save(eventCoupon.toEntity());
         User user = userService.findByUsername(username);
         user.addEventCoupon(coupon);
-//        return EventCoupon.of(coupon);
     }
 
 

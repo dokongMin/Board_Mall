@@ -73,9 +73,7 @@ class RedisCouponServiceTest {
             });
         }
         latch2.await();
-//        while (redisCouponService.publishFirstComeCoupon(eventCouponEntity)) {
-//            redisCouponService.checkWaiting(COUPON_NAME);
-//        }
+
     }
 
     private EventCoupon getEventCoupon() {
