@@ -51,8 +51,7 @@ public class RedisCouponService {
             if (eventCoupon.endCount()) {
                 log.info("선착순 이벤트가 종료되었습니다. 남은 쿠폰 개수 : {}", eventCoupon.getLimit());
                 redisTemplate.opsForZSet().removeRange(eventCoupon.getCouponName(), FIRST_ELEMENT, LAST_ELEMENT);
-                throw new RuntimeException("aa");
-//            return false;
+                throw new RuntimeException("Not Enough Coupons");
             }
             for (Object user : queue) {
                 couponService.addEventCoupon(eventCoupon, user.toString());
