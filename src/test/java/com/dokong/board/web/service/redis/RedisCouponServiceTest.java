@@ -1,34 +1,20 @@
 package com.dokong.board.web.service.redis;
 
-import com.dokong.board.domain.coupon.CouponStatus;
 import com.dokong.board.domain.user.User;
-import com.dokong.board.repository.user.UserRedisRepository;
-import com.dokong.board.web.dto.coupondto.AddCouponDto;
 import com.dokong.board.web.dto.eventcoupon.EventCoupon;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
-import com.dokong.board.web.dto.userdto.JoinUserResponseDto;
-import com.dokong.board.web.dto.userdto.UserDtoRedis;
-import com.dokong.board.web.service.CouponService;
 import com.dokong.board.web.service.UserService;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RedisCouponServiceTest {
@@ -37,10 +23,13 @@ class RedisCouponServiceTest {
     private RedisCouponService redisCouponService;
 
     @Autowired
+    private RedissonLockFacade redissonLockFacade;
+
+    @Autowired
     private UserService userService;
 
     private final int REPEAT = 100;
-    private final String COUPON_NAME = "EVENT_COUPON";
+    private final String COUPON_NAME = "EVENTCOUPON";
     private final int LIMIT = 30;
 
     @Test
@@ -49,7 +38,7 @@ class RedisCouponServiceTest {
         EventCoupon eventCouponEntity = getEventCoupon();
 
         for (int i = 0; i < REPEAT; i++) {
-            JoinUserDto joinUserDto = getJoinUserDto(i+1);
+            JoinUserDto joinUserDto = getJoinUserDto(i + 1);
             userService.saveUser(joinUserDto);
         }
 
@@ -59,21 +48,34 @@ class RedisCouponServiceTest {
         CountDownLatch latch = new CountDownLatch(threadCount);
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
-                try{
+                try {
                     Random random = new Random();
                     random.setSeed(System.currentTimeMillis());
                     int rand = (int) Math.floor(Math.random() * REPEAT);
-                    redisCouponService.addQueue(COUPON_NAME, allUser.get(rand).getUsername());
-                }
-                finally {
+                    redisCouponService.addQueue(eventCouponEntity.getCouponName(), allUser.get(rand).getUsername());
+                } finally {
                     latch.countDown();
                 }
             });
         }
         latch.await();
-        while (redisCouponService.publishFirstComeCoupon(eventCouponEntity)) {
-            redisCouponService.checkWaiting(COUPON_NAME);
+
+        ExecutorService executorService2 = Executors.newFixedThreadPool(10);
+        CountDownLatch latch2 = new CountDownLatch(threadCount);
+        for (int i = 0; i < 100; i++) {
+            executorService2.submit(() -> {
+                try {
+                    redisCouponService.publishFirstComeCoupon(eventCouponEntity);
+                    redisCouponService.checkWaiting(eventCouponEntity.getCouponName());
+                } finally {
+                    latch2.countDown();
+                }
+            });
         }
+        latch2.await();
+//        while (redisCouponService.publishFirstComeCoupon(eventCouponEntity)) {
+//            redisCouponService.checkWaiting(COUPON_NAME);
+//        }
     }
 
     private EventCoupon getEventCoupon() {

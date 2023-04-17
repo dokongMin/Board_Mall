@@ -46,6 +46,7 @@
     <orderEntry type="library" name="Gradle: com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1" level="project" />
     <orderEntry type="library" name="Gradle: com.querydsl:querydsl-jpa:5.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springdoc:springdoc-openapi-ui:1.6.12" level="project" />
+    <orderEntry type="library" name="Gradle: org.redisson:redisson-spring-boot-starter:3.17.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-redis:2.7.9" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.querydsl:querydsl-codegen:5.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-aop:2.7.9" level="project" />
@@ -71,6 +72,9 @@
     <orderEntry type="library" name="Gradle: org.webjars:swagger-ui:4.14.3" level="project" />
     <orderEntry type="library" name="Gradle: org.webjars:webjars-locator-core:0.50" level="project" />
     <orderEntry type="library" name="Gradle: io.github.classgraph:classgraph:4.8.149" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-actuator:2.7.9" level="project" />
+    <orderEntry type="library" name="Gradle: org.redisson:redisson-spring-data-27:3.17.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.redisson:redisson:3.17.5" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-redis:2.7.8" level="project" />
     <orderEntry type="library" name="Gradle: io.lettuce:lettuce-core:6.1.10.RELEASE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.querydsl:codegen-utils:5.0.0" level="project" />
@@ -110,13 +114,27 @@
     <orderEntry type="library" name="Gradle: com.mysema.commons:mysema-commons-lang:0.2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.springdoc:springdoc-openapi-common:1.6.12" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.13.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-actuator-autoconfigure:2.7.9" level="project" />
+    <orderEntry type="library" name="Gradle: io.micrometer:micrometer-core:1.9.8" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.13.5" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-resolver-dns:4.1.89.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-handler:4.1.89.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec:4.1.89.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport:4.1.89.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-buffer:4.1.89.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-resolver:4.1.89.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-common:4.1.89.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.projectreactor:reactor-core:3.4.27" level="project" />
+    <orderEntry type="library" name="Gradle: javax.cache:cache-api:1.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.reactivex.rxjava3:rxjava:3.1.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.jboss.marshalling:jboss-marshalling-river:2.0.11.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.jboss.marshalling:jboss-marshalling:2.0.11.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.jodd:jodd-bean:5.1.6" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-keyvalue:2.7.8" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context-support:5.3.25" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-oxm:5.3.25" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-handler:4.1.89.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-transport:4.1.89.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-common:4.1.89.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.projectreactor:reactor-core:3.4.27" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.eclipse.jdt:ecj:3.26.0" level="project" />
     <orderEntry type="library" name="Gradle: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" level="project" />
     <orderEntry type="library" name="Gradle: org.glassfish.jaxb:txw2:2.3.8" level="project" />
@@ -127,21 +145,20 @@
     <orderEntry type="library" name="Gradle: org.slf4j:jul-to-slf4j:1.7.36" level="project" />
     <orderEntry type="library" name="Gradle: org.attoparser:attoparser:2.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.13.5" level="project" />
     <orderEntry type="library" name="Gradle: io.swagger.core.v3:swagger-core:2.2.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-actuator:2.7.9" level="project" />
+    <orderEntry type="library" name="Gradle: org.hdrhistogram:HdrHistogram:2.1.12" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec-dns:4.1.89.Final" level="project" />
     <orderEntry type="library" name="Gradle: io.netty:netty-transport-native-unix-common:4.1.89.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-codec:4.1.89.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-resolver:4.1.89.Final" level="project" />
-    <orderEntry type="library" name="Gradle: io.netty:netty-buffer:4.1.89.Final" level="project" />
-    <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.jodd:jodd-core:5.1.6" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.2.11" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.17.2" level="project" />
     <orderEntry type="library" name="Gradle: io.swagger.core.v3:swagger-models:2.2.4" level="project" />
-    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.12.0" level="project" />
     <orderEntry type="library" name="Gradle: io.swagger.core.v3:swagger-annotations:2.2.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.h2database:h2:2.1.214" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.mysql:mysql-connector-j:8.0.32" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.sun.activation:jakarta.activation:1.2.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.latencyutils:LatencyUtils:2.0.3" level="project" />
   </component>
 </module>

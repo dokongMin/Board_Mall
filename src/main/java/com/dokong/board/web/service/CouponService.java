@@ -3,16 +3,21 @@ package com.dokong.board.web.service;
 import com.dokong.board.domain.coupon.Coupon;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.CouponRepository;
+import com.dokong.board.repository.user.UserRepository;
 import com.dokong.board.web.dto.coupondto.AddCouponDto;
 import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
 import com.dokong.board.web.dto.coupondto.UpdateCouponDto;
 import com.dokong.board.web.dto.eventcoupon.EventCoupon;
+import com.dokong.board.web.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.transaction.TransactionScoped;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +26,7 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final UserService userService;
+
 
     @Transactional
     public AddCouponResponseDto addCouponByBoard(AddCouponDto couponDto) {
@@ -40,12 +46,14 @@ public class CouponService {
     }
 
     @Transactional
-    public EventCoupon addEventCoupon(EventCoupon eventCoupon, String username) {
+    public void addEventCoupon(EventCoupon eventCoupon, String username) {
         Coupon coupon = couponRepository.save(eventCoupon.toEntity());
         User user = userService.findByUsername(username);
         user.addEventCoupon(coupon);
-        return EventCoupon.of(coupon);
+//        return EventCoupon.of(coupon);
     }
+
+
 
     @Transactional
     public List<Coupon> bulkUpdateCoupon(UpdateCouponDto couponDto) {
