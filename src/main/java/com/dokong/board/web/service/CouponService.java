@@ -3,21 +3,15 @@ package com.dokong.board.web.service;
 import com.dokong.board.domain.coupon.Coupon;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.repository.CouponRepository;
-import com.dokong.board.repository.user.UserRepository;
 import com.dokong.board.web.dto.coupondto.AddCouponDto;
 import com.dokong.board.web.dto.coupondto.AddCouponResponseDto;
 import com.dokong.board.web.dto.coupondto.UpdateCouponDto;
 import com.dokong.board.web.dto.eventcoupon.EventCoupon;
-import com.dokong.board.web.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.TransactionScoped;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor

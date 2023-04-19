@@ -84,7 +84,7 @@ public class RestBoardController {
 
         HttpSession session = request.getSession(false);
         SessionUserDto sessionUserDto = (SessionUserDto) session.getAttribute(SessionUserConst.LOGIN_MEMBER);
-        FindBoardDto findBoardDto = boardService.addViewCount(boardId, sessionUserDto.getUsername());
+        FindBoardDto findBoardDto = boardService.addViewCountInRedis(boardId, sessionUserDto.getUsername());
 
         CommonResponseDto<Object> body = CommonResponseDto.builder()
                 .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())

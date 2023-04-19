@@ -64,8 +64,8 @@ public class Board extends BaseEntity {
         this.likeCount -= 1;
     }
 
-    public void addViewCount() {
-        this.viewCount += 1;
+    public void addViewCount(long sendViewCount) {
+        this.viewCount += sendViewCount;
     }
 
     public void updateBoard(String boardTitle, String boardContent) {

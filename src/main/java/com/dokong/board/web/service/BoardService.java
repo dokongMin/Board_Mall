@@ -6,7 +6,7 @@ import com.dokong.board.exception.FiveBoardPostPerDay;
 import com.dokong.board.repository.board.BoardRepository;
 import com.dokong.board.web.dto.boarddto.*;
 import com.dokong.board.web.dto.coupondto.AddCouponDto;
-import com.dokong.board.web.service.redis.RedisService;
+import com.dokong.board.web.service.redis.RedisBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +25,10 @@ public class BoardService {
     private final UserService userService;
 
     private final CouponService couponService;
-    private final RedisService redisService;
+    private final RedisBoardService redisBoardService;
 
     @Transactional
+
     public SaveBoardRespDto saveBoard(SaveBoardReqDto boardReqDto) {
         User user = userService.findById(boardReqDto.getUserId());
         fiveBoardPostCheck();
@@ -37,15 +38,23 @@ public class BoardService {
         return SaveBoardRespDto.of(board);
     }
 
-    @Transactional
-    public FindBoardDto addViewCount(Long boardId, String username) {
+    public FindBoardDto addViewCountInRedis(Long boardId, String username) {
         Board board = findById(boardId);
-        if (redisService.checkDuplicateRequest(username, boardId)) {
+        if (redisBoardService.checkDuplicateRequest(username, boardId)) {
             throw new IllegalStateException("해당 유저는 이미 조회수를 증가시켰습니다.");
         }
-        board.addViewCount();
+        redisBoardService.addViewCountInRedis(board);
         return FindBoardDto.of(board);
     }
+
+    @Transactional
+    public long addViewCount(Long boardId, long viewCount) {
+        Board board = findById(boardId);
+        board.addViewCount(viewCount);
+        return board.getViewCount();
+    }
+
+
 
     private void fiveBoardPostCheck() {
         List<LocalDateTime> byCreatedDate = boardRepository.findByCreatedDate();
@@ -66,7 +75,7 @@ public class BoardService {
                     .couponName("게시글 " + count + " 개 작성 쿠폰")
                     .couponRate(10 + (count / 5))
                     .minCouponPrice(10000)
-                    .couponDetail("게시글을 "+ count +" 개 작성할 때마다 드리는 쿠폰입니다.")
+                    .couponDetail("게시글을 " + count + " 개 작성할 때마다 드리는 쿠폰입니다.")
                     .userId(userId)
                     .build();
             couponService.addCouponByBoard(addCouponDto);
@@ -98,7 +107,7 @@ public class BoardService {
                 .map(b -> FindBoardDto.of(b))
                 .collect(Collectors.toList());
     }
-    
+
     public Board findById(Long id) {
         return boardRepository.findById(id).orElseThrow(() -> {
             throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");
