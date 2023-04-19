@@ -7,6 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -16,6 +20,8 @@ public class RedisBoardService {
 
     private final RedisTemplate<String, String> redisTemplate;
     private static final Long TIME_OUT = 86400L;
+
+    private final Map<Long, Long> hash = new HashMap<>();
 
     public void setClientKey(String username, Long boardId) {
         String key = generateKeyForCheckDuplicate(username, boardId);
@@ -40,10 +46,11 @@ public class RedisBoardService {
     public long sendViewCount(Board board) {
         String key = generateKeyForViewCount(board);
         if (redisTemplate.opsForHash().hasKey(key, board.getBoardTitle())) {
-            long viewCount = Long.parseLong(redisTemplate.opsForHash().get(key, board.getBoardTitle()).toString());
+            Long viewCount = Long.parseLong(redisTemplate.opsForHash().get(key, board.getBoardTitle()).toString());
             redisTemplate.opsForHash().delete(key, board.getBoardTitle());
             return viewCount;
-        } else {
+        }
+        else {
             return 0;
         }
     }

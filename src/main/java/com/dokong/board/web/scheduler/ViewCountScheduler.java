@@ -23,21 +23,15 @@ public class ViewCountScheduler {
     private final BoardService boardService;
 
 
-    @Scheduled(fixedDelay = 100000)
+    @Scheduled(fixedDelay = 15000)
     private void sendVisitCount() {
         log.info("스케줄링 확인");
         List<Board> boards = boardRepository.findAll();
-        for (int i = 0; i < boards.size(); i++) {
-            long viewCount = redisBoardService.sendViewCount(boards.get(i));
+        boards.forEach(b -> {
+            long viewCount = redisBoardService.sendViewCount(b);
             if (viewCount != 0) {
-                boardService.addViewCount(boards.get(i).getId(), viewCount);
+                boardService.addViewCount(b.getId(), viewCount);
             }
-        }
-//        List<Long> collect = boards.stream()
-//                .map(b -> redisBoardService.sendViewCount(b))
-//                .collect(Collectors.toList());
-//        collect.stream()
-//                .filter(v -> v != 0)
-//                        .map(v -> )
+        });
     }
 }
