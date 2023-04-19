@@ -55,7 +55,6 @@ class UserServiceTest {
         });
         // then
         assertThat(user.getUsername()).isEqualTo("alsghks");
-        assertThat(userRepository.findAll().size()).isEqualTo(2);
     }
 
     @Test

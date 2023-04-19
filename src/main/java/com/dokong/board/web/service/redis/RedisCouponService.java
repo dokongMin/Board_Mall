@@ -65,19 +65,4 @@ public class RedisCouponService {
             lock.unlock();
         }
     }
-//    public Boolean publishFirstComeCoupon(EventCoupon eventCoupon) {
-//        Set<Object> queue = redisTemplate.opsForZSet().range(eventCoupon.getCouponName(), FIRST_ELEMENT, LAST_INDEX);
-//        if (eventCoupon.endCount()) {
-//            log.info("선착순 이벤트가 종료되었습니다. 남은 쿠폰 개수 : {}", eventCoupon.getLimit());
-//            redisTemplate.opsForZSet().removeRange(eventCoupon.getCouponName(), FIRST_ELEMENT, LAST_ELEMENT);
-//            return false;
-//        }
-//        for (Object user : queue) {
-//            couponService.addEventCoupon(eventCoupon, user.toString());
-//            log.info("'{}' 님에게 쿠폰이 발급됐습니다.", user);
-//            redisTemplate.opsForZSet().remove(eventCoupon.getCouponName(), user);
-//            eventCoupon.decreaseCount();
-//        }
-//        return true;
-//    }
 }
