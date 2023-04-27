@@ -1,11 +1,22 @@
 # DB configuration
 spring:
+# H2
   datasource:
     url: jdbc:h2:tcp://localhost/~/boardMall
     username: sa
     password:
     driver-class-name: org.h2.Driver
-## redis configuration
+## MySQL
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/BoardMall?serverTimezone=Asia/Seoul
+#    username: root
+#    password: adminadmin
+
+  ## redis configuration
+  session:
+    store-type: redis
+    timeout: 30000
   redis:
     host: localhost
     password:

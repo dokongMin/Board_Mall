@@ -29,7 +29,7 @@ public class RestLoginController {
     private final LoginService loginService;
 
     @Operation(summary = "로그인 API")
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<?> loginRest(@Validated @RequestBody LoginUserDto loginUserDto, BindingResult bindingResult, HttpServletRequest request) {
 
         bindingIllegalArgumentException(bindingResult);
