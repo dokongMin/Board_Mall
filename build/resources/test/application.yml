@@ -10,7 +10,7 @@ spring:
     password:
     port: 6379
   session:
-    store-type: none
+    store-type: redis
 
 #  jpa:
 #    hibernate:
