@@ -9,8 +9,8 @@ spring:
     host: localhost
     password:
     port: 6379
-  session:
-    store-type: redis
+#  session:
+#    store-type: redis
 
 #  jpa:
 #    hibernate:
