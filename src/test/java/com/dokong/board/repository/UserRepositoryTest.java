@@ -2,15 +2,17 @@ package com.dokong.board.repository;
 
 import com.dokong.board.domain.coupon.Coupon;
 import com.dokong.board.domain.user.User;
+import com.dokong.board.exception.NotEnoughTimeException;
 import com.dokong.board.repository.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@SpringBootTest
 class UserRepositoryTest {
 
     @Autowired

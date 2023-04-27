@@ -7,6 +7,7 @@ import com.dokong.board.web.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping
@@ -26,9 +28,13 @@ public class LoginController {
 
     private final LoginService loginService;
 
+    @GetMapping("/login")
+    public String loginForm() {
+        return "login";
+    }
     @PostMapping("/login")
     public String login(@Validated @ModelAttribute LoginUserDto loginUserDto, BindingResult bindingResult, HttpServletRequest request,
-                        @RequestParam(defaultValue = "/") String redirectURL) {
+                        @RequestParam(defaultValue = "/") String redirectURL, HttpSession session) {
 
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
 
@@ -40,9 +46,7 @@ public class LoginController {
             return "login/loginForm";
         }
 
-        HttpSession session = request.getSession();
-        session.setAttribute(SessionUserConst.LOGIN_MEMBER, sessionUserDto);
-
+        session.setAttribute(SessionUserConst.LOGIN_MEMBER, sessionUserDto.getUsername());
         return "redirect:"+ redirectURL;
     }
 
@@ -59,13 +63,18 @@ public class LoginController {
     public String homeLogin(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session == null) {
-            return "home";
+            return "login";
         }
-        SessionUserDto sessionUserDto = (SessionUserDto) session.getAttribute(SessionUserConst.LOGIN_MEMBER);
-        if (sessionUserDto == null) {
-            return "home";
+//        SessionUserDto sessionUserDto = (SessionUserDto) session.getAttribute(SessionUserConst.LOGIN_MEMBER);
+//        if (sessionUserDto == null) {
+//            return "login";
+//        }
+        String sessionUser = (String) session.getAttribute(SessionUserConst.LOGIN_MEMBER);
+        if (sessionUser == null) {
+            return "login";
         }
-        model.addAttribute("user", sessionUserDto);
-        return "loginHome";
+        model.addAttribute("user", sessionUser);
+        return "login";
     }
+
 }

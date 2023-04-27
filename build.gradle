@@ -33,7 +33,7 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-//	implementation 'org.springframework.session:spring-session-data-redis'
+	implementation 'org.springframework.session:spring-session-data-redis'
 	implementation 'org.redisson:redisson-spring-boot-starter:3.17.5'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
@@ -63,3 +63,7 @@ compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
 }
 //querydsl 추가 끝
+
+jar{
+	enabled = false
+}
