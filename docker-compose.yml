@@ -1,49 +1,49 @@
-version: '3'
-
+#version: '3'
+#
+##services:
+##  db:
+##    image: mysql:5.7
+##    volumes:
+##      - ./mysqldata:/var/lib/mysql
+##    environment:
+##      - MYSQL_ROOT_PASSWORD=adminadmin
+##      - MYSQL_DATABASE=min
+##    ports:
+##      - "3306:3306"
+#
 #services:
-#  db:
+#  database:
+##    platform: linux/x86_64
+#    container_name: db
 #    image: mysql:5.7
+#    restart: always
 #    volumes:
-#      - ./mysqldata:/var/lib/mysql
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=adminadmin
-#      - MYSQL_DATABASE=min
+#      - mysql-data:/var/lib/mysql
 #    ports:
 #      - "3306:3306"
-
-services:
-  database:
-#    platform: linux/x86_64
-    container_name: db
-    image: mysql:5.7
-    restart: always
-    volumes:
-      - mysql-data:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_DATABASE: BoardMall
-      MYSQL_ROOT_PASSWORD: adminadmin
-      TZ: 'Asia/Seoul'
-#    volumes:
-#      - ./data:/var/lib/mysql
-#      - ./mysql/conf.d:/etc/mysql/conf.d # MySQL 설정 파일 위치
-    command:
-      - "mysqld"
-      - "--character-set-server=utf8mb4"
-      - "--collation-server=utf8mb4_unicode_ci"
-
-  application:
-    container_name: boardmall
-    restart: always
-    build:
-      context: ./build/libs  # 어느 폴더인지 지칭
-      dockerfile: Dockerfile # Dockerfile 로 일반적으로 작성
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/BoardMall?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: "root"
-      SPRING_DATASOURCE_PASSWORD: "adminadmin"
-    depends_on:
-      - database
+#    environment:
+#      MYSQL_DATABASE: BoardMall
+#      MYSQL_ROOT_PASSWORD: adminadmin
+#      TZ: 'Asia/Seoul'
+##    volumes:
+##      - ./data:/var/lib/mysql
+##      - ./mysql/conf.d:/etc/mysql/conf.d # MySQL 설정 파일 위치
+#    command:
+#      - "mysqld"
+#      - "--character-set-server=utf8mb4"
+#      - "--collation-server=utf8mb4_unicode_ci"
+#
+#  application:
+#    container_name: boardmall
+#    restart: always
+#    build:
+#      context: ./build/libs  # 어느 폴더인지 지칭
+#      dockerfile: Dockerfile # Dockerfile 로 일반적으로 작성
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/BoardMall?useSSL=false&allowPublicKeyRetrieval=true
+#      SPRING_DATASOURCE_USERNAME: "root"
+#      SPRING_DATASOURCE_PASSWORD: "adminadmin"
+#    depends_on:
+#      - database
