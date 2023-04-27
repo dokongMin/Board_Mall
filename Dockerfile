@@ -1,5 +1,5 @@
 FROM openjdk:11
-COPY /build/libs/*.jar app.jar
+COPY /build/libs/board-*.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]
 #ARG JAR_FILE=*.jar
 #COPY ${JAR_FILE} app.jar
