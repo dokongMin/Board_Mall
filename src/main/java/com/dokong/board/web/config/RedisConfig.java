@@ -1,6 +1,6 @@
 package com.dokong.board.web.config;
 
-import com.dokong.board.web.property.RedisProperty;
+//import com.dokong.board.web.property.RedisProperty;
 import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -17,13 +17,20 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class RedisConfig {
 
-    private final RedisProperty redisProperty;
+//    private final RedisProperty redisProperty;
+
+    @Value("${spring.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.redis.port}")
+    private int redisPort;
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisProperty.getHost(), redisProperty.getPort());
+//        return new LettuceConnectionFactory(redisProperty.getHost(), redisProperty.getPort());
+        return new LettuceConnectionFactory(redisHost, redisPort);
     }
 
 
@@ -33,7 +40,7 @@ public class RedisConfig {
     public RedissonClient redissonClient() {
         RedissonClient redisson = null;
         Config config = new Config();
-        config.useSingleServer().setAddress(REDISSON_HOST_PREFIX + redisProperty.getHost() + ":" + redisProperty.getPort());
+        config.useSingleServer().setAddress(REDISSON_HOST_PREFIX + redisHost + ":" + redisPort);
         redisson = Redisson.create(config);
         return redisson;
     }

@@ -9,6 +9,8 @@ spring:
     host: localhost
     password:
     port: 6379
+  profiles:
+    active: local
 #  session:
 #    store-type: redis
 

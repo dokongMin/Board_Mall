@@ -21,7 +21,7 @@ public class RedisBoardService {
     private final RedisTemplate<String, String> redisTemplate;
     private static final Long TIME_OUT = 86400L;
 
-    private final Map<Long, Long> hash = new HashMap<>();
+//    private final Map<Long, Long> hash = new HashMap<>();
 
     public void setClientKey(String username, Long boardId) {
         String key = generateKeyForCheckDuplicate(username, boardId);
