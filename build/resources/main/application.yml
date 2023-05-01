@@ -14,13 +14,13 @@ spring:
 #    password: adminadmin
 
   ## redis configuration
-  session:
-    store-type: redis
-    timeout: 30000
   redis:
     host: localhost
     password:
     port: 6379
+  session:
+    store-type: redis
+    timeout: 30000
 
   jpa:
     hibernate:
