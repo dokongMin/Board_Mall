@@ -31,7 +31,7 @@ public class RedisConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(redisProperty.getHost(), redisProperty.getPort());
-//        return new LettuceConnectionFactory(redisHost, redisPort);
+//        return new LettuceConnectionFactory(redisProperty.getHost(), 6379);
     }
 
 
@@ -42,6 +42,7 @@ public class RedisConfig {
         RedissonClient redisson = null;
         Config config = new Config();
         config.useSingleServer().setAddress(REDISSON_HOST_PREFIX + redisProperty.getHost() + ":" + redisProperty.getPort());
+//        config.useSingleServer().setAddress(REDISSON_HOST_PREFIX + redisProperty.getHost() + ":" + 6379);
         redisson = Redisson.create(config);
         return redisson;
     }
