@@ -1,23 +1,20 @@
 # DB configuration
 spring:
-# H2
+  profiles:
+    default: deploy
+  # H2
   datasource:
     url: jdbc:h2:tcp://localhost/~/boardMall
     username: sa
     password:
     driver-class-name: org.h2.Driver
-## MySQL
-#  datasource:
-#    url: jdbc:mysql://min-db.ctv5qlni3dke.ap-northeast-2.rds.amazonaws.com:3306/boardmalldb?serverTimezone=UTC&characterEncoding=UTF-8
-#    username: admin
-#    password: adminadmin
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+
 
 
   ## redis configuration
   redis:
-#    host: localhost
-    host: redis-board.lrih02.ng.0001.apn2.cache.amazonaws.com
+    host: localhost
+#    host: redis-board.lrih02.ng.0001.apn2.cache.amazonaws.com
     password:
     port: 6379
   session:
@@ -26,7 +23,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         #        show_sql: true
@@ -55,3 +52,63 @@ springdoc:
   cache:
     disabled: true
 
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: deploy
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+#    defer-datasource-initialization: true # (2.5~) Hibernate 초기화 이후 data.sql 실행
+# MySQL
+  datasource:
+    url: jdbc:mysql://min-db.ctv5qlni3dke.ap-northeast-2.rds.amazonaws.com:3306/boardmalldb?serverTimezone=UTC&characterEncoding=UTF-8
+    username: admin
+    password: adminadmin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  sql:
+    init:
+      mode: never
+
+## MySQL
+#  datasource:
+#    url: jdbc:mysql://min-db.ctv5qlni3dke.ap-northeast-2.rds.amazonaws.com:3306/boardmalldb?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: admin
+#    password: adminadmin
+#    driver-class-name: com.mysql.cj.jdbc.Driver
