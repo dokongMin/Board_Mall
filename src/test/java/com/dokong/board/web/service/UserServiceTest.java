@@ -134,7 +134,7 @@ class UserServiceTest {
          userSearchCondition.setUsername("alsghks");
          // when
          List<SearchUserDto> search = userRepository.search(userSearchCondition);
-         // then
+         // then\
          assertThat(search).extracting("username").containsExactly("alsghks");
 
       }

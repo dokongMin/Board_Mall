@@ -61,7 +61,7 @@ public class RestUserController {
                 .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
                 .body(showUserDto)
                 .build();
-        return ResponseEntity.status(SuccessCode.CREATE_REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
+        return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(commonResponseDto);
     }
 
     @Operation(summary = "회원 수정 API")
@@ -109,7 +109,8 @@ public class RestUserController {
     public ResponseEntity<?> findAllUser() {
         List<User> allUser = userService.findAllUser();
         List<ShowUserDto> collect = allUser.stream()
-                .map(a -> ShowUserDto.of(a))
+                .map(ShowUserDto::of)
+//                .map(a -> ShowUserDto.of(a))
                 .collect(Collectors.toList());
         CommonResponseDto<Object> commonResponseDto = CommonResponseDto.builder()
                 .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
