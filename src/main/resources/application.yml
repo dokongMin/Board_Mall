@@ -1,7 +1,7 @@
 # DB configuration
 spring:
   profiles:
-    default: deploy
+    default: local
   # H2
   datasource:
     url: jdbc:h2:tcp://localhost/~/boardMall

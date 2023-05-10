@@ -2,6 +2,8 @@ package com.dokong.board.web.dto.userdto;
 
 import com.dokong.board.domain.user.UserRole;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

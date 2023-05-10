@@ -1,7 +1,7 @@
 # DB configuration
 spring:
   profiles:
-    default: deploy
+    default: local
   # H2
   datasource:
     url: jdbc:h2:tcp://localhost/~/boardMall
@@ -81,12 +81,6 @@ spring:
       hibernate:
         format_sql: true
 #    defer-datasource-initialization: true # (2.5~) Hibernate 초기화 이후 data.sql 실행
-# MySQL
-  datasource:
-    url: jdbc:mysql://min-db.ctv5qlni3dke.ap-northeast-2.rds.amazonaws.com:3306/boardmalldb?serverTimezone=UTC&characterEncoding=UTF-8
-    username: admin
-    password: adminadmin
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 ---
 spring:
