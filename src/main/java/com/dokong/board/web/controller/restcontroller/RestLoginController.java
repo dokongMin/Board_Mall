@@ -36,7 +36,7 @@ public class RestLoginController {
 
         SessionUserDto sessionUserDto = loginService.login(loginUserDto);
         HttpSession session = request.getSession();
-        session.setAttribute(SessionUserConst.LOGIN_MEMBER, sessionUserDto);
+        session.setAttribute(SessionUserConst.LOGIN_MEMBER, sessionUserDto.getUsername());
 
         CommonResponseDto<Object> commonResponseDto = CommonResponseDto.builder()
                 .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())

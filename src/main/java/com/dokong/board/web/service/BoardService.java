@@ -102,9 +102,11 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
-    public List<FindBoardDto> findAllByBoardStatus(FindBoardDto findBoardDto) {
-        return boardRepository.findAllByBoardStatus(findBoardDto.getBoardStatus()).stream()
-                .map(b -> FindBoardDto.of(b))
+    // todo -> findAllByBoardStatus 로직 이상.
+    // 그냥 처음부터 CREATED 상태인 Board 를 찾으면 될 듯.
+    public List<FindBoardDto> findAllByBoardStatusCreated() {
+        return boardRepository.findAllByBoardStatusCreated().stream()
+                .map(FindBoardDto::of)
                 .collect(Collectors.toList());
     }
 

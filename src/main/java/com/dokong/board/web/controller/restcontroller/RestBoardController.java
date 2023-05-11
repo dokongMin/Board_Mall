@@ -82,9 +82,9 @@ public class RestBoardController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getBoard(@PathVariable("id") Long boardId, HttpServletRequest request) {
 
-        HttpSession session = request.getSession(false);
-        SessionUserDto sessionUserDto = (SessionUserDto) session.getAttribute(SessionUserConst.LOGIN_MEMBER);
-        FindBoardDto findBoardDto = boardService.addViewCountInRedis(boardId, sessionUserDto.getUsername());
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute(SessionUserConst.LOGIN_MEMBER);
+        FindBoardDto findBoardDto = boardService.addViewCountInRedis(boardId, username);
 
         CommonResponseDto<Object> body = CommonResponseDto.builder()
                 .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
@@ -107,12 +107,12 @@ public class RestBoardController {
         return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
+    // todo -> findAllByBoardStatus 로직 이상.
     @Operation(summary = "게시글 상태 별 조회 API", description = "삭제된 게시글과 구분해서 조회가 가능")
     @GetMapping("/list")
-    public ResponseEntity<?> findAllByBoardStatus(@RequestBody FindBoardDto findBoardDto, BindingResult bindingResult) {
-        bindingIllegalArgumentException(bindingResult);
+    public ResponseEntity<?> findAllByBoardStatus() {
 
-        List<FindBoardDto> allByBoardStatus = boardService.findAllByBoardStatus(findBoardDto);
+        List<FindBoardDto> allByBoardStatus = boardService.findAllByBoardStatusCreated();
 
         CommonResponseDto<Object> body = CommonResponseDto.builder()
                 .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
