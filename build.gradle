@@ -8,6 +8,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.9'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id 'jacoco'
 }
 
 group = 'com.dokong'
@@ -48,6 +49,7 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy 'jacocoTestReport'
 }
 //querydsl 추가 시작
 def querydslDir = "$buildDir/generated/querydsl"
@@ -68,4 +70,53 @@ compileQuerydsl {
 
 jar{
 	enabled = false
+}
+
+// jacoco 설정
+
+private excludedClassFilesForReport(classDirectories) {
+	classDirectories.setFrom(
+			files(classDirectories.files.collect {
+				fileTree(dir: it, exclude: [
+						"**/Q*",
+						"**/*Dto*",
+						"**/*Dto",
+						"**/*Application*",
+						"**/*Config*"
+				])
+			})
+	)
+}
+
+jacocoTestReport {
+	reports {
+		html.enabled true
+		xml.enabled false
+		csv.enabled false
+
+// 리포트의 저장 경로를 설정합니다.
+		html.destination file("jacoco/jacocoHtml")
+		xml.destination file("jacoco/jacoco.xml")
+	}
+
+	excludedClassFilesForReport(classDirectories)
+
+	finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+	excludedClassFilesForReport(classDirectories)
+	violationRules { // 커버리지의 범위와 퍼센테이지를 설정합니다.
+		rule {
+			element = 'CLASS'
+
+			limit {
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.60
+			}
+
+
+		}
+	}
 }

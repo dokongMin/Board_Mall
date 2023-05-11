@@ -27,6 +27,16 @@
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 
+# Jacoco
+target/
+.settings/
+!org.jacoco.core/.settings/
+!org.jacoco.core.test/.settings/
+org.jacoco.agent/src/jacocoagent.jar
+.idea
+*.iml
+/jacoco/**
+
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
