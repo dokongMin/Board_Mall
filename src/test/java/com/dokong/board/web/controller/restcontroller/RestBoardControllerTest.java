@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 class RestBoardControllerTest {
 
     @Autowired
@@ -58,6 +60,10 @@ class RestBoardControllerTest {
     @MockBean
     private HttpSession session;
 
+    @AfterEach
+    void tearDown() {
+        boardRepository.deleteAllInBatch();
+    }
 
     @DisplayName("게시글을 작성한다.")
     @Test

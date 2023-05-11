@@ -4,6 +4,7 @@ import com.dokong.board.domain.Category;
 import com.dokong.board.domain.product.Product;
 import com.dokong.board.repository.product.ProductRepository;
 import com.dokong.board.web.dto.product.DeleteProductRespDto;
+import com.dokong.board.web.dto.product.FindProductDto;
 import com.dokong.board.web.dto.product.SaveProductDto;
 import com.dokong.board.web.dto.product.UpdateProductDto;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +50,9 @@ public class ProductService {
             throw new IllegalArgumentException("해당 상품은 존재하지 않습니다.");
         });
     }
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<FindProductDto> findAll() {
+        return productRepository.findAll().stream()
+                .map(FindProductDto::of)
+                .collect(Collectors.toList());
     }
 }
