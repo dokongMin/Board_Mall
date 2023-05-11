@@ -4,10 +4,12 @@ import com.dokong.board.domain.board.Board;
 import com.dokong.board.domain.board.BoardStatus;
 import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
 import com.dokong.board.web.service.BoardService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class BoardRepositoryTest {
 
 

@@ -12,6 +12,7 @@ import com.dokong.board.web.dto.boarddto.UpdateBoardDto;
 import com.dokong.board.web.dto.userdto.JoinUserDto;
 import com.dokong.board.web.dto.logindto.LoginUserDto;
 import com.dokong.board.web.dto.userdto.SessionUserDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,12 @@ class BoardServiceTest {
     LoginService loginService;
     @Autowired
     UserService userService;
+
+    @AfterEach
+    void tearDown() {
+        boardRepository.deleteAllInBatch();
+    }
+
     @Test
     @DisplayName("게시글_생성")
     public void saveBoard() throws Exception {

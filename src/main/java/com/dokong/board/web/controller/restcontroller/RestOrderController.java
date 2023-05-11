@@ -49,12 +49,12 @@ public class RestOrderController {
     @PostMapping("/cancel/{id}")
     public ResponseEntity<?> cancelOrder(@PathVariable Long id) {
 
-        orderService.cancelOrder(id);
+        Long returnIds = orderService.cancelOrder(id);
 
         CommonResponseDto<Object> body = CommonResponseDto.builder()
                 .code(SuccessCode.DELETE_REQUEST_SUCCESS.getHttpStatus())
                 .msg(SuccessCode.DELETE_REQUEST_SUCCESS.getMessage())
-                .body(id)
+                .body(returnIds)
                 .build();
 
         return ResponseEntity.status(SuccessCode.DELETE_REQUEST_SUCCESS.getHttpStatus()).body(body);

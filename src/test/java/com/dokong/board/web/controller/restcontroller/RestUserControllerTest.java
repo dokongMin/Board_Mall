@@ -7,6 +7,7 @@ import com.dokong.board.repository.user.UserRepository;
 import com.dokong.board.web.dto.userdto.*;
 import com.dokong.board.web.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,10 @@ class RestUserControllerTest {
     @MockBean
     private UserRepository userRepository;
 
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAllInBatch();
+    }
 
     @DisplayName("회원을 저장한다")
     @Test

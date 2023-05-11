@@ -63,21 +63,18 @@ public class RestProductController {
     @Operation(summary = "상품 전체 조회 API")
     @GetMapping("/item-list")
     public ResponseEntity<?> findAllProduct() {
-        List<Product> allProduct = productService.findAll();
-        List<SaveProductDto> collect = allProduct.stream()
-                .map(p -> SaveProductDto.of(p))
-                .collect(Collectors.toList());
+        List<FindProductDto> allProduct = productService.findAll();
 
         CommonResponseDto<Object> body = CommonResponseDto.builder()
-                .code(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus())
-                .msg(SuccessCode.UPDATE_REQUEST_SUCCESS.getMessage())
-                .body(collect)
+                .code(SuccessCode.REQUEST_SUCCESS.getHttpStatus())
+                .msg(SuccessCode.REQUEST_SUCCESS.getMessage())
+                .body(allProduct)
                 .build();
-        return ResponseEntity.status(SuccessCode.UPDATE_REQUEST_SUCCESS.getHttpStatus()).body(body);
+        return ResponseEntity.status(SuccessCode.REQUEST_SUCCESS.getHttpStatus()).body(body);
     }
 
     @Operation(summary = "상품 삭제 API")
-    @PostMapping("/delete/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         DeleteProductRespDto deleteProductRespDto = productService.deleteProduct(id);
 

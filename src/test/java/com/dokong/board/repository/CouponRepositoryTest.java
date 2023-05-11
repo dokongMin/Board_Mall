@@ -2,6 +2,7 @@ package com.dokong.board.repository;
 
 import com.dokong.board.domain.coupon.Coupon;
 import com.dokong.board.web.dto.coupondto.UpdateCouponDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ class CouponRepositoryTest {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @AfterEach
+    void tearDown() {
+        couponRepository.deleteAllInBatch();
+    }
 
     @Test
     @DisplayName("벌크_쿠폰_수정")

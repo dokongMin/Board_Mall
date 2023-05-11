@@ -4,6 +4,7 @@ import com.dokong.board.domain.coupon.Coupon;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.exception.NotEnoughTimeException;
 import com.dokong.board.repository.user.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,13 @@ class UserRepositoryTest {
 
     @Autowired
     CouponRepository couponRepository;
+
+    @AfterEach
+    void tearDown() {
+        couponRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+    }
+
 
     @Test
     @DisplayName("회원_저장")
