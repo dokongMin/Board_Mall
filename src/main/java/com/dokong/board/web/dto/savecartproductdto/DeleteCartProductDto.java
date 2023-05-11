@@ -14,6 +14,9 @@ public class DeleteCartProductDto {
 
 
     @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CartProductDto {
         private Long id;
         private String itemName;
