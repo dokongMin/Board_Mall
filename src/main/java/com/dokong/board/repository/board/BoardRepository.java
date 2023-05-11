@@ -24,6 +24,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardReposi
     @Query("select b from Board b")
     List<Board> findAll();
 
-    @Query("select b from Board b where b.boardStatus = :boardStatus")
-    List<Board> findAllByBoardStatus(@Param("boardStatus")BoardStatus boardStatus);
+    @Query("select b from Board b where b.boardStatus = 'CREATED'")
+    List<Board> findAllByBoardStatusCreated();
 }

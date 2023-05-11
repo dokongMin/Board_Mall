@@ -1,9 +1,11 @@
 package com.dokong.board.web.service;
 
 import com.dokong.board.domain.board.Board;
+import com.dokong.board.domain.board.BoardStatus;
 import com.dokong.board.domain.user.User;
 import com.dokong.board.exception.FiveBoardPostPerDay;
 import com.dokong.board.repository.board.BoardRepository;
+import com.dokong.board.web.dto.boarddto.FindBoardDto;
 import com.dokong.board.web.dto.boarddto.SaveBoardReqDto;
 import com.dokong.board.web.dto.boarddto.SaveBoardRespDto;
 import com.dokong.board.web.dto.boarddto.UpdateBoardDto;
@@ -17,6 +19,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+import static com.dokong.board.domain.board.BoardStatus.CREATED;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -152,6 +158,25 @@ class BoardServiceTest {
         SaveBoardRespDto board5 = boardService.saveBoard(boardDto);
         assertThat(user.getCoupons().size()).isEqualTo(1);
     }
+    
+    
+    @DisplayName("삭제된 게시글을 제외한 전체 게시글을 조회한다.")
+    @Test
+    void findAllByBoardStatusCreated () throws Exception{
+        // given
+        boardRepository.save(getBoardCreated());
+        boardRepository.save(getBoardCreated());
+        boardRepository.save(getBoardDeleted());
+        // when 
+        List<FindBoardDto> result = boardService.findAllByBoardStatusCreated();
+        // then
+        assertThat(result).hasSize(2)
+                .extracting("boardTitle", "boardStatus")
+                .containsExactlyInAnyOrder(
+                        tuple("aaa", CREATED),
+                        tuple("aaa", CREATED)
+                );
+     }
 
     private SaveBoardReqDto getBoard(Long userId) {
         return SaveBoardReqDto.builder()
@@ -172,6 +197,21 @@ class BoardServiceTest {
         return JoinUserDto.builder()
                 .username("aaa")
                 .password("bbb")
+                .build();
+    }
+
+    private Board getBoardCreated() {
+        return Board.builder()
+                .boardTitle("aaa")
+                .boardContent("bbb")
+                .boardStatus(CREATED)
+                .build();
+    }
+    private Board getBoardDeleted() {
+        return Board.builder()
+                .boardTitle("aaa")
+                .boardContent("bbb")
+                .boardStatus(BoardStatus.DELETED)
                 .build();
     }
 }
